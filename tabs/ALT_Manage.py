@@ -1,12 +1,13 @@
 # ------------------------------------------------------------
 # tabs/ALT_Manage.py
 # 화면 구성: 대체투자 약정·집행·분배·순증 현황 (기준연도 = 기준일이 속한 연도)
+#   약정은 약정일 기준(일별), 집행·분배·순증은 PCAP 분기 기준일까지 — 지표 카드에 기준월을 따로 적는다
 #   자산군 내부 탭 4개 (전체 / 사모벤처 / 부동산 / 인프라) — dcc.Tabs children 에 미리 렌더, 콜백 없음
 #   탭마다
 #     1단  지표 카드 4개        현황 · 목표/잔여 · 달성률 미터(연간 진도 눈금) · 전년 동기 대비
 #     2단  연도별 목표 대비 실적 4개   지표별 막대 (목표 골드, 실적 지표색), 달성률 라벨
 #     3단  연중 누적 추이 4개    당해 누적(지표색) · 전년 누적(회색) · 연간 목표(골드 점선)
-#     4단  월별 집행·분배·순증 1개 + 지표별 요약 표 1개
+#     4단  월별(PCAP 이면 분기별) 집행·분배·순증 1개 + 지표별 요약 표 1개
 #     5단  누적 실적을 이끈 펀드 4개   지표별 상위 5개 (로컬 통화 · 원화 · 비중)
 #     6단  자산군별 목표·현황·달성률 표 1개   전체 탭에만
 # 입력: processors.ALT_Manage.process_ALT_Manage 의 결과 사전 (global_data.DF_ALT_Manage)
@@ -172,8 +173,8 @@ def key_dot(color, size=9):
 
 
 # ---------- 1단: 지표 카드 ----------
-def make_kpi_card(m, row, unit, months, in_progress):
-    """m: METRICS 항목, row: kpi 한 행(dict)"""
+def make_kpi_card(m, row, unit, months, in_progress, note=None):
+    """m: METRICS 항목, row: kpi 한 행(dict), months: 이 지표의 집계 마지막 월, note: 기준월이 다를 때 덧붙일 문구"""
     target, actual, ratio, remain, prev = row["TARGET"], row["ACTUAL"], row["RATIO"], row["REMAIN"], row["PREV"]
     pace = months / 12.0 if in_progress else None
     unit_short = unit.replace("원", "")
@@ -188,8 +189,9 @@ def make_kpi_card(m, row, unit, months, in_progress):
                       html.Span(pct(ratio), style={"display": "inline-block", "width": "40px", "textAlign": "right",
                                                    "fontWeight": "600", "fontSize": "12.5px", "verticalAlign": "middle"})],
                      style={"marginBottom": "6px"})
-    foot = html.Div([delta_span(actual, prev), html.Span(" 전년 동기 대비", style={"color": "#4B5563"})],
-                    style={"fontSize": "12px"})
+    foot = html.Div([delta_span(actual, prev), html.Span(" 전년 동기 대비", style={"color": "#4B5563"}),
+                     html.Span(" · " + note if note else "", style={"color": MUTED})],
+                    style={"fontSize": "12px", "whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis"})
     return html.Div([head, value, tline, meter, foot], style=CARD)
 
 
@@ -217,7 +219,9 @@ def make_yearly_chart(kpi_m, base_year, height):
 
 # ---------- 3단: 연중 누적 추이 ----------
 def make_cum_chart(cur, prev, target, color, height):
-    """cur/prev: 월별 누적 Series(index 1..12, 없으면 None). target: 연간 목표"""
+    """cur/prev: 월별 누적 Series(index 1..12, 없으면 None). target: 연간 목표. 자료 없는 달(NaN)은 선을 그리지 않는다"""
+    cur = cur.dropna() if cur is not None else None
+    prev = prev.dropna() if prev is not None else None
     fig = go.Figure()
     if prev is not None and len(prev):
         fig.add_trace(go.Scatter(x=[MONTH_LABELS[i - 1] for i in prev.index], y=prev.values, mode="lines", name="전년 누적",
@@ -241,8 +245,12 @@ def make_cum_chart(cur, prev, target, color, height):
 
 
 # ---------- 4단: 월별 집행·분배·순증 ----------
-def make_flow_chart(mon, height):
-    """mon: 기준연도·자산군의 월별 DataFrame(MONTH, 집행, 분배, 순증). 집행 위, 분배 아래, 순증 점"""
+def make_flow_chart(mon, height, quarterly=False):
+    """mon: 기준연도·자산군의 월별 DataFrame(MONTH, 집행, 분배, 순증). 집행 위, 분배 아래, 순증 점.
+    quarterly 면 분기말(3·6·9·12월)만 그린다"""
+    mon = mon.dropna(subset=["집행", "분배"])
+    if quarterly:
+        mon = mon[mon["MONTH"] % 3 == 0]
     x = [MONTH_LABELS[i - 1] for i in mon["MONTH"]]
     fig = go.Figure()
     fig.add_trace(go.Bar(x=x, y=mon["집행"], name="집행", marker_color=ORANGE, hovertemplate="집행 +%{y:,.0f}<extra></extra>"))
@@ -363,14 +371,21 @@ def make_page(data, cls):
     kpi = data["kpi"]
     kpi_year = kpi[kpi["YEAR"] == year]
     kpi_rows = {r["METRIC"]: r for _, r in kpi_year[kpi_year["CLS"] == cls].iterrows()}
-    months = int(kpi_rows["약정"]["MONTHS"]) if "약정" in kpi_rows else 12
+    months = int(kpi_rows["약정"]["MONTHS"]) if "약정" in kpi_rows else 12          # 약정 기준월
+    flow_months = int(kpi_rows["집행"]["MONTHS"]) if "집행" in kpi_rows else months  # 집행·분배·순증 기준월 (PCAP)
+    asof_flow = data.get("asof_flow", asof)
+    quarterly = data.get("flow_freq", "M") == "Q"
     in_progress = year == asof.year and months < 12
     period = "%d년 %s 누적" % (year, period_text(months))
+    if flow_months != months:
+        period += " (집행·분배·순증은 %s, PCAP %s 기준)" % (period_text(flow_months), asof_flow.strftime("%m/%d"))
     pace_text = " · 연간 진도 %d%% (%d/12개월)" % (round(months / 12 * 100), months) if in_progress else ""
 
-    # 1단 지표 카드
-    kpi_cards = html.Div([make_kpi_card(m, kpi_rows[m["k"]], unit, months, in_progress) for m in METRICS if m["k"] in kpi_rows],
-                         style=dict(GRID4, marginBottom="14px"))
+    # 1단 지표 카드 — 지표마다 자기 기준월로 진도 눈금을 그린다
+    kpi_cards = html.Div([
+        make_kpi_card(m, kpi_rows[m["k"]], unit, int(kpi_rows[m["k"]]["MONTHS"]), in_progress,
+                      note=(period_text(int(kpi_rows[m["k"]]["MONTHS"])) + " 기준") if int(kpi_rows[m["k"]]["MONTHS"]) != months else None)
+        for m in METRICS if m["k"] in kpi_rows], style=dict(GRID4, marginBottom="14px"))
 
     # 2단 연도별
     yearly_cards = []
@@ -404,8 +419,8 @@ def make_page(data, cls):
     mon = mon[(mon["YEAR"] == year) & (mon["CLS"] == cls)].sort_values("MONTH")
     flow_legend = legend_bar([{"n": "집행 (잔액 증가)", "c": ORANGE, "t": "bar"}, {"n": "분배 (잔액 감소)", "c": GREEN, "t": "bar"},
                               {"n": "순증", "c": NAVY, "t": "dot"}])
-    flow = make_card("월별 집행·분배·순증", html.Div([flow_legend, make_flow_chart(mon, H_FLOW)]),
-                     sub="위는 집행, 아래는 분배, 점은 그 달의 순증", height=H_FLOW + 70)
+    flow = make_card(("분기별" if quarterly else "월별") + " 집행·분배·순증", html.Div([flow_legend, make_flow_chart(mon, H_FLOW, quarterly)]),
+                     sub=("PCAP 분기말 기준 · " if quarterly else "") + "위는 집행, 아래는 분배, 점은 순증", height=H_FLOW + 70)
     summary = make_card("지표별 요약", make_summary_table(kpi_rows, unit), sub=period + " · 단위 " + unit, height=H_FLOW + 70)
     row4 = html.Div([summary, flow], style=dict(GRID2, marginBottom="14px"))
 
@@ -445,7 +460,8 @@ def render(data):
     asof = data["asof"]
     header = html.Div([
         html.Span("대체투자 약정 현황", style={"fontSize": "18px", "fontWeight": "700", "color": INK}),
-        html.Span("기준일 %s · 단위 %s · 순증 = 집행 − 분배" % (asof.strftime("%Y-%m-%d"), data["unit"]),
+        html.Span("약정 기준일 %s · 집행·분배 기준일 %s(PCAP) · 단위 %s · 순증 = 집행 − 분배"
+                  % (asof.strftime("%Y-%m-%d"), data.get("asof_flow", asof).strftime("%Y-%m-%d"), data["unit"]),
                   style={"fontSize": "12.5px", "color": MUTED, "marginLeft": "12px"}),
     ], style={"margin": "4px 0 10px"})
     tabs = dcc.Tabs(value="tab-ALT_Manage-" + ALL, children=[

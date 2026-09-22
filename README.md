@@ -8,11 +8,12 @@
 ```
 alt_manage/
 ├── CLAUDE.md                 코딩 규칙 (TPA Dashboard 공통)
-├── sql/                      원재료 쿼리 — 테이블·컬럼명 확인 전, <<...>> 자리표시자
-│   ├── ALT_CashFlow.sql      약정·집행·분배 현금흐름 (long)
-│   ├── ALT_Target.sql        연도·자산군별 목표
-│   └── ALT_Fund.sql          펀드 마스터 (선택)
-├── processors/ALT_Manage.py  process_ALT_Manage(raw_cf, raw_target, raw_fund=None, asof=None) → 사전
+├── sql/                      원재료 쿼리 — 확인된 테이블은 실명, 나머지는 <<...>> 자리표시자
+│   ├── ALT_Commit.sql        약정 내역 (FEIAI0488NTA)
+│   ├── ALT_PCAP.sql          집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌)
+│   ├── ALT_Target.sql        연도·자산군별 목표 (확인 전)
+│   └── ALT_Fund.sql          펀드 마스터 (FEIAI0488NTA 기반, 펀드명·자산군 확인 전)
+├── processors/ALT_Manage.py  process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True) → 사전
 ├── tabs/ALT_Manage.py        render(data) — 자산군 내부 탭 4개, 콜백 없음
 ├── global_data.py            DF_ALT_Manage = None
 ├── loader.py                 create_connection(), load_data(conn, "파일.sql")  (사내 loader 와 같은 인터페이스)
@@ -39,6 +40,7 @@ alt_manage/
 | 6 | 자산군별 목표·현황·달성률 표 (전체 탭에만) |
 
 순증 = 집행 − 분배 (투자잔액 증가분). 금액은 원화 억원, 펀드 통화는 KRW 펀드면 억원·외화 펀드면 백만.
+약정은 약정일 기준(일별), 집행·분배·순증은 PCAP 분기 기준일까지 집계하며 지표 카드에 기준월을 따로 표시합니다.
 
 ## 로컬에서 확인
 
@@ -54,8 +56,8 @@ ALT_ASOF=2026-09-22 python run_local.py   # 기준일 지정
 import importlib, demo_data
 import processors.ALT_Manage, tabs.ALT_Manage
 importlib.reload(processors.ALT_Manage); importlib.reload(tabs.ALT_Manage)
-raw_cf, raw_target, raw_fund = demo_data.load_demo()          # 사내에서는 loader.load_data(conn, "ALT_CashFlow.sql") 등
-d = processors.ALT_Manage.process_ALT_Manage(raw_cf, raw_target, raw_fund)
+raw_commit, raw_pcap, raw_target, raw_fund = demo_data.load_demo()   # 사내에서는 loader.load_data(conn, "ALT_Commit.sql") 등
+d = processors.ALT_Manage.process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund)
 tabs.ALT_Manage.render(d)
 ```
 

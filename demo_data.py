@@ -1,26 +1,53 @@
-# 로컬 확인용 데모 원재료. draft/data 의 샘플 CSV 를 Oracle 이 돌려주는 모양(대문자 열, WRK_DT 는 YYYYMMDD 문자열)으로 만든다.
-# 실제 데이터 구조가 확정되면 sql/*.sql 이 같은 열 이름을 돌려주도록 맞춘다.
+# 로컬 확인용 데모 원재료. draft/data 의 샘플 CSV 를 확인된 원천 테이블 모양(대문자 열, 날짜는 YYYYMMDD 문자열)으로 만든다.
+#   raw_commit ← FEIAI0488NTA 모양 (sql/ALT_Commit.sql 결과)
+#   raw_pcap   ← FEIAI0432NTA 모양 (sql/ALT_PCAP.sql 결과): 분기말 기준 설립 이후 누적, 최신 제공일 한 벌
+#               PCAP 은 한 분기 늦게 들어오므로 기준일(9/22) 시점에는 6/30 까지만 있다고 가정
+#   raw_target ← sql/ALT_Target.sql 결과
+#   raw_fund   ← sql/ALT_Fund.sql 결과 (펀드명·자산군은 아직 원천 미확인이지만 데모에서는 채운다)
 from pathlib import Path
 
 import pandas as pd
 
 DATA_DIR = Path(__file__).resolve().parent / "draft" / "data"
+PCAP_LAST = "2026-06-30"     # 데모에서 마지막으로 제공된 PCAP 기준일
 
 
 def load_demo():
-    """(raw_cf, raw_target, raw_fund) 를 돌려준다. 각각 sql/ALT_CashFlow.sql, ALT_Target.sql, ALT_Fund.sql 의 결과 모양."""
+    """(raw_commit, raw_pcap, raw_target, raw_fund) 를 돌려준다"""
     tx = pd.read_csv(DATA_DIR / "transactions.csv", encoding="utf-8-sig")
     tg = pd.read_csv(DATA_DIR / "targets.csv", encoding="utf-8-sig")
+    tx["date"] = pd.to_datetime(tx["date"])
+    tx["currency"] = tx["currency"].fillna("KRW")
+    code = "F" + (tx["fund"].astype("category").cat.codes + 1).astype(str).str.zfill(4)   # 펀드코드 흉내
+    tx["code"] = code
 
-    raw_cf = pd.DataFrame({
-        "WRK_DT": pd.to_datetime(tx["date"]).dt.strftime("%Y%m%d"),
-        "FUND_NM": tx["fund"],
-        "ASSET_CLS": tx["asset_class"],
-        "CCY": tx["currency"].fillna("KRW"),
-        "TX_TYPE": tx["type"],
-        "AMT_KRW": tx["amount"].astype(float),
-        "AMT_LOCAL": tx["local_amount"].astype(float),
+    c = tx[tx["type"] == "약정"]
+    raw_commit = pd.DataFrame({
+        "WRK_DT": c["date"].dt.strftime("%Y%m%d"),
+        "FUND_CD": c["code"],
+        "CCY": c["currency"],
+        "AMT_KRW": c["amount"].astype(float),
+        "AMT_LOCAL": c["local_amount"].astype(float),
     })
+
+    # 분기말 누적 (설립 이후) — FUNDED 는 원천처럼 음수 부호로
+    f = tx[tx["type"].isin(["집행", "분배"])].copy()
+    f["Q_END"] = f["date"].dt.to_period("Q").dt.end_time.dt.normalize()
+    f = f[f["Q_END"] <= pd.Timestamp(PCAP_LAST)]
+    q = f.pivot_table(index=["code", "Q_END"], columns="type", values=["amount", "local_amount"], aggfunc="sum", fill_value=0.0)
+    q = q.groupby(level="code").cumsum().reset_index()
+    raw_pcap = pd.DataFrame({
+        "PROV_DT": "20260918",
+        "WRK_DT": q["Q_END"].dt.strftime("%Y%m%d"),
+        "FUND_CD": q["code"],
+        "COMMIT_KRW": 0.0,
+        "FUNDED_KRW": q[("amount", "집행")] if ("amount", "집행") in q else 0.0,
+        "FUNDED_LOCAL": q[("local_amount", "집행")] if ("local_amount", "집행") in q else 0.0,
+        "DISTRB_KRW": q[("amount", "분배")] if ("amount", "분배") in q else 0.0,
+        "DISTRB_LOCAL": q[("local_amount", "분배")] if ("local_amount", "분배") in q else 0.0,
+        "NAV_KRW": 0.0,
+    })
+
     raw_target = pd.DataFrame({
         "TARGET_YR": tg["year"].astype(int),
         "ASSET_CLS": tg["asset_class"],
@@ -29,11 +56,12 @@ def load_demo():
         "DIST_KRW": tg["distribution"].astype(float),
         "NET_KRW": pd.to_numeric(tg["net"], errors="coerce"),
     })
-    first = tx[tx["type"] == "약정"].sort_values("date").drop_duplicates("fund")
+    first = c.sort_values("date").drop_duplicates("code")
     raw_fund = pd.DataFrame({
+        "FUND_CD": first["code"].values,
         "FUND_NM": first["fund"].values,
         "ASSET_CLS": first["asset_class"].values,
-        "CCY": first["currency"].fillna("KRW").values,
-        "VINTAGE_YR": pd.to_datetime(first["date"]).dt.year.values,
+        "CCY": first["currency"].values,
+        "VINTAGE_YR": first["date"].dt.year.values,
     })
-    return raw_cf, raw_target, raw_fund
+    return raw_commit, raw_pcap, raw_target, raw_fund

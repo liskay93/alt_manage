@@ -8,11 +8,12 @@ from processors import ALT_Manage as ALT_Manage_proc
 from tabs import ALT_Manage as ALT_Manage_tab
 
 # [2] 로드 (try 블록 안)
-raw_alt_cf     = loader.load_data(conn, "ALT_CashFlow.sql")
+raw_alt_commit = loader.load_data(conn, "ALT_Commit.sql")   # FEIAI0488NTA 약정
+raw_alt_pcap   = loader.load_data(conn, "ALT_PCAP.sql")     # FEIAI0432NTA 집행·분배 (최신 제공일, 분기별 누적)
 raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
-raw_alt_fund   = loader.load_data(conn, "ALT_Fund.sql")      # 펀드 마스터가 없으면 None
-global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(raw_alt_cf, raw_alt_target, raw_alt_fund)
-logging.info(f"ALT_Manage 로드: 현금흐름 {len(raw_alt_cf)}행, 목표 {len(raw_alt_target)}행")
+raw_alt_fund   = loader.load_data(conn, "ALT_Fund.sql")     # 펀드 마스터가 없으면 None
+global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund)
+logging.info(f"ALT_Manage 로드: 약정 {len(raw_alt_commit)}행, PCAP {len(raw_alt_pcap)}행, 목표 {len(raw_alt_target)}행")
 
 # [4] 레이아웃 -- dcc.Tabs children
 dcc.Tab(label='대체투자 약정', value='tab-ALT_Manage',
@@ -27,4 +28,5 @@ dcc.Tab(label='대체투자 약정', value='tab-ALT_Manage',
 DF_ALT_Manage = None
 ```
 
-기준일을 지정하려면 `process_ALT_Manage(..., asof="2026-09-30")`. 생략하면 현금흐름의 마지막 거래일.
+기준일을 지정하려면 `process_ALT_Manage(..., asof="2026-09-30")`. 생략하면 약정·PCAP 의 마지막 날짜.
+PCAP 금액이 누적이 아니라 기간 증분이면 `pcap_cumulative=False`.
