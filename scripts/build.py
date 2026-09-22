@@ -5,6 +5,8 @@
   data/targets.csv       year, asset_class, commitment, drawdown, distribution, net
                          (열 이름은 약정/집행/분배/순증 도 인식. net 이 비어 있으면 drawdown − distribution)
   data/transactions.csv  date(YYYY-MM-DD), fund, asset_class, type(약정|집행|분배), amount
+                         [currency, local_amount]  펀드 통화와 그 통화 기준 금액 (선택, 없으면 KRW)
+                         amount 는 원화, local_amount 는 KRW 면 amount 와 같은 단위, 외화면 --local-unit 단위(기본 백만)
 
 출력
   data/data.js           index.html 이 읽는 월별 집계 + 펀드별 연간 집계 (window.ALT_DATA)
@@ -51,7 +53,7 @@ def to_number(s: str) -> float:
     return float(s) if s else 0.0
 
 
-def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
+def build(as_of: dt.date | None, unit: str, note: str | None, local_unit: str = "백만") -> dict:
     targets_raw = read_csv(DATA / "targets.csv")
     tx_raw = read_csv(DATA / "transactions.csv")
 
@@ -81,8 +83,11 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
     flows: dict[tuple[str, str], dict] = defaultdict(
         lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0, "commitCount": 0})
     fund_years: dict[tuple[str, str, int], dict] = defaultdict(
-        lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0})
+        lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0,
+                 "localCommitment": 0.0, "localDrawdown": 0.0, "localDistribution": 0.0})
     vintage: dict[str, int] = {}
+    currency_of: dict[str, str] = {}
+    missing_local = 0
     last_date: dt.date | None = None
     skipped = 0
     for r in tx_raw:
@@ -100,12 +105,25 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
         if key == "commitment":
             cell["commitCount"] += 1
         fund = r.get("fund", "").strip() or "(펀드명 없음)"
-        fund_years[(fund, r["asset_class"], d.year)][key] += amount
+        ccy = (r.get("currency") or "KRW").strip().upper() or "KRW"
+        currency_of.setdefault(fund, ccy)
+        if r.get("local_amount", "") != "":
+            local = to_number(r["local_amount"])
+        elif ccy == "KRW":
+            local = amount
+        else:
+            local = 0.0
+            missing_local += 1
+        fy = fund_years[(fund, r["asset_class"], d.year)]
+        fy[key] += amount
+        fy["local" + key[0].upper() + key[1:]] += local
         if key == "commitment" and (fund not in vintage or d.year < vintage[fund]):
             vintage[fund] = d.year
 
     if skipped:
         print(f"warning: {skipped} transaction rows skipped (unknown type or empty date)")
+    if missing_local:
+        print(f"warning: {missing_local} foreign-currency rows have no local_amount (counted as 0 in local currency)")
 
     effective_as_of = as_of or last_date or dt.date.today()
     flow_rows = [
@@ -114,7 +132,7 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
     ]
     fund_rows = [
         {"fund": fund, "assetClass": cls, "year": year, "vintage": vintage.get(fund, year),
-         **{k: round(v, 2) for k, v in cell.items()}}
+         "currency": currency_of.get(fund, "KRW"), **{k: round(v, 2) for k, v in cell.items()}}
         for (fund, cls, year), cell in sorted(fund_years.items())
     ]
     data = {
@@ -124,6 +142,7 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
         "targets": targets,
         "flows": flow_rows,
         "funds": fund_rows,
+        "localUnits": {"KRW": unit[:-1] if unit.endswith("원") else unit, "default": local_unit},
     }
     if note:
         data["note"] = note
@@ -135,10 +154,11 @@ def main() -> None:
     ap.add_argument("--as-of", help="기준일 (YYYY-MM-DD). 생략 시 마지막 거래일")
     ap.add_argument("--unit", default="억원", help="금액 단위 표기 (기본: 억원)")
     ap.add_argument("--note", help="대시보드 하단에 표시할 메모 (예: 샘플 데이터 안내)")
+    ap.add_argument("--local-unit", default="백만", help="외화 local_amount 의 단위 표기 (기본: 백만)")
     args = ap.parse_args()
 
     as_of = dt.date.fromisoformat(args.as_of) if args.as_of else None
-    data = build(as_of, args.unit, args.note)
+    data = build(as_of, args.unit, args.note, args.local_unit)
     payload = json.dumps(data, ensure_ascii=False, indent=1).replace("</", "<\\/")
 
     DATA.mkdir(exist_ok=True)

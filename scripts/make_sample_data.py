@@ -3,7 +3,7 @@
 
 생성 파일
   data/targets.csv       연도·자산군별 목표 (약정·집행·분배·순증)
-  data/transactions.csv  약정·집행·분배 거래 내역 (펀드 단위)
+  data/transactions.csv  약정·집행·분배 거래 내역 (펀드 단위, 원화·로컬 통화 병기)
 
 실제 데이터를 쓸 때는 이 스크립트를 실행하지 말고, 두 CSV를 같은 형식으로
 채운 뒤 scripts/build.py 를 실행한다. 모든 금액 단위는 억원.
@@ -48,6 +48,15 @@ NAMES = {
     "인프라": ["동해 신재생", "서해 에너지", "영남 교통", "호남 데이터센터"],
 }
 
+# 자산군별 펀드 통화 비중 (KRW, USD, EUR)
+CCY_MIX = {
+    "사모벤처": (0.50, 0.40, 0.10),
+    "부동산": (0.50, 0.30, 0.20),
+    "인프라": (0.30, 0.40, 0.30),
+}
+# 환율(원/1단위): 월별로 천천히 움직이는 가상 시계열
+FX_BASE = {"USD": 1350.0, "EUR": 1480.0}
+
 # 자산군별 집행 페이스: 약정 후 n년차 말 누적 집행률
 PACE = {
     "사모벤처": [0.30, 0.62, 0.85, 0.97, 1.00],
@@ -78,6 +87,27 @@ def cum_fraction(cls: str, month_idx: int) -> float:
     return prev + (pace[lo] - prev) * (years - lo)
 
 
+_fx_cache: dict[tuple[str, int, int], float] = {}
+
+
+def fx(date: dt.date, ccy: str) -> float:
+    """해당 월의 환율(원/1단위). 2018-01부터 월별 랜덤워크로 만든다."""
+    key = (ccy, date.year, date.month)
+    if key not in _fx_cache:
+        rng = random.Random(f"fx-{ccy}")
+        rate = FX_BASE[ccy] * 0.92
+        y, m = 2018, 1
+        while True:
+            rate *= 1 + rng.uniform(-0.02, 0.022)
+            _fx_cache[(ccy, y, m)] = round(rate, 1)
+            if (y, m) >= (2027, 12):
+                break
+            m += 1
+            if m > 12:
+                y, m = y + 1, 1
+    return _fx_cache[key]
+
+
 def round10(x: float) -> int:
     return int(round(x / 10.0)) * 10
 
@@ -85,6 +115,7 @@ def round10(x: float) -> int:
 def main() -> None:
     DATA.mkdir(exist_ok=True)
     counters = {c: 0 for c in CLASSES}
+    fund_ccy: dict[str, str] = {}
     tx: list[tuple[dt.date, str, str, str, int]] = []
 
     vintages = sorted(set(LEGACY) | set(TARGETS))
@@ -107,6 +138,7 @@ def main() -> None:
                     continue
                 counters[cls] += 1
                 name = f"{NAMES[cls][counters[cls] % len(NAMES[cls])]} {counters[cls]}호"
+                fund_ccy[name] = random.choices(["KRW", "USD", "EUR"], weights=CCY_MIX[cls])[0]
                 tx.append((commit_date, name, cls, "약정", amt))
 
                 # 집행: 페이스 곡선을 따라 월별 캐피털콜, 일부 달은 건너뛰고 다음 달에 몰림
@@ -161,9 +193,12 @@ def main() -> None:
 
     with (DATA / "transactions.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)
-        w.writerow(["date", "fund", "asset_class", "type", "amount"])
+        # amount: 원화(억원). local_amount: 펀드 통화 금액 — KRW 펀드는 억원(= amount), 외화 펀드는 백만 단위.
+        w.writerow(["date", "fund", "asset_class", "currency", "type", "amount", "local_amount"])
         for date, name, cls, typ, amt in tx:
-            w.writerow([date.isoformat(), name, cls, typ, amt])
+            ccy = fund_ccy[name]
+            local = amt if ccy == "KRW" else round(amt * 100 / fx(date, ccy), 1)
+            w.writerow([date.isoformat(), name, cls, ccy, typ, amt, local])
 
     n_commit = sum(1 for r in tx if r[3] == "약정")
     print(f"targets.csv: {len(TARGETS) * len(CLASSES)} rows")

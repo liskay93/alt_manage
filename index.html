@@ -143,19 +143,30 @@ td .meter{display:inline-block;vertical-align:middle;width:44px;margin-right:7px
 td.neg,.delta.neg{color:var(--bad)}
 td .lead{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--ink)}
 td .lead .key{width:9px;height:9px;border-radius:2px;flex:none}
-.flist{display:flex;flex-direction:column;gap:5px;margin-top:6px}
-.frow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(48px,0.9fr) auto;align-items:center;gap:10px;font-size:12.5px;padding:3px 6px;border-radius:6px;outline:none}
+.flist{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.fhead,.frow{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(44px,0.8fr) auto auto auto;grid-template-areas:"name bar local krw share";align-items:center;gap:10px;padding:3px 6px}
+.fhead{font-size:11px;color:var(--muted);border-bottom:1px solid var(--grid);padding-bottom:4px;margin-bottom:1px}
+.fhead span{text-align:right;white-space:nowrap}
+.fhead .h-name{grid-area:name;text-align:left}.fhead .h-bar{grid-area:bar}.fhead .h-local{grid-area:local}.fhead .h-krw{grid-area:krw}.fhead .h-share{grid-area:share}
+.frow{font-size:12.5px;border-radius:6px;outline:none}
 .frow:hover,.frow:focus-visible{background:var(--surface-2)}
 .frow:focus-visible{box-shadow:0 0 0 2px var(--accent)}
-.frow .fname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.frow .fname{grid-area:name;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .frow .fname small{color:var(--muted);margin-left:5px;font-size:11px}
-.frow .fbar{position:relative;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.frow .fbar{grid-area:bar;position:relative;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
 .frow .fbar i{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--mc)}
 .frow .fbar b{position:absolute;top:0;bottom:0;width:1px;background:var(--axis)}
-.frow .fval{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink);white-space:nowrap;text-align:right}
-.frow .fval small{color:var(--muted);font-weight:500;margin-left:5px;display:inline-block;min-width:34px;text-align:right}
+.frow .flocal{grid-area:local;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:12px}
+.frow .fval{grid-area:krw;font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink);white-space:nowrap;text-align:right;min-width:44px}
+.frow .fshare{grid-area:share;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;min-width:36px;font-size:12px}
 .frow.other .fname{color:var(--muted)} .frow.other .fbar i{background:var(--s-prev)} .frow.other .fval{color:var(--ink-2);font-weight:500}
 .frow.neg .fval{color:var(--bad)}
+@media (max-width:640px){
+  .fhead,.frow{grid-template-columns:minmax(0,1.4fr) minmax(40px,0.8fr) auto auto;grid-template-areas:"name bar krw share" "local local local local";row-gap:0}
+  .fhead .h-local{display:none}
+  .frow .flocal{text-align:left;font-size:11px;color:var(--muted);padding-left:2px}
+  .frow .flocal:empty{display:none}
+}
 .fempty{font-size:12.5px;color:var(--muted);padding:10px 6px}
 th.sortable{cursor:pointer;user-select:none}
 th.sortable:hover{color:var(--ink)}
@@ -346,6 +357,15 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
   function fmt(v) { if (v == null || isNaN(v)) return '–'; const r = Math.round(v); return (r < 0 ? '−' : '') + nf.format(Math.abs(r)); }
   function fmtU(v) { return (v == null || isNaN(v)) ? '–' : fmt(v) + U; }
   function fmtSigned(v) { if (v == null || isNaN(v)) return '–'; const r = Math.round(v); return (r > 0 ? '+' : '') + fmt(r); }
+  const LOCAL_UNITS = (D.localUnits && typeof D.localUnits === 'object') ? D.localUnits : { KRW: U, default: '백만' };
+  // 로컬 통화 금액: KRW 펀드는 원화 단위(억), 외화는 백만 단위. withCode 가 참이면 통화 코드를 앞에 붙인다
+  function fmtLocal(v, cur, withCode) {
+    if (v == null || isNaN(v)) return '–';
+    cur = cur || 'KRW';
+    const unit = cur === 'KRW' ? (LOCAL_UNITS.KRW || U) : (LOCAL_UNITS.default || '');
+    const num = cur === 'KRW' ? fmt(v) : (v < 0 ? '−' : '') + (Math.abs(v) < 100 ? Math.abs(v).toFixed(1) : nf.format(Math.round(Math.abs(v))));
+    return (withCode ? cur + ' ' : '') + num + unit;
+  }
   function fmtPct(v, d) { if (v == null || !isFinite(v)) return '–'; const p = v * 100; return (p < 0 ? '−' : '') + Math.abs(p).toFixed(d || 0) + '%'; }
 
   // ---------- DOM 도우미 ----------
@@ -804,18 +824,19 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
       if (+f.year > year) continue;
       const id = f.fund + '|' + f.assetClass;
       let o = map.get(id);
-      if (!o) { o = { fund: f.fund, assetClass: f.assetClass, vintage: +f.vintage || +f.year, commit: 0, call: 0, dist: 0, net: 0, lifeCommit: 0, lifeCall: 0, lifeDist: 0 }; map.set(id, o); }
+      if (!o) { o = { fund: f.fund, assetClass: f.assetClass, vintage: +f.vintage || +f.year, currency: f.currency || 'KRW', commit: 0, call: 0, dist: 0, net: 0, lcommit: 0, lcall: 0, ldist: 0, lnet: 0, lifeCommit: 0, lifeCall: 0, lifeDist: 0 }; map.set(id, o); }
       const c = +f.commitment || 0, d = +f.drawdown || 0, r = +f.distribution || 0;
       o.lifeCommit += c; o.lifeCall += d; o.lifeDist += r;
-      if (+f.year === year) { o.commit += c; o.call += d; o.dist += r; }
+      if (+f.year === year) { o.commit += c; o.call += d; o.dist += r; o.lcommit += +f.localCommitment || 0; o.lcall += +f.localDrawdown || 0; o.ldist += +f.localDistribution || 0; }
     }
     const out = [];
-    for (const o of map.values()) { o.net = o.call - o.dist; o.callRate = ratio(o.lifeCall, o.lifeCommit); if (o.commit || o.call || o.dist) out.push(o); }
+    for (const o of map.values()) { o.net = o.call - o.dist; o.lnet = o.lcall - o.ldist; o.callRate = ratio(o.lifeCall, o.lifeCommit); if (o.commit || o.call || o.dist) out.push(o); }
     return out;
   }
+  const LOCAL_KEY = { commit: 'lcommit', call: 'lcall', dist: 'ldist', net: 'lnet' };
   function fundTipRows(f) {
     return [
-      ...METRICS.map(mt => ({ color: mt.color, shape: 'rect', label: mt.label, value: fmtU(f[mt.key]) })),
+      ...METRICS.map(mt => ({ color: mt.color, shape: 'rect', label: mt.label, value: fmtU(f[mt.key]) + (f.currency !== 'KRW' ? ' · ' + fmtLocal(f[LOCAL_KEY[mt.key]], f.currency, true) : '') })),
       { label: '누적 약정 ' + fmtU(f.lifeCommit) + ' 중 집행률', value: fmtPct(f.callRate), strong: true },
     ];
   }
@@ -828,10 +849,12 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
       if (o.value >= 0) i.style.left = '50%'; else i.style.right = '50%';
     } else { i.style.left = '0'; i.style.width = (Math.abs(o.value) / o.maxAbs * 100) + '%'; }
     bar.appendChild(i);
-    const row = el('div', { class: 'frow' + (o.other ? ' other' : '') + (o.value < 0 ? ' neg' : ''), tabindex: '0', role: 'img', 'aria-label': o.name + (o.tag ? ' (' + o.tag + ')' : '') + ' ' + fmtU(o.value) + (o.share ? ', 비중 ' + o.share : '') }, [
+    const row = el('div', { class: 'frow' + (o.other ? ' other' : '') + (o.value < 0 ? ' neg' : ''), tabindex: '0', role: 'img', 'aria-label': o.name + (o.tag ? ' (' + o.tag + ')' : '') + ' ' + fmtU(o.value) + (o.local ? ', ' + o.local : '') + (o.share ? ', 비중 ' + o.share : '') }, [
       el('span', { class: 'fname', title: o.name }, [o.name, o.tag ? el('small', { text: o.tag }) : null]),
       bar,
-      el('span', { class: 'fval' }, [fmt(o.value), el('small', { text: o.share || '' })]),
+      el('span', { class: 'flocal', text: o.local || '' }),
+      el('span', { class: 'fval', text: fmt(o.value) }),
+      el('span', { class: 'fshare', text: o.share || '' }),
     ]);
     if (o.tip) {
       const show = (x, y) => showTip(o.tip.title, o.tip.rows, x, y);
@@ -847,9 +870,9 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
     const { chart: host, tableWrap, sub } = cardParts('funds');
     const yv = state.year, cls = state.cls, TOP = 5;
     const funds = fundsFor(yv, cls), st = status(yv, cls);
-    sub.textContent = yv + '년 ' + periodOf(yv) + ' 누적 기준 · 지표별 상위 ' + TOP + '개 펀드와 전체 대비 비중 · 순증은 잔액을 늘린 펀드가 오른쪽, 줄인 펀드가 왼쪽';
+    sub.textContent = yv + '년 ' + periodOf(yv) + ' 누적 기준 · 지표별 상위 ' + TOP + '개 펀드 · 막대와 비중은 원화 기준, 펀드 통화 금액 병기 · 순증은 잔액을 늘린 펀드가 오른쪽, 줄인 펀드가 왼쪽';
     const W = Math.max(280, host.clientWidth || 1100);
-    const ncols = W >= 1180 ? 4 : W >= 560 ? 2 : 1;
+    const ncols = W >= 640 ? 2 : 1;
     panelGrid(host, ncols);
     host.replaceChildren(...METRICS.map(mt => {
       const key = mt.key, total = st[key];
@@ -861,17 +884,19 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
       const share = v => total > 0 ? fmtPct(v / total) : null;
       const head = el('div', { class: 'panel-head' }, [keySwatch(mt.color), el('span', { text: mt.label + ' 상위 ' + top.length + '개' }), el('span', { class: 'rate' }, [el('small', { text: '상위 비중' }), share(topSum) || '–'])]);
       const body = el('div', { class: 'flist' });
+      if (list.length) body.appendChild(el('div', { class: 'fhead', 'aria-hidden': 'true' }, [el('span', { class: 'h-name', text: '펀드' }), el('span', { class: 'h-bar' }), el('span', { class: 'h-local', text: '로컬 통화' }), el('span', { class: 'h-krw', text: '원화' }), el('span', { class: 'h-share', text: '비중(원화)' })]));
       if (!list.length) body.appendChild(el('div', { class: 'fempty', text: '해당 기간 ' + mt.label + ' 실적이 있는 펀드가 없습니다' }));
-      for (const f of top) body.appendChild(fundRow({ name: f.fund, tag: ncols > 2 ? '' : (cls === ALL ? f.assetClass : f.vintage + '년 약정'), value: f[key], maxAbs, diverging, color: mt.color, share: share(f[key]), tip: { title: f.fund + ' · ' + f.assetClass + ' · ' + f.vintage + '년 약정 · ' + yv + '년 ' + periodOf(yv), rows: fundTipRows(f) } }));
+      for (const f of top) body.appendChild(fundRow({ name: f.fund, tag: cls === ALL ? f.assetClass : f.vintage + '년 약정', value: f[key], local: fmtLocal(f[LOCAL_KEY[key]], f.currency, true), maxAbs, diverging, color: mt.color, share: share(f[key]), tip: { title: f.fund + ' · ' + f.assetClass + ' · ' + f.currency + ' · ' + f.vintage + '년 약정 · ' + yv + '년 ' + periodOf(yv), rows: fundTipRows(f) } }));
       if (rest.length) body.appendChild(fundRow({ name: '기타 ' + rest.length + '개 펀드', value: restSum, maxAbs, diverging, share: share(restSum), other: true }));
       return el('div', { class: 'panel' }, [head, body]);
     }));
     // 전체 표: 열 머리글을 누르면 정렬
     const cols = [
-      { label: '펀드', key: 'fund', str: true }, { label: '자산군', key: 'assetClass', str: true }, { label: '약정연도', key: 'vintage' },
-      ...METRICS.map(mt => ({ label: mt.label, key: mt.key, color: mt.color })),
-      { label: '누적 약정', key: 'lifeCommit' }, { label: '누적 집행률', key: 'callRate' },
+      { label: '펀드', key: 'fund', str: true }, { label: '자산군', key: 'assetClass', str: true }, { label: '통화', key: 'currency', str: true }, { label: '약정연도', key: 'vintage' },
+      ...METRICS.flatMap(mt => [{ label: '로컬', key: LOCAL_KEY[mt.key], local: true }, { label: '원화', key: mt.key }]),
+      { label: '누적 약정(원화)', key: 'lifeCommit' }, { label: '누적 집행률', key: 'callRate' },
     ];
+    const groups = [{ label: '', span: 4 }, ...METRICS.map(mt => ({ label: mt.label, span: 2, color: mt.color })), { label: '', span: 2 }];
     const sort = state.fundSort;
     const sorted = funds.slice().sort((a, b) => {
       const va = a[sort.key], vb = b[sort.key];
@@ -879,12 +904,12 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
       return ((va == null ? -Infinity : va) - (vb == null ? -Infinity : vb)) * sort.dir;
     });
     const t = table(cols.map(c => c.label + (c.key === sort.key ? (sort.dir < 0 ? ' ▼' : ' ▲') : '')),
-      sorted.map(f => [f.fund, f.assetClass, f.vintage + '년', ...METRICS.map(mt => fmt(f[mt.key])), fmt(f.lifeCommit), fmtPct(f.callRate)]));
+      sorted.map(f => [f.fund, f.assetClass, f.currency, f.vintage + '년', ...METRICS.flatMap(mt => [f[LOCAL_KEY[mt.key]] ? fmtLocal(f[LOCAL_KEY[mt.key]], f.currency) : '–', fmt(f[mt.key])]), fmt(f.lifeCommit), fmtPct(f.callRate)]),
+      { groups });
     t.querySelectorAll('thead tr:last-child th').forEach((th, i) => {
       const c = cols[i];
       th.classList.add('sortable'); th.setAttribute('tabindex', '0'); th.setAttribute('role', 'button');
       th.setAttribute('aria-sort', c.key === sort.key ? (sort.dir < 0 ? 'descending' : 'ascending') : 'none');
-      if (c.color) th.prepend(keySwatch(c.color));
       const pick = () => { state.fundSort = { key: c.key, dir: c.key === sort.key ? -sort.dir : (c.str ? 1 : -1) }; saveState(); renderFunds(); };
       th.addEventListener('click', pick);
       th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });

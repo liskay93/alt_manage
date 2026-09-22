@@ -173,125 +173,141 @@ window.ALT_DATA = {
   {
    "month": "2018-03",
    "assetClass": "부동산",
-   "commitment": 150.0,
+   "commitment": 200.0,
    "drawdown": 0.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2018-03",
-   "assetClass": "사모벤처",
+   "month": "2018-04",
+   "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 5.0,
+   "drawdown": 9.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2018-04",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-05",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-06",
    "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-07",
+   "assetClass": "부동산",
+   "commitment": 200.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2018-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-08",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-09",
+   "assetClass": "사모벤처",
+   "commitment": 210.0,
+   "drawdown": 6.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2018-09",
+   "assetClass": "인프라",
+   "commitment": 160.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2018-10",
+   "assetClass": "사모벤처",
    "commitment": 0.0,
    "drawdown": 7.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2018-04",
-   "assetClass": "인프라",
-   "commitment": 130.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-05",
+   "month": "2018-11",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-05",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-06",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 8.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-08",
-   "assetClass": "인프라",
-   "commitment": 170.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-09",
-   "assetClass": "부동산",
-   "commitment": 90.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-09",
-   "assetClass": "사모벤처",
-   "commitment": 210.0,
-   "drawdown": 11.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-10",
-   "assetClass": "부동산",
-   "commitment": 160.0,
-   "drawdown": 32.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 11.0,
+   "drawdown": 30.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2018-11",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-11",
+   "assetClass": "인프라",
+   "commitment": 140.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2018-12",
+   "assetClass": "사모벤처",
+   "commitment": 220.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 75.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-01",
+   "assetClass": "사모벤처",
+   "commitment": 250.0,
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-02",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 17.0,
@@ -299,80 +315,32 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2018-11",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-12",
+   "month": "2019-02",
    "assetClass": "사모벤처",
    "commitment": 220.0,
-   "drawdown": 23.0,
+   "drawdown": 22.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-01",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-01",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 8.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-02",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
    "month": "2019-02",
    "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-03",
+   "assetClass": "부동산",
+   "commitment": 160.0,
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-03",
+   "assetClass": "사모벤처",
    "commitment": 0.0,
    "drawdown": 22.0,
    "distribution": 0.0,
@@ -380,30 +348,182 @@ window.ALT_DATA = {
   },
   {
    "month": "2019-03",
-   "assetClass": "사모벤처",
-   "commitment": 260.0,
-   "drawdown": 14.0,
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
    "distribution": 0.0,
-   "commitCount": 1
+   "commitCount": 0
   },
   {
    "month": "2019-04",
    "assetClass": "부동산",
-   "commitment": 230.0,
-   "drawdown": 22.0,
+   "commitment": 0.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
-   "commitCount": 1
+   "commitCount": 0
   },
   {
    "month": "2019-04",
    "assetClass": "사모벤처",
-   "commitment": 390.0,
-   "drawdown": 26.0,
+   "commitment": 0.0,
+   "drawdown": 45.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-05",
+   "assetClass": "사모벤처",
+   "commitment": 280.0,
+   "drawdown": 31.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-04",
+   "month": "2019-05",
+   "assetClass": "인프라",
+   "commitment": 80.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 39.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-07",
+   "assetClass": "부동산",
+   "commitment": 130.0,
+   "drawdown": 15.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-07",
+   "assetClass": "사모벤처",
+   "commitment": 260.0,
+   "drawdown": 36.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 46.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "인프라",
+   "commitment": 120.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-09",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 48.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "인프라",
+   "commitment": 100.0,
+   "drawdown": 7.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-12",
+   "assetClass": "부동산",
+   "commitment": 100.0,
+   "drawdown": 27.0,
+   "distribution": 3.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-12",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 48.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-12",
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 8.0,
@@ -411,143 +531,151 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2019-05",
-   "assetClass": "부동산",
+   "month": "2020-01",
+   "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 63.0,
+   "drawdown": 76.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-05",
-   "assetClass": "사모벤처",
-   "commitment": 350.0,
-   "drawdown": 26.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2019-05",
+   "month": "2020-01",
    "assetClass": "인프라",
-   "commitment": 130.0,
+   "commitment": 180.0,
    "drawdown": 5.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-06",
+   "month": "2020-02",
    "assetClass": "부동산",
-   "commitment": 170.0,
-   "drawdown": 21.0,
+   "commitment": 150.0,
+   "drawdown": 53.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-06",
+   "month": "2020-02",
    "assetClass": "사모벤처",
+   "commitment": 320.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-02",
+   "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 52.0,
+   "drawdown": 5.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-07",
+   "month": "2020-03",
    "assetClass": "부동산",
+   "commitment": 120.0,
+   "drawdown": 18.0,
+   "distribution": 6.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-03",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-03",
+   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 22.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 45.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
+   "month": "2020-04",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-09",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 19.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-10",
-   "assetClass": "인프라",
-   "commitment": 170.0,
-   "drawdown": 0.0,
+   "commitment": 180.0,
+   "drawdown": 65.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-11",
+   "month": "2020-04",
+   "assetClass": "사모벤처",
+   "commitment": 420.0,
+   "drawdown": 58.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-05",
+   "assetClass": "사모벤처",
+   "commitment": 410.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 106.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 29.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-07",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 79.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 12.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-08",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 51.0,
@@ -555,1527 +683,1143 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2019-11",
+   "month": "2020-08",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 46.0,
+   "drawdown": 48.0,
    "distribution": 0.0,
    "commitCount": 0
-  },
-  {
-   "month": "2019-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-12",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-01",
-   "assetClass": "사모벤처",
-   "commitment": 310.0,
-   "drawdown": 28.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-01",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "사모벤처",
-   "commitment": 360.0,
-   "drawdown": 52.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 67.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "사모벤처",
-   "commitment": 210.0,
-   "drawdown": 69.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "부동산",
-   "commitment": 260.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 35.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "인프라",
-   "commitment": 170.0,
-   "drawdown": 9.0,
-   "distribution": 0.0,
-   "commitCount": 1
   },
   {
    "month": "2020-08",
-   "assetClass": "부동산",
-   "commitment": 190.0,
+   "assetClass": "인프라",
+   "commitment": 0.0,
    "drawdown": 21.0,
    "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-08",
-   "assetClass": "사모벤처",
-   "commitment": 260.0,
-   "drawdown": 69.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 6.0,
    "commitCount": 0
   },
   {
    "month": "2020-09",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 98.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 64.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 97.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 71.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "인프라",
-   "commitment": 180.0,
-   "drawdown": 19.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "사모벤처",
    "commitment": 0.0,
    "drawdown": 47.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2021-01",
-   "assetClass": "인프라",
-   "commitment": 160.0,
-   "drawdown": 17.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "사모벤처",
-   "commitment": 360.0,
-   "drawdown": 75.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
+   "month": "2020-09",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 71.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "인프라",
-   "commitment": 150.0,
-   "drawdown": 15.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-04",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 69.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "부동산",
-   "commitment": 240.0,
-   "drawdown": 26.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 75.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-06",
-   "assetClass": "사모벤처",
-   "commitment": 330.0,
-   "drawdown": 32.0,
-   "distribution": 18.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 75.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-07",
-   "assetClass": "인프라",
-   "commitment": 110.0,
-   "drawdown": 18.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 60.0,
+   "drawdown": 72.0,
    "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2021-08",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 95.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-08",
+   "month": "2020-09",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "사모벤처",
-   "commitment": 350.0,
-   "drawdown": 84.0,
-   "distribution": 12.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 25.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 25.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
+   "commitment": 170.0,
    "drawdown": 19.0,
    "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-11",
-   "assetClass": "부동산",
-   "commitment": 280.0,
-   "drawdown": 39.0,
-   "distribution": 4.0,
    "commitCount": 1
   },
   {
-   "month": "2021-11",
+   "month": "2020-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-10",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 129.0,
+   "drawdown": 91.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2021-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 35.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "사모벤처",
-   "commitment": 320.0,
-   "drawdown": 69.0,
-   "distribution": 43.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 58.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-01",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 79.0,
-   "distribution": 27.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-01",
+   "month": "2020-10",
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 5.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 5.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-02",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 82.0,
-   "distribution": 37.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-03",
-   "assetClass": "부동산",
-   "commitment": 150.0,
-   "drawdown": 42.0,
-   "distribution": 5.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-03",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 83.0,
-   "distribution": 30.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 17.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2022-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-04",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 37.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-05",
-   "assetClass": "사모벤처",
-   "commitment": 290.0,
-   "drawdown": 117.0,
-   "distribution": 52.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-05",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 5.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 49.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-06",
-   "assetClass": "사모벤처",
-   "commitment": 470.0,
-   "drawdown": 104.0,
-   "distribution": 15.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 65.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-07",
-   "assetClass": "사모벤처",
-   "commitment": 400.0,
-   "drawdown": 65.0,
-   "distribution": 47.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "부동산",
-   "commitment": 150.0,
-   "drawdown": 14.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "인프라",
-   "commitment": 200.0,
-   "drawdown": 21.0,
-   "distribution": 5.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-09",
+   "month": "2020-11",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 33.0,
-   "distribution": 7.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2022-09",
+   "month": "2020-11",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 81.0,
-   "distribution": 11.0,
+   "drawdown": 62.0,
+   "distribution": 10.0,
    "commitCount": 0
   },
   {
-   "month": "2022-09",
+   "month": "2020-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 44.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-12",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-12",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 23.0,
+   "drawdown": 33.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-01",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 82.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-02",
+   "assetClass": "부동산",
+   "commitment": 230.0,
+   "drawdown": 31.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-02",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 54.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 47.0,
+   "distribution": 8.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 7.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 43.0,
    "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2022-10",
-   "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 24.0,
-   "distribution": 10.0,
+   "month": "2021-04",
+   "assetClass": "사모벤처",
+   "commitment": 360.0,
+   "drawdown": 94.0,
+   "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2022-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 74.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-10",
+   "month": "2021-04",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 35.0,
+   "drawdown": 38.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2022-11",
+   "month": "2021-05",
+   "assetClass": "부동산",
+   "commitment": 290.0,
+   "drawdown": 28.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-05",
    "assetClass": "사모벤처",
    "commitment": 300.0,
-   "drawdown": 106.0,
-   "distribution": 12.0,
+   "drawdown": 78.0,
+   "distribution": 7.0,
    "commitCount": 1
   },
   {
-   "month": "2022-11",
+   "month": "2021-05",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 19.0,
-   "distribution": 5.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-12",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 99.0,
-   "distribution": 48.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-12",
-   "assetClass": "인프라",
-   "commitment": 280.0,
-   "drawdown": 32.0,
+   "drawdown": 10.0,
    "distribution": 0.0,
-   "commitCount": 1
+   "commitCount": 0
   },
   {
-   "month": "2023-01",
+   "month": "2021-06",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 32.0,
+   "drawdown": 0.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2023-01",
+   "month": "2021-06",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 159.0,
-   "distribution": 22.0,
+   "drawdown": 49.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2023-01",
+   "month": "2021-06",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 17.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 15.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 83.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "인프라",
+   "commitment": 140.0,
+   "drawdown": 29.0,
+   "distribution": 3.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 41.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-08",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 91.0,
    "distribution": 18.0,
    "commitCount": 0
   },
   {
-   "month": "2023-02",
+   "month": "2021-08",
+   "assetClass": "인프라",
+   "commitment": 180.0,
+   "drawdown": 13.0,
+   "distribution": 3.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "사모벤처",
+   "commitment": 210.0,
+   "drawdown": 50.0,
+   "distribution": 11.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 84.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 58.0,
+   "distribution": 18.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-11",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 38.0,
-   "distribution": 15.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2023-02",
+   "month": "2021-11",
    "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 85.0,
-   "distribution": 62.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 19.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 88.0,
-   "distribution": 31.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "사모벤처",
-   "commitment": 620.0,
-   "drawdown": 70.0,
-   "distribution": 10.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 14.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-05",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 131.0,
-   "distribution": 59.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-05",
-   "assetClass": "인프라",
-   "commitment": 180.0,
-   "drawdown": 24.0,
-   "distribution": 16.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "부동산",
-   "commitment": 180.0,
-   "drawdown": 10.0,
-   "distribution": 19.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 62.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 18.0,
+   "commitment": 210.0,
+   "drawdown": 65.0,
    "distribution": 13.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 102.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-08",
-   "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 27.0,
-   "distribution": 12.0,
    "commitCount": 1
   },
   {
-   "month": "2023-08",
-   "assetClass": "사모벤처",
+   "month": "2021-11",
+   "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 93.0,
-   "distribution": 23.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2023-08",
+   "month": "2021-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-12",
+   "assetClass": "사모벤처",
+   "commitment": 290.0,
+   "drawdown": 108.0,
+   "distribution": 14.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-12",
    "assetClass": "인프라",
-   "commitment": 190.0,
-   "drawdown": 43.0,
+   "commitment": 110.0,
+   "drawdown": 33.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 31.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "사모벤처",
+   "commitment": 360.0,
+   "drawdown": 89.0,
    "distribution": 9.0,
    "commitCount": 1
   },
   {
-   "month": "2023-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 71.0,
-   "distribution": 16.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-09",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 85.0,
-   "distribution": 39.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-09",
+   "month": "2022-01",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 6.0,
+   "drawdown": 6.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2023-10",
+   "month": "2022-02",
    "assetClass": "부동산",
-   "commitment": 180.0,
-   "drawdown": 54.0,
-   "distribution": 6.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 40.0,
+   "distribution": 7.0,
+   "commitCount": 0
   },
   {
-   "month": "2023-10",
+   "month": "2022-02",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 71.0,
+   "drawdown": 88.0,
    "distribution": 11.0,
    "commitCount": 0
   },
   {
-   "month": "2023-10",
+   "month": "2022-02",
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 14.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 67.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-11",
-   "assetClass": "사모벤처",
-   "commitment": 460.0,
-   "drawdown": 80.0,
-   "distribution": 45.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 42.0,
    "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2023-12",
+   "month": "2022-03",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 0.0,
-   "commitCount": 0
+   "commitment": 230.0,
+   "drawdown": 31.0,
+   "distribution": 3.0,
+   "commitCount": 1
   },
   {
-   "month": "2023-12",
+   "month": "2022-03",
    "assetClass": "사모벤처",
-   "commitment": 560.0,
-   "drawdown": 99.0,
+   "commitment": 300.0,
+   "drawdown": 85.0,
    "distribution": 16.0,
    "commitCount": 1
   },
   {
-   "month": "2023-12",
-   "assetClass": "인프라",
-   "commitment": 170.0,
-   "drawdown": 10.0,
-   "distribution": 12.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-01",
-   "assetClass": "부동산",
-   "commitment": 150.0,
-   "drawdown": 27.0,
-   "distribution": 13.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-01",
-   "assetClass": "사모벤처",
-   "commitment": 580.0,
-   "drawdown": 120.0,
-   "distribution": 69.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-01",
+   "month": "2022-03",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 7.0,
+   "drawdown": 22.0,
+   "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2024-02",
+   "month": "2022-04",
    "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-04",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 90.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-04",
+   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 24.0,
-   "distribution": 15.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2024-02",
+   "month": "2022-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 72.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-05",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 149.0,
-   "distribution": 33.0,
+   "drawdown": 120.0,
+   "distribution": 36.0,
    "commitCount": 0
   },
   {
-   "month": "2024-02",
+   "month": "2022-05",
    "assetClass": "인프라",
-   "commitment": 240.0,
-   "drawdown": 15.0,
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-06",
+   "assetClass": "사모벤처",
+   "commitment": 340.0,
+   "drawdown": 66.0,
+   "distribution": 38.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-06",
+   "assetClass": "인프라",
+   "commitment": 270.0,
+   "drawdown": 32.0,
    "distribution": 4.0,
    "commitCount": 1
   },
   {
-   "month": "2024-03",
+   "month": "2022-07",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 23.0,
+   "drawdown": 22.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-07",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 78.0,
    "distribution": 20.0,
    "commitCount": 0
   },
   {
-   "month": "2024-03",
-   "assetClass": "사모벤처",
-   "commitment": 560.0,
-   "drawdown": 120.0,
-   "distribution": 100.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-03",
+   "month": "2022-07",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 15.0,
+   "drawdown": 18.0,
+   "distribution": 5.0,
    "commitCount": 0
   },
   {
-   "month": "2024-04",
-   "assetClass": "부동산",
-   "commitment": 220.0,
-   "drawdown": 46.0,
-   "distribution": 11.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-04",
-   "assetClass": "사모벤처",
-   "commitment": 420.0,
-   "drawdown": 109.0,
-   "distribution": 27.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 16.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-05",
+   "month": "2022-08",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 33.0,
+   "drawdown": 30.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2024-05",
+   "month": "2022-08",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 74.0,
-   "distribution": 23.0,
+   "drawdown": 71.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2024-05",
+   "month": "2022-08",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 78.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-06",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 133.0,
-   "distribution": 80.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-07",
-   "assetClass": "부동산",
-   "commitment": 160.0,
-   "drawdown": 53.0,
-   "distribution": 16.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 155.0,
-   "distribution": 114.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 19.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 44.0,
+   "drawdown": 42.0,
    "distribution": 6.0,
    "commitCount": 0
   },
   {
-   "month": "2024-08",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 183.0,
-   "distribution": 77.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-09",
+   "month": "2022-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 88.0,
-   "distribution": 7.0,
+   "drawdown": 21.0,
+   "distribution": 12.0,
    "commitCount": 0
   },
   {
-   "month": "2024-09",
+   "month": "2022-09",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 163.0,
-   "distribution": 32.0,
+   "drawdown": 86.0,
+   "distribution": 38.0,
    "commitCount": 0
   },
   {
-   "month": "2024-09",
+   "month": "2022-09",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 14.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 55.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 94.0,
-   "distribution": 64.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "인프라",
-   "commitment": 250.0,
-   "drawdown": 42.0,
-   "distribution": 18.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 17.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 137.0,
-   "distribution": 60.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "인프라",
-   "commitment": 260.0,
-   "drawdown": 18.0,
-   "distribution": 8.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 14.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-12",
-   "assetClass": "사모벤처",
-   "commitment": 560.0,
-   "drawdown": 78.0,
-   "distribution": 94.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
+   "commitment": 210.0,
    "drawdown": 26.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 18.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "사모벤처",
-   "commitment": 450.0,
-   "drawdown": 194.0,
-   "distribution": 13.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "인프라",
-   "commitment": 320.0,
-   "drawdown": 7.0,
-   "distribution": 16.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 0.0,
    "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-02",
-   "assetClass": "사모벤처",
-   "commitment": 500.0,
-   "drawdown": 100.0,
-   "distribution": 43.0,
    "commitCount": 1
   },
   {
-   "month": "2025-02",
-   "assetClass": "인프라",
+   "month": "2022-10",
+   "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 112.0,
+   "drawdown": 35.0,
    "distribution": 10.0,
    "commitCount": 0
   },
   {
-   "month": "2025-03",
-   "assetClass": "부동산",
+   "month": "2022-10",
+   "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 18.0,
+   "drawdown": 70.0,
+   "distribution": 53.0,
    "commitCount": 0
   },
   {
-   "month": "2025-03",
-   "assetClass": "사모벤처",
-   "commitment": 370.0,
-   "drawdown": 183.0,
-   "distribution": 26.0,
-   "commitCount": 1
+   "month": "2022-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 14.0,
+   "distribution": 8.0,
+   "commitCount": 0
   },
   {
-   "month": "2025-03",
+   "month": "2022-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 29.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-11",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 133.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-11",
    "assetClass": "인프라",
-   "commitment": 390.0,
-   "drawdown": 32.0,
+   "commitment": 0.0,
+   "drawdown": 39.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-12",
+   "assetClass": "부동산",
+   "commitment": 250.0,
+   "drawdown": 14.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2025-04",
+   "month": "2022-12",
+   "assetClass": "사모벤처",
+   "commitment": 450.0,
+   "drawdown": 41.0,
+   "distribution": 37.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 27.0,
+   "distribution": 14.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "사모벤처",
+   "commitment": 460.0,
+   "drawdown": 140.0,
+   "distribution": 57.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "부동산",
+   "commitment": 200.0,
+   "drawdown": 42.0,
+   "distribution": 16.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 128.0,
+   "distribution": 26.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "사모벤처",
+   "commitment": 350.0,
+   "drawdown": 103.0,
+   "distribution": 33.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "부동산",
+   "commitment": 210.0,
+   "drawdown": 49.0,
+   "distribution": 17.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 106.0,
+   "distribution": 37.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 33.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 50.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 118.0,
+   "distribution": 70.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 107.0,
+   "distribution": 32.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 90.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "사모벤처",
+   "commitment": 430.0,
+   "drawdown": 87.0,
+   "distribution": 82.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-09",
+   "assetClass": "부동산",
+   "commitment": 130.0,
+   "drawdown": 43.0,
+   "distribution": 7.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-09",
+   "assetClass": "사모벤처",
+   "commitment": 400.0,
+   "drawdown": 116.0,
+   "distribution": 13.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-09",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 31.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 25.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-10",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 102.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 14.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 59.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-11",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 126.0,
+   "distribution": 54.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-11",
+   "assetClass": "인프라",
+   "commitment": 270.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 42.0,
+   "distribution": 11.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-12",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 89.0,
+   "distribution": 61.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-12",
+   "assetClass": "인프라",
+   "commitment": 270.0,
+   "drawdown": 0.0,
+   "distribution": 6.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-01",
+   "assetClass": "사모벤처",
+   "commitment": 620.0,
+   "drawdown": 123.0,
+   "distribution": 36.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 36.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-02",
+   "assetClass": "부동산",
+   "commitment": 220.0,
+   "drawdown": 38.0,
+   "distribution": 6.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-02",
+   "assetClass": "사모벤처",
+   "commitment": 440.0,
+   "drawdown": 64.0,
+   "distribution": 11.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 15.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 51.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 200.0,
+   "distribution": 63.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 40.0,
+   "distribution": 9.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 109.0,
+   "distribution": 44.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "인프라",
+   "commitment": 410.0,
+   "drawdown": 69.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-05",
+   "assetClass": "부동산",
+   "commitment": 310.0,
+   "drawdown": 21.0,
+   "distribution": 20.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-05",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 157.0,
+   "distribution": 26.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-05",
+   "assetClass": "인프라",
+   "commitment": 330.0,
+   "drawdown": 32.0,
+   "distribution": 6.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 63.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 80.0,
+   "distribution": 64.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 58.0,
+   "distribution": 17.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-07",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 170.0,
+   "distribution": 93.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-08",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 35.0,
@@ -2083,427 +1827,619 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2025-04",
+   "month": "2024-08",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 188.0,
-   "distribution": 55.0,
+   "drawdown": 94.0,
+   "distribution": 44.0,
    "commitCount": 0
   },
   {
-   "month": "2025-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 59.0,
-   "distribution": 26.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-05",
-   "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 31.0,
-   "distribution": 8.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-05",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 156.0,
-   "distribution": 103.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-05",
+   "month": "2024-08",
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 72.0,
-   "distribution": 29.0,
+   "distribution": 20.0,
    "commitCount": 0
   },
   {
-   "month": "2025-06",
+   "month": "2024-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 14.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-06",
-   "assetClass": "사모벤처",
-   "commitment": 640.0,
-   "drawdown": 108.0,
-   "distribution": 102.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 45.0,
+   "drawdown": 56.0,
    "distribution": 10.0,
    "commitCount": 0
   },
   {
-   "month": "2025-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-07",
+   "month": "2024-09",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 214.0,
-   "distribution": 52.0,
+   "drawdown": 104.0,
+   "distribution": 91.0,
    "commitCount": 0
   },
   {
-   "month": "2025-07",
+   "month": "2024-09",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 9.0,
+   "drawdown": 35.0,
+   "distribution": 14.0,
    "commitCount": 0
   },
   {
-   "month": "2025-08",
+   "month": "2024-10",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 18.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-08",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 157.0,
-   "distribution": 90.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 21.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 18.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 133.0,
-   "distribution": 70.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 15.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "부동산",
-   "commitment": 250.0,
-   "drawdown": 32.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 169.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 32.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-11",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 147.0,
-   "distribution": 73.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 58.0,
-   "distribution": 22.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 34.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-12",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 71.0,
-   "distribution": 152.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 59.0,
-   "distribution": 16.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-01",
-   "assetClass": "사모벤처",
-   "commitment": 500.0,
-   "drawdown": 205.0,
-   "distribution": 89.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-01",
-   "assetClass": "인프라",
-   "commitment": 350.0,
-   "drawdown": 31.0,
-   "distribution": 31.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-02",
-   "assetClass": "부동산",
-   "commitment": 100.0,
-   "drawdown": 42.0,
-   "distribution": 37.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-02",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 177.0,
-   "distribution": 103.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 33.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 19.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-03",
-   "assetClass": "사모벤처",
-   "commitment": 460.0,
-   "drawdown": 152.0,
-   "distribution": 119.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 46.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 26.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "사모벤처",
-   "commitment": 320.0,
-   "drawdown": 108.0,
-   "distribution": 31.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "인프라",
-   "commitment": 280.0,
-   "drawdown": 82.0,
-   "distribution": 29.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-05",
-   "assetClass": "사모벤처",
-   "commitment": 540.0,
-   "drawdown": 176.0,
-   "distribution": 124.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-05",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 53.0,
-   "distribution": 28.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "부동산",
-   "commitment": 120.0,
-   "drawdown": 16.0,
-   "distribution": 15.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 168.0,
-   "distribution": 132.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 79.0,
-   "distribution": 30.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 53.0,
-   "distribution": 21.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-07",
-   "assetClass": "사모벤처",
-   "commitment": 0.0,
-   "drawdown": 97.0,
-   "distribution": 123.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 16.0,
+   "drawdown": 54.0,
    "distribution": 13.0,
    "commitCount": 0
   },
   {
+   "month": "2024-10",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 111.0,
+   "distribution": 81.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 40.0,
+   "distribution": 8.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-11",
+   "assetClass": "사모벤처",
+   "commitment": 440.0,
+   "drawdown": 101.0,
+   "distribution": 50.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-11",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 7.0,
+   "distribution": 11.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "사모벤처",
+   "commitment": 610.0,
+   "drawdown": 90.0,
+   "distribution": 96.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 73.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-01",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 94.0,
+   "distribution": 73.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 65.0,
+   "distribution": 22.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 14.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 140.0,
+   "distribution": 51.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 55.0,
+   "distribution": 17.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 73.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "사모벤처",
+   "commitment": 480.0,
+   "drawdown": 130.0,
+   "distribution": 91.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "부동산",
+   "commitment": 110.0,
+   "drawdown": 40.0,
+   "distribution": 22.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "사모벤처",
+   "commitment": 530.0,
+   "drawdown": 58.0,
+   "distribution": 65.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "인프라",
+   "commitment": 340.0,
+   "drawdown": 5.0,
+   "distribution": 15.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 18.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 214.0,
+   "distribution": 60.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 67.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-06",
+   "assetClass": "부동산",
+   "commitment": 170.0,
+   "drawdown": 9.0,
+   "distribution": 7.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 174.0,
+   "distribution": 67.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 80.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 16.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "사모벤처",
+   "commitment": 430.0,
+   "drawdown": 92.0,
+   "distribution": 40.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 78.0,
+   "distribution": 20.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-08",
+   "assetClass": "부동산",
+   "commitment": 170.0,
+   "drawdown": 31.0,
+   "distribution": 26.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-08",
+   "assetClass": "사모벤처",
+   "commitment": 520.0,
+   "drawdown": 201.0,
+   "distribution": 161.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-08",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 32.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 32.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-09",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 160.0,
+   "distribution": 71.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-09",
+   "assetClass": "인프라",
+   "commitment": 370.0,
+   "drawdown": 43.0,
+   "distribution": 19.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 54.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 95.0,
+   "distribution": 65.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 37.0,
+   "distribution": 30.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 40.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 130.0,
+   "distribution": 118.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 79.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 47.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-12",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 185.0,
+   "distribution": 67.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 23.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-01",
+   "assetClass": "부동산",
+   "commitment": 180.0,
+   "drawdown": 14.0,
+   "distribution": 8.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-01",
+   "assetClass": "사모벤처",
+   "commitment": 470.0,
+   "drawdown": 172.0,
+   "distribution": 152.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 55.0,
+   "distribution": 31.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-02",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 50.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-02",
+   "assetClass": "사모벤처",
+   "commitment": 400.0,
+   "drawdown": 86.0,
+   "distribution": 89.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 58.0,
+   "distribution": 31.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 18.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "사모벤처",
+   "commitment": 470.0,
+   "drawdown": 173.0,
+   "distribution": 92.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "인프라",
+   "commitment": 380.0,
+   "drawdown": 36.0,
+   "distribution": 14.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 31.0,
+   "distribution": 14.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-04",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 190.0,
+   "distribution": 125.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-04",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 45.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-05",
+   "assetClass": "부동산",
+   "commitment": 170.0,
+   "drawdown": 26.0,
+   "distribution": 20.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-05",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 143.0,
+   "distribution": 158.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 100.0,
+   "distribution": 30.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 64.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "사모벤처",
+   "commitment": 0.0,
+   "drawdown": 149.0,
+   "distribution": 163.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "인프라",
+   "commitment": 250.0,
+   "drawdown": 51.0,
+   "distribution": 40.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 25.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-07",
+   "assetClass": "사모벤처",
+   "commitment": 490.0,
+   "drawdown": 153.0,
+   "distribution": 171.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 41.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 54.0,
+   "distribution": 20.0,
+   "commitCount": 0
+  },
+  {
    "month": "2026-08",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 308.0,
-   "distribution": 129.0,
+   "drawdown": 181.0,
+   "distribution": 96.0,
    "commitCount": 0
   },
   {
    "month": "2026-08",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 12.0,
+   "drawdown": 48.0,
+   "distribution": 65.0,
    "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "부동산",
-   "commitment": 130.0,
-   "drawdown": 27.0,
-   "distribution": 18.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 22.0,
+   "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "사모벤처",
    "commitment": 0.0,
-   "drawdown": 142.0,
-   "distribution": 75.0,
+   "drawdown": 72.0,
+   "distribution": 65.0,
    "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 25.0,
-   "distribution": 25.0,
+   "drawdown": 61.0,
+   "distribution": 37.0,
    "commitCount": 0
   }
  ],
@@ -2513,3322 +2449,4867 @@ window.ALT_DATA = {
    "assetClass": "부동산",
    "year": 2022,
    "vintage": 2022,
-   "commitment": 190.0,
-   "drawdown": 19.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 250.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 19.6,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 12호",
    "assetClass": "부동산",
    "year": 2023,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 88.0,
-   "distribution": 0.0
+   "drawdown": 144.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 11.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 12호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 4.0
+   "drawdown": 77.0,
+   "distribution": 11.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.9,
+   "localDistribution": 0.8
   },
   {
    "fund": "남산 오피스 12호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 17.0
+   "drawdown": 15.0,
+   "distribution": 20.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.1,
+   "localDistribution": 1.5
   },
   {
    "fund": "남산 오피스 12호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 7.0
+   "distribution": 22.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.6
   },
   {
    "fund": "남산 오피스 16호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2024,
-   "commitment": 150.0,
-   "drawdown": 73.0,
-   "distribution": 0.0
+   "currency": "EUR",
+   "commitment": 220.0,
+   "drawdown": 94.0,
+   "distribution": 0.0,
+   "localCommitment": 15.4,
+   "localDrawdown": 6.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 16호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2024,
+   "currency": "EUR",
    "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 0.0
+   "drawdown": 97.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.0,
+   "localDistribution": 0.6
   },
   {
    "fund": "남산 오피스 16호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2024,
+   "currency": "EUR",
    "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0
+   "drawdown": 13.0,
+   "distribution": 4.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.9,
+   "localDistribution": 0.3
   },
   {
    "fund": "남산 오피스 20호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2025,
-   "commitment": 250.0,
-   "drawdown": 27.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 170.0,
+   "drawdown": 35.0,
+   "distribution": 0.0,
+   "localCommitment": 170.0,
+   "localDrawdown": 35.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 20호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2025,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 98.0,
-   "distribution": 0.0
+   "drawdown": 49.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 49.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2019,
    "vintage": 2019,
-   "commitment": 230.0,
-   "drawdown": 79.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 130.0,
+   "drawdown": 33.0,
+   "distribution": 0.0,
+   "localCommitment": 130.0,
+   "localDrawdown": 33.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2020,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 99.0,
-   "distribution": 0.0
+   "drawdown": 49.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 49.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 27.0
-  },
-  {
-   "fund": "남산 오피스 4호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 31.0
+   "drawdown": 22.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 22.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2023,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 32.0
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 22.0
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.0
   },
   {
    "fund": "남산 오피스 4호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 28.0
-  },
-  {
-   "fund": "남산 오피스 4호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 28.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 6.0
   },
   {
    "fund": "남산 오피스 8호",
    "assetClass": "부동산",
-   "year": 2021,
-   "vintage": 2021,
-   "commitment": 240.0,
-   "drawdown": 63.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "남산 오피스 8호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 105.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "남산 오피스 8호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 14.0
-  },
-  {
-   "fund": "남산 오피스 8호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 24.0
-  },
-  {
-   "fund": "남산 오피스 8호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 28.0
-  },
-  {
-   "fund": "남산 오피스 8호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 6.0
-  },
-  {
-   "fund": "동해 신재생 12호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2023,
+   "year": 2020,
+   "vintage": 2020,
+   "currency": "EUR",
    "commitment": 180.0,
-   "drawdown": 26.0,
-   "distribution": 0.0
+   "drawdown": 63.0,
+   "distribution": 0.0,
+   "localCommitment": 14.0,
+   "localDrawdown": 4.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2021,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 71.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.2,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.8,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.1
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "남산 오피스 8호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2020,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "동해 신재생 12호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 210.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "localCommitment": 210.0,
+   "localDrawdown": 11.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "동해 신재생 12호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 44.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 44.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 12호",
    "assetClass": "인프라",
    "year": 2024,
-   "vintage": 2023,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 46.0,
-   "distribution": 0.0
+   "drawdown": 51.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 51.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 12호",
    "assetClass": "인프라",
    "year": 2025,
-   "vintage": 2023,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 7.0
+   "drawdown": 43.0,
+   "distribution": 26.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 43.0,
+   "localDistribution": 26.0
   },
   {
    "fund": "동해 신재생 12호",
    "assetClass": "인프라",
    "year": 2026,
-   "vintage": 2023,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 12.0
+   "drawdown": 14.0,
+   "distribution": 19.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 14.0,
+   "localDistribution": 19.0
   },
   {
    "fund": "동해 신재생 16호",
    "assetClass": "인프라",
    "year": 2024,
    "vintage": 2024,
-   "commitment": 250.0,
-   "drawdown": 6.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 330.0,
+   "drawdown": 53.0,
+   "distribution": 0.0,
+   "localCommitment": 330.0,
+   "localDrawdown": 53.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 16호",
    "assetClass": "인프라",
    "year": 2025,
    "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 84.0,
-   "distribution": 0.0
+   "drawdown": 86.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 86.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 16호",
    "assetClass": "인프라",
    "year": 2026,
    "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 0.0
+   "drawdown": 78.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 78.0,
+   "localDistribution": 17.0
   },
   {
    "fund": "동해 신재생 20호",
    "assetClass": "인프라",
    "year": 2026,
    "vintage": 2026,
-   "commitment": 350.0,
-   "drawdown": 61.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 250.0,
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "localCommitment": 250.0,
+   "localDrawdown": 17.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2019,
    "vintage": 2019,
-   "commitment": 170.0,
-   "drawdown": 7.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 120.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 9.3,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2020,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 0.0
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.6,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2021,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "동해 신재생 4호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 15.0
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.3,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2023,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 17.0
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.9,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2024,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 26.0
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.2
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2025,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 7.0
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.6
   },
   {
    "fund": "동해 신재생 4호",
    "assetClass": "인프라",
    "year": 2026,
    "vintage": 2019,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 36.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.4
   },
   {
    "fund": "동해 신재생 8호",
    "assetClass": "인프라",
    "year": 2021,
    "vintage": 2021,
-   "commitment": 150.0,
-   "drawdown": 24.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 140.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "localCommitment": 140.0,
+   "localDrawdown": 8.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 8호",
    "assetClass": "인프라",
    "year": 2022,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 0.0
+   "drawdown": 27.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 27.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "동해 신재생 8호",
    "assetClass": "인프라",
    "year": 2023,
    "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 27.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 27.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "동해 신재생 8호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 20.0,
-   "distribution": 7.0
-  },
-  {
-   "fund": "동해 신재생 8호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 20.0
+   "distribution": 20.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 20.0,
+   "localDistribution": 20.0
   },
   {
    "fund": "동해 신재생 8호",
    "assetClass": "인프라",
    "year": 2025,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 19.0
+   "drawdown": 12.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 12.0,
+   "localDistribution": 9.0
   },
   {
    "fund": "동해 신재생 8호",
    "assetClass": "인프라",
    "year": 2026,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 11.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 6.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2020,
-   "commitment": 210.0,
-   "drawdown": 26.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 420.0,
+   "drawdown": 82.0,
+   "distribution": 0.0,
+   "localCommitment": 420.0,
+   "localDrawdown": 82.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 0.0
+   "drawdown": 130.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 130.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 11.0
+   "drawdown": 108.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 108.0,
+   "localDistribution": 16.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 12.0
+   "drawdown": 42.0,
+   "distribution": 83.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 42.0,
+   "localDistribution": 83.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 27.0
+   "drawdown": 30.0,
+   "distribution": 75.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 30.0,
+   "localDistribution": 75.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 12.0
+   "distribution": 38.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 38.0
   },
   {
    "fund": "백두 벤처 10호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 28.0
+   "distribution": 67.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 67.0
   },
   {
    "fund": "백두 벤처 17호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2022,
-   "commitment": 470.0,
-   "drawdown": 37.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 360.0,
+   "drawdown": 97.0,
+   "distribution": 0.0,
+   "localCommitment": 360.0,
+   "localDrawdown": 97.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 17호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 135.0,
-   "distribution": 0.0
+   "drawdown": 119.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 119.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 17호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 170.0,
-   "distribution": 0.0
+   "drawdown": 69.0,
+   "distribution": 39.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 69.0,
+   "localDistribution": 39.0
   },
   {
    "fund": "백두 벤처 17호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 61.0,
-   "distribution": 53.0
-  },
-  {
-   "fund": "백두 벤처 17호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 32.0,
-   "distribution": 44.0
+   "distribution": 53.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 32.0,
+   "localDistribution": 53.0
+  },
+  {
+   "fund": "백두 벤처 17호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 96.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 96.0
+  },
+  {
+   "fund": "백두 벤처 24호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 400.0,
+   "drawdown": 25.0,
+   "distribution": 0.0,
+   "localCommitment": 32.2,
+   "localDrawdown": 2.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 24호",
    "assetClass": "사모벤처",
    "year": 2024,
-   "vintage": 2024,
-   "commitment": 560.0,
-   "drawdown": 128.0,
-   "distribution": 0.0
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 123.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 9.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 24호",
    "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2024,
+   "vintage": 2023,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 134.0,
-   "distribution": 0.0
+   "drawdown": 117.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 8.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 24호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2024,
+   "vintage": 2023,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 145.0,
-   "distribution": 0.0
+   "drawdown": 64.0,
+   "distribution": 47.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.8,
+   "localDistribution": 3.5
+  },
+  {
+   "fund": "백두 벤처 31호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2025,
+   "currency": "EUR",
+   "commitment": 430.0,
+   "drawdown": 54.0,
+   "distribution": 0.0,
+   "localCommitment": 30.4,
+   "localDrawdown": 3.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 31호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2026,
-   "commitment": 500.0,
-   "drawdown": 88.0,
-   "distribution": 0.0
+   "vintage": 2025,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 86.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.1,
+   "localDistribution": 0.0
   },
   {
    "fund": "백두 벤처 3호",
    "assetClass": "사모벤처",
    "year": 2018,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 210.0,
-   "drawdown": 15.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2019,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 61.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2020,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 32.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 43.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 33.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 19.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 33.0
-  },
-  {
-   "fund": "백두 벤처 3호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 25.0
-  },
-  {
-   "fund": "서해 에너지 13호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 190.0,
    "drawdown": 10.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 210.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "서해 에너지 13호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 13호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 72.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 13호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 27.0
-  },
-  {
-   "fund": "서해 에너지 17호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2024,
-   "commitment": 260.0,
-   "drawdown": 6.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 17호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 17호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 46.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
-   "year": 2018,
-   "vintage": 2018,
-   "commitment": 130.0,
-   "drawdown": 11.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
+   "fund": "백두 벤처 3호",
+   "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 0.0
+   "drawdown": 64.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 64.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
+   "fund": "백두 벤처 3호",
+   "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 3.0
+   "drawdown": 67.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 67.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
+   "fund": "백두 벤처 3호",
+   "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 10.0
+   "drawdown": 34.0,
+   "distribution": 45.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 34.0,
+   "localDistribution": 45.0
   },
   {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
+   "fund": "백두 벤처 3호",
+   "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 4.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 10.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 6.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 18.0
-  },
-  {
-   "fund": "서해 에너지 1호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 13.0
-  },
-  {
-   "fund": "서해 에너지 21호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2026,
-   "commitment": 280.0,
-   "drawdown": 25.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2020,
-   "vintage": 2020,
-   "commitment": 170.0,
-   "drawdown": 9.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 46.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 23.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 7.0,
-   "distribution": 14.0
+   "distribution": 38.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.0,
+   "localDistribution": 38.0
   },
   {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 18.0
-  },
-  {
-   "fund": "서해 에너지 5호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 12.0
-  },
-  {
-   "fund": "서해 에너지 9호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2021,
-   "commitment": 110.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "서해 에너지 9호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 25.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2021,
-   "commitment": 320.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 96.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 99.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 74.0,
-   "distribution": 45.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 60.0
-  },
-  {
-   "fund": "설악 바이아웃 15호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 57.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
-   "assetClass": "사모벤처",
-   "year": 2018,
-   "vintage": 2018,
-   "commitment": 160.0,
-   "drawdown": 28.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
-   "assetClass": "사모벤처",
-   "year": 2019,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
-   "assetClass": "사모벤처",
-   "year": 2020,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 10.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 26.0
-  },
-  {
-   "fund": "설악 바이아웃 1호",
+   "fund": "백두 벤처 3호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 11.0
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 15.0
   },
   {
-   "fund": "설악 바이아웃 1호",
+   "fund": "백두 벤처 3호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 15.0
+   "distribution": 14.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 14.0
   },
   {
-   "fund": "설악 바이아웃 1호",
+   "fund": "백두 벤처 3호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 18.0
+   "distribution": 37.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 37.0
   },
   {
-   "fund": "설악 바이아웃 1호",
+   "fund": "백두 벤처 3호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 9.0
+   "distribution": 26.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 26.0
   },
   {
-   "fund": "설악 바이아웃 22호",
-   "assetClass": "사모벤처",
+   "fund": "서해 에너지 13호",
+   "assetClass": "인프라",
    "year": 2023,
    "vintage": 2023,
-   "commitment": 560.0,
+   "currency": "KRW",
+   "commitment": 270.0,
    "drawdown": 0.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 270.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "설악 바이아웃 22호",
-   "assetClass": "사모벤처",
+   "fund": "서해 에너지 13호",
+   "assetClass": "인프라",
    "year": 2024,
    "vintage": 2023,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 127.0,
-   "distribution": 0.0
+   "drawdown": 88.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 88.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "설악 바이아웃 22호",
-   "assetClass": "사모벤처",
+   "fund": "서해 에너지 13호",
+   "assetClass": "인프라",
    "year": 2025,
    "vintage": 2023,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 209.0,
-   "distribution": 0.0
+   "drawdown": 82.0,
+   "distribution": 5.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 82.0,
+   "localDistribution": 5.0
   },
   {
-   "fund": "설악 바이아웃 22호",
-   "assetClass": "사모벤처",
+   "fund": "서해 에너지 13호",
+   "assetClass": "인프라",
    "year": 2026,
    "vintage": 2023,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 94.0,
-   "distribution": 28.0
+   "drawdown": 57.0,
+   "distribution": 52.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 57.0,
+   "localDistribution": 52.0
   },
   {
-   "fund": "설악 바이아웃 29호",
-   "assetClass": "사모벤처",
+   "fund": "서해 에너지 17호",
+   "assetClass": "인프라",
    "year": 2025,
    "vintage": 2025,
-   "commitment": 370.0,
-   "drawdown": 60.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 29호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2025,
-   "commitment": 0.0,
-   "drawdown": 87.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2020,
-   "vintage": 2020,
-   "commitment": 310.0,
-   "drawdown": 94.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 99.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2020,
-   "commitment": 0.0,
+   "currency": "KRW",
+   "commitment": 340.0,
    "drawdown": 72.0,
-   "distribution": 32.0
+   "distribution": 0.0,
+   "localCommitment": 340.0,
+   "localDrawdown": 72.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 32.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 88.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 47.0
-  },
-  {
-   "fund": "설악 바이아웃 8호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 77.0
-  },
-  {
-   "fund": "송도 리츠 11호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2022,
-   "commitment": 150.0,
-   "drawdown": 15.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 11호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 11호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 11호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 15호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 180.0,
-   "drawdown": 17.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 15호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 87.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 15호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "송도 리츠 15호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 19호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2025,
-   "commitment": 190.0,
-   "drawdown": 44.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 19호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2025,
-   "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 23호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2026,
-   "commitment": 130.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2018,
-   "vintage": 2018,
-   "commitment": 160.0,
-   "drawdown": 14.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2019,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 86.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2020,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 9.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 12.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 12.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "송도 리츠 3호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 9.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2020,
-   "vintage": 2020,
-   "commitment": 190.0,
-   "drawdown": 35.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2021,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 68.0,
-   "distribution": 8.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 10.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 13.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 16.0
-  },
-  {
-   "fund": "송도 리츠 7호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 21.0
-  },
-  {
-   "fund": "영남 교통 10호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2022,
-   "commitment": 200.0,
-   "drawdown": 19.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 10호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 58.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 10호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 11.0
-  },
-  {
-   "fund": "영남 교통 10호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 29.0,
-   "distribution": 16.0
-  },
-  {
-   "fund": "영남 교통 10호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 8.0,
-   "distribution": 30.0
-  },
-  {
-   "fund": "영남 교통 14호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 170.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 14호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 14호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 14호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 14.0
-  },
-  {
-   "fund": "영남 교통 18호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2025,
-   "commitment": 320.0,
-   "drawdown": 71.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 18호",
+   "fund": "서해 에너지 17호",
    "assetClass": "인프라",
    "year": 2026,
    "vintage": 2025,
-   "commitment": 0.0,
-   "drawdown": 66.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2018,
-   "vintage": 2018,
-   "commitment": 170.0,
-   "drawdown": 5.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2019,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 37.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2020,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 9.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 6.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 15.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 16.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 29.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 21.0
-  },
-  {
-   "fund": "영남 교통 2호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 19.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2020,
-   "vintage": 2020,
-   "commitment": 180.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 7.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 19.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 30.0
-  },
-  {
-   "fund": "영남 교통 6호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 15.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2021,
-   "commitment": 330.0,
-   "drawdown": 52.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 121.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 78.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 17.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 13호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 54.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 20호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 620.0,
-   "drawdown": 121.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 20호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 190.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 20호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 160.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 20호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2023,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 65.0,
-   "distribution": 30.0
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 65.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2018,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 160.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 12.2,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2019,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 31.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.0,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 11.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.2,
+   "localDistribution": 0.8
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 12.0,
+   "distribution": 20.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.9,
+   "localDistribution": 1.5
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 26.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.9
+  },
+  {
+   "fund": "서해 에너지 1호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2019,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 100.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 7.8,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.9,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.9,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.4
+  },
+  {
+   "fund": "서해 에너지 5호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.6
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 180.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "localCommitment": 180.0,
+   "localDrawdown": 14.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 57.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 57.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 5.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 52.0,
+   "localDistribution": 5.0
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 26.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 28.0,
+   "localDistribution": 26.0
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 28.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 28.0
+  },
+  {
+   "fund": "서해 에너지 9호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 27.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 27.0
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 210.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 16.1,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 63.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 55.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.3,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 33.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.5,
+   "localDistribution": 1.3
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.4,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "설악 바이아웃 15호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.9
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2018,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 160.0,
+   "drawdown": 12.0,
+   "distribution": 0.0,
+   "localCommitment": 12.9,
+   "localDrawdown": 1.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2019,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 39.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.1,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2020,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.7,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 10.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.4,
+   "localDistribution": 0.7
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 19.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.5
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 7.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.5
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "설악 바이아웃 1호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 8.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.6
+  },
+  {
+   "fund": "설악 바이아웃 22호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 350.0,
+   "drawdown": 78.0,
+   "distribution": 0.0,
+   "localCommitment": 26.9,
+   "localDrawdown": 6.3,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 22호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 92.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.9,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 22호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 100.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.5,
+   "localDistribution": 1.0
+  },
+  {
+   "fund": "설악 바이아웃 22호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 24.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.2,
+   "localDistribution": 1.9
+  },
+  {
+   "fund": "설악 바이아웃 29호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 480.0,
+   "drawdown": 113.0,
+   "distribution": 0.0,
+   "localCommitment": 36.5,
+   "localDrawdown": 8.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 29호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 107.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 8.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 36호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2026,
+   "currency": "KRW",
+   "commitment": 490.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "localCommitment": 490.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2019,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 260.0,
+   "drawdown": 33.0,
+   "distribution": 0.0,
+   "localCommitment": 20.3,
+   "localDrawdown": 2.6,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2020,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 70.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 78.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 53.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.7,
+   "localDistribution": 4.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 37.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.6,
+   "localDistribution": 2.7
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 57.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.9
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 56.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 4.0
+  },
+  {
+   "fund": "설악 바이아웃 8호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2019,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 60.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 4.3
+  },
+  {
+   "fund": "송도 리츠 11호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2022,
+   "currency": "USD",
+   "commitment": 230.0,
+   "drawdown": 79.0,
+   "distribution": 0.0,
+   "localCommitment": 18.1,
+   "localDrawdown": 6.2,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 11호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2022,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 105.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 8.2,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 11호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2022,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.5,
+   "localDistribution": 1.0
+  },
+  {
+   "fund": "송도 리츠 11호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2022,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 19.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.6,
+   "localDistribution": 1.4
+  },
+  {
+   "fund": "송도 리츠 11호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2022,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "송도 리츠 15호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "KRW",
+   "commitment": 130.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "localCommitment": 130.0,
+   "localDrawdown": 11.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 15호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2023,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 50.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 50.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 15호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 35.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 35.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 19호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 170.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
+   "localCommitment": 12.9,
+   "localDrawdown": 2.7,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 19호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 53.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.9,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2019,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 160.0,
+   "drawdown": 36.0,
+   "distribution": 0.0,
+   "localCommitment": 160.0,
+   "localDrawdown": 36.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2020,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 86.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 86.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2021,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 9.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 15.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 15.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 10.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 10.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 18.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 18.0
+  },
+  {
+   "fund": "송도 리츠 3호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 9.0
+  },
+  {
+   "fund": "송도 리츠 7호",
+   "assetClass": "부동산",
+   "year": 2020,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 120.0,
+   "drawdown": 44.0,
+   "distribution": 0.0,
+   "localCommitment": 120.0,
+   "localDrawdown": 44.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 7호",
+   "assetClass": "부동산",
+   "year": 2021,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 29.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 29.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "송도 리츠 7호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 110.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 110.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 20.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 19.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 17.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 6.0
+  },
+  {
+   "fund": "영남 교통 10호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 9.0
+  },
+  {
+   "fund": "영남 교통 14호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 270.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 19.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 14호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 68.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 14호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 92.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.7,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 14호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 55.0,
+   "distribution": 31.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.0,
+   "localDistribution": 2.2
+  },
+  {
+   "fund": "영남 교통 18호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 370.0,
+   "drawdown": 19.0,
+   "distribution": 0.0,
+   "localCommitment": 27.9,
+   "localDrawdown": 1.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 18호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 101.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.5,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2018,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 140.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 11.2,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2019,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.5,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.6,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 27.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.1,
+   "localDistribution": 0.4
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 7.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.5,
+   "localDistribution": 0.5
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.8
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 21.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.5
+  },
+  {
+   "fund": "영남 교통 2호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.7
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 180.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
+   "localCommitment": 14.1,
+   "localDrawdown": 2.7,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 47.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.6,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 30.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.5,
+   "localDistribution": 2.3
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 12.0,
+   "distribution": 24.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.0,
+   "localDistribution": 1.9
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 29.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 2.2
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 28.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 2.1
+  },
+  {
+   "fund": "영남 교통 6호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 8.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.6
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 300.0,
+   "drawdown": 52.0,
+   "distribution": 0.0,
+   "localCommitment": 22.3,
+   "localDrawdown": 3.9,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 86.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 74.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.6,
+   "localDistribution": 1.3
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 16.0,
+   "distribution": 46.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.2,
+   "localDistribution": 3.5
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 13호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2021,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 67.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 5.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 20호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 450.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 450.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 20호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 138.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 138.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 20호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 148.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 148.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 20호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 103.0,
+   "distribution": 68.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 103.0,
+   "localDistribution": 68.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 20호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 37.0,
+   "distribution": 90.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 37.0,
+   "localDistribution": 90.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 27호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 440.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "localCommitment": 440.0,
+   "localDrawdown": 8.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "오대 스페셜시츄에이션 27호",
    "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2025,
-   "commitment": 450.0,
-   "drawdown": 127.0,
-   "distribution": 0.0
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 136.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 136.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "오대 스페셜시츄에이션 27호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2025,
+   "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 86.0,
-   "distribution": 0.0
+   "drawdown": 84.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 84.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "오대 스페셜시츄에이션 34호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2026,
-   "commitment": 540.0,
-   "drawdown": 60.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 400.0,
+   "drawdown": 73.0,
+   "distribution": 0.0,
+   "localCommitment": 400.0,
+   "localDrawdown": 73.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2019,
-   "commitment": 390.0,
-   "drawdown": 81.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 220.0,
+   "drawdown": 55.0,
+   "distribution": 0.0,
+   "localCommitment": 220.0,
+   "localDrawdown": 55.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 106.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 6호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 114.0,
-   "distribution": 25.0
-  },
-  {
-   "fund": "오대 스페셜시츄에이션 6호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 61.0,
-   "distribution": 52.0
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 61.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 6호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 52.0,
+   "localDistribution": 6.0
+  },
+  {
+   "fund": "오대 스페셜시츄에이션 6호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 17.0,
+   "localDistribution": 16.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 17.0,
-   "distribution": 71.0
+   "drawdown": 6.0,
+   "distribution": 64.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.0,
+   "localDistribution": 64.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 51.0
+   "distribution": 41.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 41.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 103.0
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 25.0
   },
   {
    "fund": "오대 스페셜시츄에이션 6호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 60.0
+   "distribution": 46.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 46.0
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 360.0,
-   "drawdown": 85.0,
-   "distribution": 0.0
+   "drawdown": 63.0,
+   "distribution": 0.0,
+   "localCommitment": 27.1,
+   "localDrawdown": 4.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 113.0,
-   "distribution": 0.0
+   "drawdown": 79.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.3,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 95.0,
-   "distribution": 0.0
+   "drawdown": 120.0,
+   "distribution": 22.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 9.4,
+   "localDistribution": 1.7
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 35.0
+   "drawdown": 57.0,
+   "distribution": 68.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.4,
+   "localDistribution": 5.1
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 52.0
+   "drawdown": 13.0,
+   "distribution": 63.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.0,
+   "localDistribution": 4.7
   },
   {
    "fund": "지리 미드캡 12호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 27.0
+   "distribution": 69.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 5.2
   },
   {
    "fund": "지리 미드캡 19호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2022,
-   "commitment": 300.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 340.0,
+   "drawdown": 42.0,
+   "distribution": 0.0,
+   "localCommitment": 340.0,
+   "localDrawdown": 42.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 19호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 104.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 104.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "지리 미드캡 19호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 88.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 88.0,
+   "localDistribution": 6.0
+  },
+  {
+   "fund": "지리 미드캡 19호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 58.0,
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 58.0,
+   "localDistribution": 9.0
+  },
+  {
+   "fund": "지리 미드캡 19호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 18.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 22.0,
+   "localDistribution": 18.0
+  },
+  {
+   "fund": "지리 미드캡 26호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 440.0,
+   "drawdown": 98.0,
+   "distribution": 0.0,
+   "localCommitment": 440.0,
+   "localDrawdown": 98.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "지리 미드캡 26호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 124.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 124.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "지리 미드캡 26호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 91.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "지리 미드캡 19호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 96.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "지리 미드캡 19호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 33.0
-  },
-  {
-   "fund": "지리 미드캡 19호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 50.0
-  },
-  {
-   "fund": "지리 미드캡 26호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2024,
-   "commitment": 560.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "지리 미드캡 26호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 133.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "지리 미드캡 26호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 169.0,
-   "distribution": 0.0
+   "distribution": 18.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 91.0,
+   "localDistribution": 18.0
   },
   {
    "fund": "지리 미드캡 33호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2026,
-   "commitment": 320.0,
-   "drawdown": 32.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 470.0,
+   "drawdown": 77.0,
+   "distribution": 0.0,
+   "localCommitment": 34.9,
+   "localDrawdown": 5.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 5호",
    "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2019,
-   "commitment": 260.0,
-   "drawdown": 39.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 250.0,
+   "drawdown": 69.0,
+   "distribution": 0.0,
+   "localCommitment": 250.0,
+   "localDrawdown": 69.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 5호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 102.0,
-   "distribution": 0.0
+   "drawdown": 67.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 67.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "지리 미드캡 5호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 58.0,
-   "distribution": 12.0
-  },
-  {
-   "fund": "지리 미드캡 5호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 15.0
-  },
-  {
-   "fund": "지리 미드캡 5호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 29.0
-  },
-  {
-   "fund": "지리 미드캡 5호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 90.0
-  },
-  {
-   "fund": "지리 미드캡 5호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 34.0
-  },
-  {
-   "fund": "지리 미드캡 5호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 22.0
-  },
-  {
-   "fund": "태백 세컨더리 16호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2022,
-   "commitment": 290.0,
-   "drawdown": 50.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "태백 세컨더리 16호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 92.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "태백 세컨더리 16호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 60.0,
-   "distribution": 12.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 60.0,
+   "localDistribution": 6.0
+  },
+  {
+   "fund": "지리 미드캡 5호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 15.0,
+   "distribution": 31.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 15.0,
+   "localDistribution": 31.0
+  },
+  {
+   "fund": "지리 미드캡 5호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 54.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 54.0
+  },
+  {
+   "fund": "지리 미드캡 5호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 22.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 22.0
+  },
+  {
+   "fund": "지리 미드캡 5호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 25.0
+  },
+  {
+   "fund": "지리 미드캡 5호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 75.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 75.0
+  },
+  {
+   "fund": "태백 세컨더리 16호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 290.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 290.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "태백 세컨더리 16호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 87.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 87.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "태백 세컨더리 16호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 104.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 104.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "태백 세컨더리 16호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 40.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 52.0,
+   "localDistribution": 40.0
   },
   {
    "fund": "태백 세컨더리 16호",
    "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 22.0
+   "drawdown": 35.0,
+   "distribution": 69.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 35.0,
+   "localDistribution": 69.0
   },
   {
    "fund": "태백 세컨더리 16호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 62.0
+   "drawdown": 0.0,
+   "distribution": 52.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 52.0
+  },
+  {
+   "fund": "태백 세컨더리 23호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 430.0,
+   "drawdown": 35.0,
+   "distribution": 0.0,
+   "localCommitment": 30.5,
+   "localDrawdown": 2.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 23호",
    "assetClass": "사모벤처",
    "year": 2024,
-   "vintage": 2024,
-   "commitment": 580.0,
-   "drawdown": 149.0,
-   "distribution": 0.0
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 151.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.5,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 23호",
    "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2024,
+   "vintage": 2023,
+   "currency": "EUR",
    "commitment": 0.0,
-   "drawdown": 160.0,
-   "distribution": 0.0
+   "drawdown": 131.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 9.3,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 23호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2024,
+   "vintage": 2023,
+   "currency": "EUR",
    "commitment": 0.0,
-   "drawdown": 118.0,
-   "distribution": 26.0
+   "drawdown": 66.0,
+   "distribution": 33.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.6,
+   "localDistribution": 2.4
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2018,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 210.0,
-   "drawdown": 50.0,
-   "distribution": 0.0
+   "drawdown": 45.0,
+   "distribution": 0.0,
+   "localCommitment": 210.0,
+   "localDrawdown": 45.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 64.0,
-   "distribution": 0.0
+   "drawdown": 63.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 63.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 23.0
+   "drawdown": 33.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 33.0,
+   "localDistribution": 17.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 7.0
+   "drawdown": 20.0,
+   "distribution": 7.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 20.0,
+   "localDistribution": 7.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 5.0,
-   "distribution": 37.0
+   "distribution": 47.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 47.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 53.0
+   "distribution": 43.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 43.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 25.0
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 25.0
   },
   {
    "fund": "태백 세컨더리 2호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 12.0
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 12.0
+  },
+  {
+   "fund": "태백 세컨더리 2호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 17.0
   },
   {
    "fund": "태백 세컨더리 30호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2025,
-   "commitment": 640.0,
-   "drawdown": 107.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 530.0,
+   "drawdown": 90.0,
+   "distribution": 0.0,
+   "localCommitment": 39.8,
+   "localDrawdown": 6.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 30호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2025,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 154.0,
-   "distribution": 0.0
+   "drawdown": 137.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.2,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 9호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2020,
-   "commitment": 360.0,
-   "drawdown": 83.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 320.0,
+   "drawdown": 84.0,
+   "distribution": 0.0,
+   "localCommitment": 320.0,
+   "localDrawdown": 84.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "태백 세컨더리 9호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 99.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "태백 세컨더리 9호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 98.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "태백 세컨더리 9호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 18.0
-  },
-  {
-   "fund": "태백 세컨더리 9호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 72.0
-  },
-  {
-   "fund": "태백 세컨더리 9호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 60.0
-  },
-  {
-   "fund": "태백 세컨더리 9호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 9.0
-  },
-  {
-   "fund": "판교 코어플러스 10호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2022,
-   "commitment": 150.0,
-   "drawdown": 66.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "판교 코어플러스 10호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "판교 코어플러스 10호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "판교 코어플러스 10호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 9.0
-  },
-  {
-   "fund": "판교 코어플러스 10호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "판교 코어플러스 14호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 190.0,
-   "drawdown": 24.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "판교 코어플러스 14호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2023,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 100.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 100.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "판교 코어플러스 14호",
-   "assetClass": "부동산",
+   "fund": "태백 세컨더리 9호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 61.0,
+   "distribution": 24.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 61.0,
+   "localDistribution": 24.0
+  },
+  {
+   "fund": "태백 세컨더리 9호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 47.0,
+   "distribution": 46.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 47.0,
+   "localDistribution": 46.0
+  },
+  {
+   "fund": "태백 세컨더리 9호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 50.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 50.0
+  },
+  {
+   "fund": "태백 세컨더리 9호",
+   "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2023,
+   "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 0.0
+   "drawdown": 0.0,
+   "distribution": 140.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 140.0
   },
   {
-   "fund": "판교 코어플러스 14호",
-   "assetClass": "부동산",
+   "fund": "태백 세컨더리 9호",
+   "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2023,
+   "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 10.0
+   "drawdown": 0.0,
+   "distribution": 46.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 46.0
   },
   {
-   "fund": "판교 코어플러스 18호",
+   "fund": "판교 코어플러스 10호",
+   "assetClass": "부동산",
+   "year": 2021,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 290.0,
+   "drawdown": 102.0,
+   "distribution": 0.0,
+   "localCommitment": 290.0,
+   "localDrawdown": 102.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "판교 코어플러스 10호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 120.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 120.0,
+   "localDistribution": 3.0
+  },
+  {
+   "fund": "판교 코어플러스 10호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 14.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 43.0,
+   "localDistribution": 14.0
+  },
+  {
+   "fund": "판교 코어플러스 10호",
    "assetClass": "부동산",
    "year": 2024,
-   "vintage": 2024,
-   "commitment": 160.0,
-   "drawdown": 37.0,
-   "distribution": 0.0
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 36.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 36.0
+  },
+  {
+   "fund": "판교 코어플러스 10호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 14.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 14.0
+  },
+  {
+   "fund": "판교 코어플러스 10호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2021,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 15.0
+  },
+  {
+   "fund": "판교 코어플러스 14호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 210.0,
+   "drawdown": 78.0,
+   "distribution": 0.0,
+   "localCommitment": 16.3,
+   "localDrawdown": 6.3,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "판교 코어플러스 14호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 91.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.7,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "판교 코어플러스 14호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.0,
+   "localDistribution": 1.2
+  },
+  {
+   "fund": "판교 코어플러스 14호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2023,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 4.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.3
   },
   {
    "fund": "판교 코어플러스 18호",
    "assetClass": "부동산",
    "year": 2025,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 76.0,
-   "distribution": 0.0
+   "vintage": 2025,
+   "currency": "KRW",
+   "commitment": 110.0,
+   "drawdown": 44.0,
+   "distribution": 0.0,
+   "localCommitment": 110.0,
+   "localDrawdown": 44.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 18호",
    "assetClass": "부동산",
    "year": 2026,
-   "vintage": 2024,
+   "vintage": 2025,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 0.0
+   "drawdown": 34.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 34.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 22호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2026,
-   "commitment": 120.0,
-   "drawdown": 7.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 170.0,
+   "drawdown": 23.0,
+   "distribution": 0.0,
+   "localCommitment": 13.0,
+   "localDrawdown": 1.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 2호",
    "assetClass": "부동산",
    "year": 2018,
    "vintage": 2018,
-   "commitment": 90.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 200.0,
+   "drawdown": 40.0,
+   "distribution": 0.0,
+   "localCommitment": 16.7,
+   "localDrawdown": 3.2,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 2호",
    "assetClass": "부동산",
    "year": 2019,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 40.0,
-   "distribution": 0.0
+   "drawdown": 100.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.9,
+   "localDistribution": 0.2
   },
   {
    "fund": "판교 코어플러스 2호",
    "assetClass": "부동산",
    "year": 2020,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 0.0
+   "drawdown": 49.0,
+   "distribution": 10.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.8,
+   "localDistribution": 0.7
   },
   {
    "fund": "판교 코어플러스 2호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 5.0,
-   "distribution": 0.0
+   "distribution": 8.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.4,
+   "localDistribution": 0.6
+  },
+  {
+   "fund": "판교 코어플러스 2호",
+   "assetClass": "부동산",
+   "year": 2022,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 11.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.8
+  },
+  {
+   "fund": "판교 코어플러스 2호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 21.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.5
+  },
+  {
+   "fund": "판교 코어플러스 2호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 26.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.9
+  },
+  {
+   "fund": "판교 코어플러스 2호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 22.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.6
+  },
+  {
+   "fund": "판교 코어플러스 2호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 21.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.6
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2020,
    "vintage": 2020,
-   "commitment": 260.0,
-   "drawdown": 61.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 150.0,
+   "drawdown": 71.0,
+   "distribution": 0.0,
+   "localCommitment": 150.0,
+   "localDrawdown": 71.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 130.0,
-   "distribution": 4.0
+   "drawdown": 41.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 41.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2022,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 50.0,
-   "distribution": 15.0
+   "drawdown": 14.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 14.0,
+   "localDistribution": 3.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2023,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 17.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 6.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 17.0
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 35.0
+   "distribution": 9.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 9.0
   },
   {
    "fund": "판교 코어플러스 6호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 34.0
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 12.0
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2021,
-   "commitment": 350.0,
-   "drawdown": 25.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 210.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 16.1,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 109.0,
-   "distribution": 0.0
+   "drawdown": 73.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.8,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 109.0,
-   "distribution": 0.0
+   "drawdown": 63.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 78.0
+   "drawdown": 30.0,
+   "distribution": 31.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.3,
+   "localDistribution": 2.2
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 46.0
+   "drawdown": 15.0,
+   "distribution": 29.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.2,
+   "localDistribution": 2.2
   },
   {
    "fund": "한강 그로스 14호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2021,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 53.0
+   "distribution": 10.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.7
   },
   {
    "fund": "한강 그로스 21호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2023,
+   "currency": "EUR",
    "commitment": 460.0,
-   "drawdown": 10.0,
-   "distribution": 0.0
+   "drawdown": 129.0,
+   "distribution": 0.0,
+   "localCommitment": 33.3,
+   "localDrawdown": 9.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 21호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 128.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "한강 그로스 21호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2023,
+   "currency": "EUR",
    "commitment": 0.0,
    "drawdown": 145.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.1,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "한강 그로스 21호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 111.0,
+   "distribution": 19.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.8,
+   "localDistribution": 1.4
   },
   {
    "fund": "한강 그로스 21호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2023,
+   "currency": "EUR",
    "commitment": 0.0,
-   "drawdown": 82.0,
-   "distribution": 29.0
+   "drawdown": 23.0,
+   "distribution": 64.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.7,
+   "localDistribution": 4.6
+  },
+  {
+   "fund": "한강 그로스 28호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2024,
+   "currency": "USD",
+   "commitment": 610.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 45.5,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 28호",
    "assetClass": "사모벤처",
    "year": 2025,
-   "vintage": 2025,
-   "commitment": 500.0,
-   "drawdown": 111.0,
-   "distribution": 0.0
+   "vintage": 2024,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 167.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 12.5,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 28호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2025,
+   "vintage": 2024,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 122.0,
-   "distribution": 0.0
+   "drawdown": 152.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 11.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "한강 그로스 35호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2026,
+   "currency": "USD",
+   "commitment": 470.0,
+   "drawdown": 58.0,
+   "distribution": 0.0,
+   "localCommitment": 35.0,
+   "localDrawdown": 4.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 7호",
    "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2019,
-   "commitment": 350.0,
-   "drawdown": 60.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 280.0,
+   "drawdown": 22.0,
+   "distribution": 0.0,
+   "localCommitment": 280.0,
+   "localDrawdown": 22.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 7호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 103.0,
-   "distribution": 0.0
+   "drawdown": 116.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 116.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한강 그로스 7호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 84.0,
-   "distribution": 15.0
-  },
-  {
-   "fund": "한강 그로스 7호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 66.0,
-   "distribution": 82.0
-  },
-  {
-   "fund": "한강 그로스 7호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 90.0
-  },
-  {
-   "fund": "한강 그로스 7호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 102.0
-  },
-  {
-   "fund": "한강 그로스 7호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 59.0
-  },
-  {
-   "fund": "한강 그로스 7호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 77.0
-  },
-  {
-   "fund": "한라 메자닌 11호",
-   "assetClass": "사모벤처",
-   "year": 2020,
-   "vintage": 2020,
-   "commitment": 260.0,
-   "drawdown": 20.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "한라 메자닌 11호",
-   "assetClass": "사모벤처",
-   "year": 2021,
-   "vintage": 2020,
-   "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "한라 메자닌 11호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 69.0,
-   "distribution": 0.0
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 69.0,
+   "localDistribution": 6.0
+  },
+  {
+   "fund": "한강 그로스 7호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 41.0,
+   "distribution": 42.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 41.0,
+   "localDistribution": 42.0
+  },
+  {
+   "fund": "한강 그로스 7호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 33.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 33.0
+  },
+  {
+   "fund": "한강 그로스 7호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 52.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 52.0
+  },
+  {
+   "fund": "한강 그로스 7호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 53.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 53.0
+  },
+  {
+   "fund": "한강 그로스 7호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2019,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 36.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 36.0
+  },
+  {
+   "fund": "한라 메자닌 11호",
+   "assetClass": "사모벤처",
+   "year": 2020,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 410.0,
+   "drawdown": 50.0,
+   "distribution": 0.0,
+   "localCommitment": 410.0,
+   "localDrawdown": 50.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "한라 메자닌 11호",
+   "assetClass": "사모벤처",
+   "year": 2021,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 147.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 147.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "한라 메자닌 11호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 99.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 99.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 11호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 0.0
+   "drawdown": 69.0,
+   "distribution": 64.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 69.0,
+   "localDistribution": 64.0
   },
   {
    "fund": "한라 메자닌 11호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 25.0
+   "drawdown": 24.0,
+   "distribution": 73.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 24.0,
+   "localDistribution": 73.0
   },
   {
    "fund": "한라 메자닌 11호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 39.0
+   "distribution": 84.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 84.0
   },
   {
    "fund": "한라 메자닌 11호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2020,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 41.0
+   "distribution": 48.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 48.0
   },
   {
    "fund": "한라 메자닌 18호",
    "assetClass": "사모벤처",
    "year": 2022,
    "vintage": 2022,
-   "commitment": 400.0,
-   "drawdown": 49.0,
-   "distribution": 0.0
+   "currency": "USD",
+   "commitment": 300.0,
+   "drawdown": 70.0,
+   "distribution": 0.0,
+   "localCommitment": 23.6,
+   "localDrawdown": 5.6,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 18호",
    "assetClass": "사모벤처",
    "year": 2023,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 120.0,
-   "distribution": 0.0
+   "drawdown": 81.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 6.4,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 18호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 124.0,
-   "distribution": 0.0
+   "drawdown": 75.0,
+   "distribution": 15.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.7,
+   "localDistribution": 1.1
   },
   {
    "fund": "한라 메자닌 18호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 39.0
+   "drawdown": 28.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 2.2,
+   "localDistribution": 1.0
   },
   {
    "fund": "한라 메자닌 18호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2022,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 66.0
+   "drawdown": 13.0,
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.9,
+   "localDistribution": 1.8
   },
   {
    "fund": "한라 메자닌 25호",
    "assetClass": "사모벤처",
    "year": 2024,
    "vintage": 2024,
-   "commitment": 420.0,
-   "drawdown": 84.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 620.0,
+   "drawdown": 146.0,
+   "distribution": 0.0,
+   "localCommitment": 620.0,
+   "localDrawdown": 146.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 25호",
    "assetClass": "사모벤처",
    "year": 2025,
    "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 133.0,
-   "distribution": 0.0
+   "drawdown": 183.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 183.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 25호",
    "assetClass": "사모벤처",
    "year": 2026,
    "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 83.0,
-   "distribution": 0.0
+   "drawdown": 98.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 98.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "한라 메자닌 32호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 520.0,
+   "drawdown": 42.0,
+   "distribution": 0.0,
+   "localCommitment": 39.4,
+   "localDrawdown": 3.1,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 32호",
    "assetClass": "사모벤처",
    "year": 2026,
-   "vintage": 2026,
-   "commitment": 460.0,
-   "drawdown": 63.0,
-   "distribution": 0.0
+   "vintage": 2025,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 100.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 7.5,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 4호",
    "assetClass": "사모벤처",
    "year": 2018,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 220.0,
    "drawdown": 0.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 17.8,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 4호",
    "assetClass": "사모벤처",
    "year": 2019,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 66.0,
-   "distribution": 0.0
+   "drawdown": 72.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.7,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 4호",
    "assetClass": "사모벤처",
    "year": 2020,
    "vintage": 2018,
+   "currency": "USD",
    "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 0.0
+   "drawdown": 67.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.1,
+   "localDistribution": 0.0
   },
   {
    "fund": "한라 메자닌 4호",
    "assetClass": "사모벤처",
    "year": 2021,
    "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.7,
+   "localDistribution": 1.0
+  },
+  {
+   "fund": "한라 메자닌 4호",
+   "assetClass": "사모벤처",
+   "year": 2022,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.4,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "한라 메자닌 4호",
+   "assetClass": "사모벤처",
+   "year": 2023,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 37.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 2.9
+  },
+  {
+   "fund": "한라 메자닌 4호",
+   "assetClass": "사모벤처",
+   "year": 2024,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 45.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.3
+  },
+  {
+   "fund": "한라 메자닌 4호",
+   "assetClass": "사모벤처",
+   "year": 2025,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 44.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.3
+  },
+  {
+   "fund": "한라 메자닌 4호",
+   "assetClass": "사모벤처",
+   "year": 2026,
+   "vintage": 2018,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 44.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 3.3
+  },
+  {
+   "fund": "해운대 물류 13호",
+   "assetClass": "부동산",
+   "year": 2023,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 200.0,
+   "drawdown": 87.0,
+   "distribution": 0.0,
+   "localCommitment": 14.7,
+   "localDrawdown": 6.2,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "해운대 물류 13호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 59.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 4.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "해운대 물류 13호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.2,
+   "localDistribution": 0.4
+  },
+  {
+   "fund": "해운대 물류 13호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2023,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.2
+  },
+  {
+   "fund": "해운대 물류 17호",
+   "assetClass": "부동산",
+   "year": 2024,
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 310.0,
+   "drawdown": 67.0,
+   "distribution": 0.0,
+   "localCommitment": 310.0,
+   "localDrawdown": 67.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "해운대 물류 17호",
+   "assetClass": "부동산",
+   "year": 2025,
+   "vintage": 2024,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 158.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 158.0,
+   "localDistribution": 3.0
+  },
+  {
+   "fund": "해운대 물류 17호",
+   "assetClass": "부동산",
+   "year": 2026,
+   "vintage": 2024,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 47.0,
-   "distribution": 12.0
-  },
-  {
-   "fund": "한라 메자닌 4호",
-   "assetClass": "사모벤처",
-   "year": 2022,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 29.0
-  },
-  {
-   "fund": "한라 메자닌 4호",
-   "assetClass": "사모벤처",
-   "year": 2023,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 41.0
-  },
-  {
-   "fund": "한라 메자닌 4호",
-   "assetClass": "사모벤처",
-   "year": 2024,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 11.0
-  },
-  {
-   "fund": "한라 메자닌 4호",
-   "assetClass": "사모벤처",
-   "year": 2025,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 52.0
-  },
-  {
-   "fund": "한라 메자닌 4호",
-   "assetClass": "사모벤처",
-   "year": 2026,
-   "vintage": 2018,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 51.0
-  },
-  {
-   "fund": "해운대 물류 13호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2023,
-   "commitment": 180.0,
-   "drawdown": 55.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "해운대 물류 13호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "해운대 물류 13호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 14.0
-  },
-  {
-   "fund": "해운대 물류 13호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2023,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 16.0
-  },
-  {
-   "fund": "해운대 물류 17호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2024,
-   "commitment": 220.0,
-   "drawdown": 71.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "해운대 물류 17호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 89.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "해운대 물류 17호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 3.0
+   "distribution": 10.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 47.0,
+   "localDistribution": 10.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2018,
    "vintage": 2018,
-   "commitment": 150.0,
-   "drawdown": 52.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 200.0,
+   "drawdown": 36.0,
+   "distribution": 0.0,
+   "localCommitment": 200.0,
+   "localDrawdown": 36.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2019,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 54.0,
-   "distribution": 0.0
+   "drawdown": 124.0,
+   "distribution": 6.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 124.0,
+   "localDistribution": 6.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2020,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 0.0
+   "drawdown": 24.0,
+   "distribution": 14.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 24.0,
+   "localDistribution": 14.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 3.0
+   "drawdown": 5.0,
+   "distribution": 17.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 5.0,
+   "localDistribution": 17.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2022,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 6.0
+   "distribution": 14.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 14.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2023,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 9.0
+   "distribution": 25.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 25.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 6.0
+   "distribution": 4.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 4.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 3.0
+   "distribution": 28.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 28.0
   },
   {
    "fund": "해운대 물류 1호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2018,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 6.0
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 13.0
   },
   {
    "fund": "해운대 물류 21호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2026,
+   "currency": "KRW",
+   "commitment": 180.0,
+   "drawdown": 69.0,
+   "distribution": 0.0,
+   "localCommitment": 180.0,
+   "localDrawdown": 69.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "해운대 물류 5호",
+   "assetClass": "부동산",
+   "year": 2019,
+   "vintage": 2019,
+   "currency": "KRW",
    "commitment": 100.0,
-   "drawdown": 32.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2019,
-   "vintage": 2019,
-   "commitment": 170.0,
-   "drawdown": 35.0,
-   "distribution": 0.0
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 100.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "해운대 물류 5호",
    "assetClass": "부동산",
    "year": 2020,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 81.0,
-   "distribution": 0.0
+   "drawdown": 49.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 49.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "해운대 물류 5호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2019,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2023,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 23.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2024,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 21.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2025,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 14.0
-  },
-  {
-   "fund": "해운대 물류 5호",
-   "assetClass": "부동산",
-   "year": 2026,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 4.0
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 13.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2021,
    "vintage": 2021,
-   "commitment": 280.0,
-   "drawdown": 11.0,
-   "distribution": 0.0
+   "currency": "KRW",
+   "commitment": 230.0,
+   "drawdown": 94.0,
+   "distribution": 0.0,
+   "localCommitment": 230.0,
+   "localDrawdown": 94.0,
+   "localDistribution": 0.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2022,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 134.0,
-   "distribution": 0.0
+   "drawdown": 98.0,
+   "distribution": 3.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 98.0,
+   "localDistribution": 3.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2023,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 105.0,
-   "distribution": 13.0
+   "drawdown": 18.0,
+   "distribution": 18.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 18.0,
+   "localDistribution": 18.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2024,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 16.0
+   "drawdown": 0.0,
+   "distribution": 23.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 23.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2025,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 5.0
+   "distribution": 24.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 24.0
   },
   {
    "fund": "해운대 물류 9호",
    "assetClass": "부동산",
    "year": 2026,
    "vintage": 2021,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 30.0
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 13.0
   },
   {
    "fund": "호남 데이터센터 11호",
    "assetClass": "인프라",
    "year": 2022,
    "vintage": 2022,
-   "commitment": 280.0,
-   "drawdown": 0.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 11호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 11호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 86.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 11호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 57.0,
-   "distribution": 25.0
-  },
-  {
-   "fund": "호남 데이터센터 11호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2022,
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 29.0
-  },
-  {
-   "fund": "호남 데이터센터 15호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2024,
-   "commitment": 240.0,
-   "drawdown": 57.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 15호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 70.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 15호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2024,
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 18.0
-  },
-  {
-   "fund": "호남 데이터센터 19호",
-   "assetClass": "인프라",
-   "year": 2025,
-   "vintage": 2025,
-   "commitment": 390.0,
-   "drawdown": 91.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 19호",
-   "assetClass": "인프라",
-   "year": 2026,
-   "vintage": 2025,
-   "commitment": 0.0,
-   "drawdown": 87.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 3호",
-   "assetClass": "인프라",
-   "year": 2019,
-   "vintage": 2019,
-   "commitment": 130.0,
-   "drawdown": 6.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 3호",
-   "assetClass": "인프라",
-   "year": 2020,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 3호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2019,
-   "commitment": 0.0,
+   "currency": "KRW",
+   "commitment": 270.0,
    "drawdown": 24.0,
-   "distribution": 0.0
+   "distribution": 0.0,
+   "localCommitment": 270.0,
+   "localDrawdown": 24.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "호남 데이터센터 3호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 3.0
-  },
-  {
-   "fund": "호남 데이터센터 3호",
+   "fund": "호남 데이터센터 11호",
    "assetClass": "인프라",
    "year": 2023,
-   "vintage": 2019,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 12.0
+   "drawdown": 94.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 94.0,
+   "localDistribution": 0.0
   },
   {
-   "fund": "호남 데이터센터 3호",
+   "fund": "호남 데이터센터 11호",
    "assetClass": "인프라",
    "year": 2024,
-   "vintage": 2019,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 3.0
+   "drawdown": 58.0,
+   "distribution": 13.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 58.0,
+   "localDistribution": 13.0
   },
   {
-   "fund": "호남 데이터센터 3호",
+   "fund": "호남 데이터센터 11호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2022,
+   "currency": "KRW",
+   "commitment": 0.0,
+   "drawdown": 78.0,
+   "distribution": 33.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 78.0,
+   "localDistribution": 33.0
+  },
+  {
+   "fund": "호남 데이터센터 11호",
    "assetClass": "인프라",
    "year": 2026,
-   "vintage": 2019,
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 10.0
-  },
-  {
-   "fund": "호남 데이터센터 7호",
-   "assetClass": "인프라",
-   "year": 2021,
-   "vintage": 2021,
-   "commitment": 160.0,
-   "drawdown": 38.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 7호",
-   "assetClass": "인프라",
-   "year": 2022,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 0.0
-  },
-  {
-   "fund": "호남 데이터센터 7호",
-   "assetClass": "인프라",
-   "year": 2023,
-   "vintage": 2021,
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 10.0
-  },
-  {
-   "fund": "호남 데이터센터 7호",
-   "assetClass": "인프라",
-   "year": 2024,
-   "vintage": 2021,
+   "vintage": 2022,
+   "currency": "KRW",
    "commitment": 0.0,
    "drawdown": 10.0,
-   "distribution": 4.0
+   "distribution": 55.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 10.0,
+   "localDistribution": 55.0
+  },
+  {
+   "fund": "호남 데이터센터 15호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2024,
+   "currency": "EUR",
+   "commitment": 410.0,
+   "drawdown": 84.0,
+   "distribution": 0.0,
+   "localCommitment": 28.3,
+   "localDrawdown": 6.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 15호",
+   "assetClass": "인프라",
+   "year": 2025,
+   "vintage": 2024,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 117.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 8.5,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 15호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2024,
+   "currency": "EUR",
+   "commitment": 0.0,
+   "drawdown": 54.0,
+   "distribution": 12.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.8,
+   "localDistribution": 0.9
+  },
+  {
+   "fund": "호남 데이터센터 19호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2026,
+   "currency": "USD",
+   "commitment": 380.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
+   "localCommitment": 28.3,
+   "localDrawdown": 2.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 3호",
+   "assetClass": "인프라",
+   "year": 2019,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 80.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "localCommitment": 6.4,
+   "localDrawdown": 0.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 3호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.4,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 3호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2019,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.8,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2020,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 170.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "localCommitment": 12.6,
+   "localDrawdown": 1.1,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2021,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 41.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.2,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2022,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 3.0,
+   "localDistribution": 0.0
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2023,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 5.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 1.5,
+   "localDistribution": 0.4
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2024,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 16.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.2
   },
   {
    "fund": "호남 데이터센터 7호",
    "assetClass": "인프라",
    "year": 2025,
-   "vintage": 2021,
+   "vintage": 2020,
+   "currency": "USD",
    "commitment": 0.0,
    "drawdown": 0.0,
-   "distribution": 12.0
+   "distribution": 23.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.7
+  },
+  {
+   "fund": "호남 데이터센터 7호",
+   "assetClass": "인프라",
+   "year": 2026,
+   "vintage": 2020,
+   "currency": "USD",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 18.0,
+   "localCommitment": 0.0,
+   "localDrawdown": 0.0,
+   "localDistribution": 1.4
   }
  ],
+ "localUnits": {
+  "KRW": "억",
+  "default": "백만"
+ },
  "note": "표시된 수치는 시연용 샘플 데이터입니다"
 };
