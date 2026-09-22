@@ -4,11 +4,12 @@
 #
 # 입력 (모두 loader.load_data 결과, Oracle 이라 열 이름은 대문자)
 #   raw_cf     sql/ALT_CashFlow.sql  long 형태의 현금흐름
-#              WRK_DT(YYYYMMDD 또는 날짜), FUND_NM, ASSET_CLS, CCY, TX_TYPE(약정|집행|분배), AMT_KRW, AMT_LOCAL
+#              WRK_DT(YYYYMMDD 또는 날짜), FUND_CD(선택), FUND_NM, ASSET_CLS, CCY, TX_TYPE(약정|집행|분배), AMT_KRW, AMT_LOCAL
+#              FUND_CD 가 있으면 펀드 키로 쓰고 FUND_NM 은 표시 이름, 없으면 FUND_NM 이 키
 #   raw_target sql/ALT_Target.sql    연도·자산군별 목표
 #              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
 #   raw_fund   sql/ALT_Fund.sql      펀드 마스터 (선택, None 이면 현금흐름에서 유추)
-#              FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
+#              FUND_CD(선택), FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
 #   asof       기준일 (None 이면 raw_cf 의 마지막 거래일). 기준일 이후 거래는 제외
 #
 # 출력 (사전)  실패하면 {}
@@ -24,7 +25,7 @@
 #   kpi         DataFrame [YEAR, CLS, METRIC, MONTHS, TARGET, ACTUAL, RATIO, REMAIN, PREV]
 #                 연도·자산군·지표별 목표/현황/달성률. MONTHS 는 집계에 들어간 마지막 월,
 #                 PREV 는 전년 동기(같은 월 범위) 실적. 전년 자료 없으면 NaN
-#   funds       DataFrame [FUND, CLS, CCY, VINTAGE, YEAR, 약정, 집행, 분배, 순증,
+#   funds       DataFrame [FUND_KEY, FUND, CLS, CCY, VINTAGE, YEAR, 약정, 집행, 분배, 순증,
 #                          약정_L, 집행_L, 분배_L, 순증_L, 누적약정, 누적집행, 집행률]
 #                 펀드·연도별 실적(원화, _L 은 펀드 통화). 누적은 그 연도까지, 집행률 = 누적집행/누적약정
 #
@@ -58,6 +59,8 @@ def _prep_cf(raw):
     df.columns = df.columns.str.upper()
     df["WRK_DT"] = _to_date(df["WRK_DT"])
     df["FUND_NM"] = df["FUND_NM"].astype(str).str.strip()
+    # 펀드 키: FUND_CD 가 있으면 코드, 없으면 이름. 표시는 FUND_NM
+    df["FUND_KEY"] = df["FUND_CD"].astype(str).str.strip() if "FUND_CD" in df else df["FUND_NM"]
     df["ASSET_CLS"] = df["ASSET_CLS"].astype(str).str.strip()
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper().replace("", "KRW") if "CCY" in df else "KRW"
     df["TX_TYPE"] = df["TX_TYPE"].astype(str).str.strip()
@@ -71,7 +74,7 @@ def _prep_cf(raw):
     df["AMT_LOCAL"] = local.where(local.notna(), df["AMT_KRW"].where(df["CCY"] == "KRW", 0.0)).astype(float)
     df = df.dropna(subset=["WRK_DT"])
     df = df[df["TX_TYPE"].isin(FLOW_TYPES)]
-    return df[["WRK_DT", "FUND_NM", "ASSET_CLS", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
+    return df[["WRK_DT", "FUND_KEY", "FUND_NM", "ASSET_CLS", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
 
 
 def _prep_target(raw):
@@ -96,9 +99,10 @@ def _prep_fund(raw):
     df = raw.copy()
     df.columns = df.columns.str.upper()
     df["FUND_NM"] = df["FUND_NM"].astype(str).str.strip()
+    df["FUND_KEY"] = df["FUND_CD"].astype(str).str.strip() if "FUND_CD" in df else df["FUND_NM"]
     df["CCY"] = (df["CCY"].fillna("KRW").astype(str).str.strip().str.upper() if "CCY" in df else "KRW")
     df["VINTAGE_YR"] = pd.to_numeric(df["VINTAGE_YR"], errors="coerce") if "VINTAGE_YR" in df else pd.NA
-    return df.drop_duplicates("FUND_NM").set_index("FUND_NM")
+    return df.drop_duplicates("FUND_KEY").set_index("FUND_KEY")
 
 
 def _class_order(names):
@@ -184,7 +188,9 @@ def process_ALT_Manage(raw_cf, raw_target, raw_fund=None, asof=None):
     kpi = pd.DataFrame(rows)
 
     # ---- 펀드·연도별 실적 (원화 + 펀드 통화)
-    fy = cf.pivot_table(index=["FUND_NM", "ASSET_CLS", "CCY", "YEAR"], columns="TX_TYPE",
+    # 펀드 키 하나에 표시 이름 하나 (마지막 거래의 이름)
+    names = cf.sort_values("WRK_DT").groupby("FUND_KEY")["FUND_NM"].last()
+    fy = cf.pivot_table(index=["FUND_KEY", "ASSET_CLS", "CCY", "YEAR"], columns="TX_TYPE",
                         values=["AMT_KRW", "AMT_LOCAL"], aggfunc="sum", fill_value=0.0)
     funds = pd.DataFrame(index=fy.index)
     for t in FLOW_TYPES:
@@ -192,17 +198,18 @@ def process_ALT_Manage(raw_cf, raw_target, raw_fund=None, asof=None):
         funds[t + "_L"] = fy[("AMT_LOCAL", t)] if ("AMT_LOCAL", t) in fy.columns else 0.0
     funds["순증"] = funds["집행"] - funds["분배"]
     funds["순증_L"] = funds["집행_L"] - funds["분배_L"]
-    funds = funds.reset_index().rename(columns={"FUND_NM": "FUND", "ASSET_CLS": "CLS"}).sort_values(["FUND", "YEAR"])
-    funds["누적약정"] = funds.groupby("FUND")["약정"].cumsum()
-    funds["누적집행"] = funds.groupby("FUND")["집행"].cumsum()
+    funds = funds.reset_index().rename(columns={"ASSET_CLS": "CLS"}).sort_values(["FUND_KEY", "YEAR"])
+    funds["FUND"] = funds["FUND_KEY"].map(names)
+    funds["누적약정"] = funds.groupby("FUND_KEY")["약정"].cumsum()
+    funds["누적집행"] = funds.groupby("FUND_KEY")["집행"].cumsum()
     funds["집행률"] = funds["누적집행"] / funds["누적약정"].replace(0, pd.NA)
-    first_commit = cf[cf["TX_TYPE"] == "약정"].groupby("FUND_NM")["YEAR"].min()
-    funds["VINTAGE"] = funds["FUND"].map(first_commit)
+    first_commit = cf[cf["TX_TYPE"] == "약정"].groupby("FUND_KEY")["YEAR"].min()
+    funds["VINTAGE"] = funds["FUND_KEY"].map(first_commit)
     if fund_master is not None:
-        vin = funds["FUND"].map(fund_master["VINTAGE_YR"])
+        vin = funds["FUND_KEY"].map(fund_master["VINTAGE_YR"])
         funds["VINTAGE"] = vin.where(vin.notna(), funds["VINTAGE"])
     funds["VINTAGE"] = funds["VINTAGE"].where(funds["VINTAGE"].notna(), funds["YEAR"]).astype(int)
-    funds = funds[["FUND", "CLS", "CCY", "VINTAGE", "YEAR"] + METRICS + [m + "_L" for m in METRICS]
+    funds = funds[["FUND_KEY", "FUND", "CLS", "CCY", "VINTAGE", "YEAR"] + METRICS + [m + "_L" for m in METRICS]
                   + ["누적약정", "누적집행", "집행률"]].reset_index(drop=True)
 
     return {

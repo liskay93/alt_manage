@@ -4,8 +4,8 @@
 
 | # | 테이블 | 필수 | 용도 | 상태 |
 |---|---|---|---|---|
-| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | ⬜ 미완료 |
-| 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | ⬜ 미완료 |
+| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | 🟡 부분 — FEIAI0488NTA (펀드코드·빈티지·통화). 펀드명·자산군 테이블 확인 중 |
+| 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | 🟡 부분 — FEIAI0488NTA (AGRT_DT, AGRT_AMT). 금액 통화·단위, 날짜 형식 확인 중 |
 | 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 월별 집행, 누적 집행률 | ⬜ 미완료 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 월별 분배 | ⬜ 미완료 |
 | 5 | 연도별 목표 | 필수 | 네 지표의 목표·달성률·잔여, 목표 점선 | ⬜ 미완료 |
@@ -90,12 +90,18 @@
 | 통화 | 필수 | USD, EUR 등 |
 | 환율(원/1단위) | 필수 | |
 
+## 확인된 원천 테이블
+
+| 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
+|---|---|---|---|
+| FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
+
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
 
 | 체크리스트 | SQL 파일 | 돌려주는 열 (대문자) | 상태 |
 |---|---|---|---|
-| 1 펀드 마스터 | sql/ALT_Fund.sql (선택) | FUND_NM, ASSET_CLS, CCY, VINTAGE_YR | ⬜ 테이블 확인 전 |
-| 2·3·4 약정·집행·분배 | sql/ALT_CashFlow.sql (long, TX_TYPE 로 구분) | WRK_DT, FUND_NM, ASSET_CLS, CCY, TX_TYPE, AMT_KRW, AMT_LOCAL | ⬜ 테이블 확인 전 |
+| 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR | 🟡 FEIAI0488NTA 반영, 펀드명·자산군 대기 |
+| 2·3·4 약정·집행·분배 | sql/ALT_CashFlow.sql (long, TX_TYPE 로 구분, UNION ALL) | WRK_DT, FUND_CD, FUND_NM, ASSET_CLS, CCY, TX_TYPE, AMT_KRW, AMT_LOCAL | 🟡 약정(FEIAI0488NTA) 반영, 집행·분배 대기 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
 | 6 환율 | (없음) | 원화 금액이 거래에 있으면 불필요 | ⬜ |
 
