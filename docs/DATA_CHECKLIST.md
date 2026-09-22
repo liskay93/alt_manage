@@ -13,10 +13,10 @@
 
 공통 규칙
 - 금액 기준은 **원화**. 지표·달성률·비중은 모두 원화로 계산하고, 로컬 통화는 펀드 카드에 병기만 합니다.
-- 원화 단위는 억원(빌드 시 `--unit` 으로 변경 가능). 외화 로컬 금액은 백만 단위(`--local-unit` 으로 변경 가능).
+- 원화 단위는 억원, 외화 로컬 금액은 백만 단위. SQL 에서 그 단위로 나눠서 돌려줍니다 (processors/ALT_Manage.py 의 UNIT, LOCAL_UNIT 은 표기만).
 - 자산군 이름은 모든 테이블에서 동일하게: 사모벤처 / 부동산 / 인프라.
 - 거래는 건별이 가장 좋고, 최소 월 단위 집계까지 허용합니다(월말 일자로 기입).
-- 기준일(as-of)은 테이블이 아니라 빌드 인자(`--as-of`)입니다. 생략하면 마지막 거래일.
+- 기준일(as-of)은 테이블이 아니라 process_ALT_Manage 의 asof 인자입니다. 생략하면 마지막 거래일.
 
 ## 1. 펀드 마스터
 
@@ -90,15 +90,60 @@
 | 통화 | 필수 | USD, EUR 등 |
 | 환율(원/1단위) | 필수 | |
 
-## 현재 CSV와의 대응
+## SQL 파일과의 대응 (TPA Dashboard 형식)
 
-지금 빌드 스크립트는 2~4번을 하나의 `data/transactions.csv` 로 받습니다.
+| 체크리스트 | SQL 파일 | 돌려주는 열 (대문자) | 상태 |
+|---|---|---|---|
+| 1 펀드 마스터 | sql/ALT_Fund.sql (선택) | FUND_NM, ASSET_CLS, CCY, VINTAGE_YR | ⬜ 테이블 확인 전 |
+| 2·3·4 약정·집행·분배 | sql/ALT_CashFlow.sql (long, TX_TYPE 로 구분) | WRK_DT, FUND_NM, ASSET_CLS, CCY, TX_TYPE, AMT_KRW, AMT_LOCAL | ⬜ 테이블 확인 전 |
+| 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
+| 6 환율 | (없음) | 원화 금액이 거래에 있으면 불필요 | ⬜ |
 
-| 체크리스트 | 현재 파일 | 열 |
+약정·집행·분배가 서로 다른 테이블이면 ALT_CashFlow.sql 안에서 UNION ALL 로 이어 붙입니다.
+SQL 의 `<<...>>` 는 확인 전 자리표시자이며 추측한 이름이 아닙니다. 아래 확인 쿼리로 찾은 실제 이름으로 교체합니다.
+
+### 테이블별로 확인이 필요한 것
+
+| # | 테이블 | 확인할 것 |
 |---|---|---|
-| 1 펀드 마스터 | (없음, 거래에서 유추) | fund, asset_class, currency |
-| 2·3·4 거래 | data/transactions.csv | date, fund, asset_class, currency, type(약정/집행/분배), amount(원화), local_amount |
-| 5 목표 | data/targets.csv | year, asset_class, commitment, drawdown, distribution, net |
-| 6 환율 | (없음) | 필요 시 build.py 에 환산 단계 추가 |
+| 1 | 펀드 마스터 | 테이블명, 펀드명 컬럼, 자산군 코드 컬럼과 코드값(사모벤처/부동산/인프라), 통화 코드 컬럼, 약정연도 컬럼 |
+| 2 | 약정 내역 | 테이블명, 거래일자 컬럼(형식), 펀드 키, 원화 금액 컬럼(단위: 원/천원/백만원), 로컬 금액 컬럼 |
+| 3 | 집행 내역 | 위와 같음 + 거래유형 코드값(약정·집행·분배가 한 테이블이면) |
+| 4 | 분배 내역 | 위와 같음. 원금/수익 구분 컬럼이 있으면 합산 여부 |
+| 5 | 연도별 목표 | 테이블명(또는 엑셀), 연도·자산군·지표별 목표 컬럼, 단위 |
+| 6 | 환율 | (2~4에 원화 금액이 없을 때만) 테이블명, 일자·통화·환율 컬럼 |
 
-테이블이 따로 있어도 됩니다. 각 테이블의 열 이름을 알려 주시면 build.py 가 그대로 읽도록 맞추겠습니다.
+### 확인 쿼리 (Oracle, 세미콜론 없음)
+
+```sql
+-- 이름에 특정 단어가 들어간 테이블 찾기
+SELECT owner, table_name, comments
+  FROM all_tab_comments
+ WHERE comments LIKE '%대체%' OR table_name LIKE '%FUND%' OR table_name LIKE '%ALT%'
+ ORDER BY owner, table_name
+```
+
+```sql
+-- 테이블의 컬럼과 주석 보기 (테이블명을 넣어서)
+SELECT c.column_id, c.column_name, c.data_type, c.data_length, m.comments
+  FROM all_tab_columns c
+  LEFT JOIN all_col_comments m ON m.owner = c.owner AND m.table_name = c.table_name AND m.column_name = c.column_name
+ WHERE c.table_name = '<<테이블명>>'
+ ORDER BY c.column_id
+```
+
+```sql
+-- 코드 컬럼의 값 분포 보기 (자산군 코드, 거래유형 코드)
+SELECT <<코드컬럼>>, COUNT(*) AS cnt, MIN(<<거래일자>>) AS first_dt, MAX(<<거래일자>>) AS last_dt
+  FROM <<테이블명>>
+ GROUP BY <<코드컬럼>>
+ ORDER BY cnt DESC
+```
+
+```sql
+-- 금액 단위 확인 (한 펀드의 최근 거래 몇 건)
+SELECT *
+  FROM <<테이블명>>
+ WHERE ROWNUM <= 20
+ ORDER BY <<거래일자>> DESC
+```

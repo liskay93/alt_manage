@@ -1,97 +1,68 @@
-# 대체투자 약정 현황판
+# 대체투자 약정 현황 (ALT_Manage)
 
-약정·집행·분배·순증 네 지표를 **목표 · 현황 · 달성률** 관점으로 보는 대체투자 대시보드입니다.
-연도별 목표 대비 실적과 연중 누적 추이를 지표별로 나란히 보여 주며, 외부 라이브러리 없이 HTML 한 장으로 동작합니다.
-라이트/다크 테마와 모바일 폭을 지원합니다.
+약정·집행·분배·순증 네 지표를 목표 · 현황 · 달성률 관점으로 보는 TPA Dashboard 탭입니다.
+코딩 규칙은 `CLAUDE.md` 를 따릅니다 (sql → loader → processors → global_data → tabs → Main).
 
-| 지표 | 정의 |
-|---|---|
-| 약정 | 해당 연도에 신규로 약정한 금액 |
-| 집행 | 캐피털콜에 응해 납입한 금액 |
-| 분배 | 펀드로부터 회수한 금액 |
-| 순증 | 집행 − 분배 (투자잔액 증가분) |
-
-## 화면 구성
-
-| 영역 | 내용 |
-|---|---|
-| 조회 조건 | 기준연도, 자산군(전체/사모벤처/부동산/인프라 등, CSV의 자산군 이름을 그대로 씁니다). 모든 지표와 차트가 같은 조건으로 다시 계산됩니다 |
-| 지표 타일 | 지표별 현황(누적), 목표와 잔여, 달성률 미터(진행 중 연도는 연간 진도 눈금 표시), 전년 동기 대비 |
-| 연도별 목표 대비 실적 | 지표별 소형 차트. 연한 막대가 목표, 진한 막대가 실적. 막대를 누르면 기준연도가 바뀝니다 |
-| 연중 누적 추이 | 지표별 소형 차트. 1월부터 누적한 실적, 연간 목표(점선), 전년 누적(회색). 네 차트의 크로스헤어가 같은 달에 맞춰집니다 |
-| 누적 실적을 이끈 펀드 | 지표별 상위 5개 펀드를 `펀드 · 막대 · 로컬 통화 · 원화 · 비중(원화 기준)` 으로 표시. 막대와 비중은 원화 기준이고 펀드 통화 금액을 병기합니다. 순증은 잔액을 늘린 펀드가 오른쪽, 줄인 펀드가 왼쪽. 펀드에 마우스를 올리면 네 지표(원화·로컬)와 누적 집행률이 보입니다. **전체 표**로 전환하면 그해 실적이 있는 모든 펀드를 열 기준으로 정렬해 볼 수 있습니다 |
-| 지표별 요약 | 목표·현황·달성률·잔여·전년 동기·전년비 표 |
-| 월별 집행·분배·순증 | 위로 집행(잔액 증가), 아래로 분배(잔액 감소), 점은 그 달의 순증 |
-| 자산군별 목표·현황·달성률 | 자산군 × 지표 × (목표/현황/달성률) 표. 행을 누르면 해당 자산군으로 조회 |
-
-모든 차트는 우측 상단의 **표** 버튼으로 같은 값을 표로 볼 수 있습니다. 툴팁은 마우스 오버 또는 키보드 포커스(Tab, 좌우 화살표)로 열립니다.
-
-## 파일
+## 구조
 
 ```
-index.html                 대시보드 본체 (data/data.js 를 읽음)
-data/targets.csv           연도·자산군별 지표 목표    ← 직접 편집
-data/transactions.csv      약정·집행·분배 거래 내역  ← 직접 편집
-data/data.js               build.py 가 만드는 월별 집계 + 펀드별 연간 집계 (직접 수정하지 않음)
-dist/dashboard.html        데이터를 내장한 단일 파일 (메일 첨부·공유용)
-scripts/build.py           CSV → data.js, dist/dashboard.html
-scripts/make_sample_data.py 시연용 샘플 CSV 생성기
+alt_manage/
+├── CLAUDE.md                 코딩 규칙 (TPA Dashboard 공통)
+├── sql/                      원재료 쿼리 — 테이블·컬럼명 확인 전, <<...>> 자리표시자
+│   ├── ALT_CashFlow.sql      약정·집행·분배 현금흐름 (long)
+│   ├── ALT_Target.sql        연도·자산군별 목표
+│   └── ALT_Fund.sql          펀드 마스터 (선택)
+├── processors/ALT_Manage.py  process_ALT_Manage(raw_cf, raw_target, raw_fund=None, asof=None) → 사전
+├── tabs/ALT_Manage.py        render(data) — 자산군 내부 탭 4개, 콜백 없음
+├── global_data.py            DF_ALT_Manage = None
+├── loader.py                 create_connection(), load_data(conn, "파일.sql")  (사내 loader 와 같은 인터페이스)
+├── ui/theme.py               TAB_STYLE, SELECTED_TAB_STYLE, CARD_STYLE  (로컬 확인용)
+├── run_local.py              Main 노트북을 흉내 낸 로컬 실행기
+├── demo_data.py              샘플 CSV → Oracle 결과 모양의 데모 원재료
+├── docs/
+│   ├── DATA_CHECKLIST.md     필요한 데이터 6개 테이블, SQL 대응, 확인 쿼리, 진행 상태
+│   └── MAIN_연결.md          dash_board.ipynb 에 붙이는 코드
+└── draft/                    HTML 가안 (순수 HTML/CSS/JS, 데모 데이터) — 화면 확정용
 ```
 
-## 실제 데이터 넣기
+## 화면
 
-1. `data/targets.csv` 를 채웁니다. 한 행이 연도 하나·자산군 하나의 목표이고, 열은 지표별 목표입니다.
-   열 이름은 영문(`commitment`, `drawdown`, `distribution`, `net`) 또는 한글(`약정`, `집행`, `분배`, `순증`) 모두 인식합니다.
-   `net`(순증) 열을 비워 두면 `drawdown − distribution` 으로 계산합니다.
+기준연도는 기준일이 속한 연도이고, 자산군(전체 / 사모벤처 / 부동산 / 인프라)은 내부 탭으로 미리 렌더합니다.
 
-   ```csv
-   year,asset_class,commitment,drawdown,distribution,net
-   2026,사모벤처,2600,1800,1300,500
-   2026,부동산,500,450,300,
-   ```
+| 단 | 내용 |
+|---|---|
+| 1 | 지표 카드 4개: 현황, 목표·잔여, 달성률 미터(진행 중 연도는 연간 진도 눈금), 전년 동기 대비 |
+| 2 | 연도별 목표 대비 실적 4개: 목표(골드) vs 실적(지표색) 막대, 달성률 라벨 |
+| 3 | 연중 누적 추이 4개: 당해 누적, 전년 누적(회색), 연간 목표(골드 점선) |
+| 4 | 월별 집행·분배·순증 + 지표별 요약 표 |
+| 5 | 누적 실적을 이끈 펀드 4개: 지표별 상위 5개, 로컬 통화 · 원화 · 비중(원화 기준) |
+| 6 | 자산군별 목표·현황·달성률 표 (전체 탭에만) |
 
-2. `data/transactions.csv` 를 채웁니다. 한 행이 거래 하나입니다. `type` 은 `약정`, `집행`, `분배` 중 하나입니다 (`commitment`, `drawdown`, `distribution` 도 인식).
-   `amount` 는 **원화** 금액이고, 모든 지표·달성률·비중은 이 원화 값으로 계산합니다.
-   외화 펀드는 `currency`(USD, EUR 등)와 `local_amount`(펀드 통화 기준 금액)를 함께 적으면 펀드 카드에 병기됩니다.
-   두 열을 비우면 KRW 펀드로 보고 `local_amount = amount` 로 처리합니다.
+순증 = 집행 − 분배 (투자잔액 증가분). 금액은 원화 억원, 펀드 통화는 KRW 펀드면 억원·외화 펀드면 백만.
 
-   ```csv
-   date,fund,asset_class,currency,type,amount,local_amount
-   2026-03-14,한강 그로스 4호,사모벤처,KRW,약정,250,250
-   2026-04-02,Hangang Global Growth IV,사모벤처,USD,집행,54,4.0
-   2026-06-30,남산 오피스 2호,부동산,,분배,18,
-   ```
+## 로컬에서 확인
 
-   단위: `amount` 는 `--unit`(기본 억원). `local_amount` 는 KRW 펀드면 `amount` 와 같은 단위, 외화 펀드면 `--local-unit`(기본 백만) 단위입니다.
-   위 예시의 USD 행은 54억원, 4.0백만 달러를 뜻합니다.
-   자산군 이름은 두 파일에서 동일하게 적어야 합니다. `fund` 열의 이름이 같으면 같은 펀드로 묶이며, 펀드 통화는 첫 거래의 `currency` 를 따릅니다.
+```bash
+pip install pandas plotly dash      # 사내 환경에는 이미 있음
+python run_local.py                 # http://127.0.0.1:8050  (ORACLE_DSN 없으면 데모 원재료)
+ALT_ASOF=2026-09-22 python run_local.py   # 기준일 지정
+```
 
-3. 빌드합니다.
+노트북에서 직접 호출해 확인하는 방법 (오류 traceback 이 한 화면에 나옵니다):
 
-   ```bash
-   python3 scripts/build.py                       # 기준일 = 마지막 거래일
-   python3 scripts/build.py --as-of 2026-09-30    # 기준일 지정 (이후 거래는 제외)
-   python3 scripts/build.py --unit 백만원 --note "9월 말 마감 기준"
-   python3 scripts/build.py --local-unit 천                # 외화 local_amount 를 천 단위로 적었을 때
-   ```
+```python
+import importlib, demo_data
+import processors.ALT_Manage, tabs.ALT_Manage
+importlib.reload(processors.ALT_Manage); importlib.reload(tabs.ALT_Manage)
+raw_cf, raw_target, raw_fund = demo_data.load_demo()          # 사내에서는 loader.load_data(conn, "ALT_CashFlow.sql") 등
+d = processors.ALT_Manage.process_ALT_Manage(raw_cf, raw_target, raw_fund)
+tabs.ALT_Manage.render(d)
+```
 
-   Python 3.9 이상, 추가 패키지 없음.
+## 진행 순서
 
-4. `index.html` 을 브라우저로 열거나 `dist/dashboard.html` 하나만 공유합니다.
-
-### 계산 규칙
-
-- **기준연도의 마지막 월**: 과거 연도는 12월, 기준일이 속한 연도는 기준일의 월. 그 이후 월은 빈 값으로 둡니다.
-- **현황** = 해당 연도 1월부터 마지막 월까지의 누적 실적. 순증 현황 = 집행 현황 − 분배 현황.
-- **달성률** = 현황 ÷ 그 연도의 연간 목표. 목표가 0이거나 없으면 표시하지 않습니다.
-- **연간 진도** = 마지막 월 ÷ 12. 진행 중인 연도의 달성률 미터에 눈금으로 표시해 목표 대비 페이스를 볼 수 있습니다.
-- **잔여** = 목표 − 현황.
-- **펀드 기여도** = 그해 해당 펀드의 원화 실적 ÷ 그해 전체 원화 실적. 누적 집행률 = 그해까지의 누적 집행 ÷ 누적 약정(원화).
-- **로컬 통화** 값은 거래별 `local_amount` 를 그대로 합산한 것이며 환산하지 않습니다. 순증(로컬) = 집행(로컬) − 분배(로컬).
-- **전년 동기 대비** = 같은 월 범위(예: 1~9월)로 전년 누적과 비교.
-- 자산군 필터를 걸면 목표도 해당 자산군의 목표만 합산합니다.
-
-## 샘플 데이터
-
-저장소에 들어 있는 CSV는 `scripts/make_sample_data.py` 가 만든 가상의 수치입니다 (실존 펀드·운용사와 무관).
-실제 데이터를 넣을 때는 이 스크립트를 실행하지 마세요. 실행하면 CSV가 샘플로 덮어써집니다.
+1. HTML 가안 (`draft/`) — 확정
+2. SQL — 원천 테이블·컬럼명 확인 후 자리표시자 교체 (`docs/DATA_CHECKLIST.md` 의 확인 쿼리 사용)
+3. processors / tabs — 데모 데이터로 실행 확인 완료
+4. Main 연결 — `docs/MAIN_연결.md`
+5. 최종 전달 — 코드모음 텍스트 파일 한 개 (SQL 확정 후 생성)

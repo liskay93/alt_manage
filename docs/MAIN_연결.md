@@ -1,0 +1,30 @@
+# Main 노트북(dash_board.ipynb) 연결
+
+CLAUDE.md 8절 형식. 아래 조각을 각 셀에 추가합니다.
+
+```python
+# [1] Import
+from processors import ALT_Manage as ALT_Manage_proc
+from tabs import ALT_Manage as ALT_Manage_tab
+
+# [2] 로드 (try 블록 안)
+raw_alt_cf     = loader.load_data(conn, "ALT_CashFlow.sql")
+raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
+raw_alt_fund   = loader.load_data(conn, "ALT_Fund.sql")      # 펀드 마스터가 없으면 None
+global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(raw_alt_cf, raw_alt_target, raw_alt_fund)
+logging.info(f"ALT_Manage 로드: 현금흐름 {len(raw_alt_cf)}행, 목표 {len(raw_alt_target)}행")
+
+# [4] 레이아웃 -- dcc.Tabs children
+dcc.Tab(label='대체투자 약정', value='tab-ALT_Manage',
+        style=TAB_STYLE, selected_style=SELECTED_TAB_STYLE),
+
+# [5] 콜백 -- tab_renderers 사전
+'tab-ALT_Manage': lambda: ALT_Manage_tab.render(global_data.DF_ALT_Manage),
+```
+
+```python
+# global_data.py
+DF_ALT_Manage = None
+```
+
+기준일을 지정하려면 `process_ALT_Manage(..., asof="2026-09-30")`. 생략하면 현금흐름의 마지막 거래일.
