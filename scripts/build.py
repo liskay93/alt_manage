@@ -7,7 +7,7 @@
   data/transactions.csv  date(YYYY-MM-DD), fund, asset_class, type(약정|집행|분배), amount
 
 출력
-  data/data.js           index.html 이 읽는 월별 집계 (window.ALT_DATA)
+  data/data.js           index.html 이 읽는 월별 집계 + 펀드별 연간 집계 (window.ALT_DATA)
   dist/dashboard.html    데이터를 내장한 단일 파일 (메일 첨부·공유용)
 
 사용법
@@ -80,6 +80,9 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
 
     flows: dict[tuple[str, str], dict] = defaultdict(
         lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0, "commitCount": 0})
+    fund_years: dict[tuple[str, str, int], dict] = defaultdict(
+        lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0})
+    vintage: dict[str, int] = {}
     last_date: dt.date | None = None
     skipped = 0
     for r in tx_raw:
@@ -91,10 +94,15 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
         if as_of and d > as_of:
             continue
         last_date = d if last_date is None or d > last_date else last_date
+        amount = to_number(r["amount"])
         cell = flows[(d.strftime("%Y-%m"), r["asset_class"])]
-        cell[key] += to_number(r["amount"])
+        cell[key] += amount
         if key == "commitment":
             cell["commitCount"] += 1
+        fund = r.get("fund", "").strip() or "(펀드명 없음)"
+        fund_years[(fund, r["asset_class"], d.year)][key] += amount
+        if key == "commitment" and (fund not in vintage or d.year < vintage[fund]):
+            vintage[fund] = d.year
 
     if skipped:
         print(f"warning: {skipped} transaction rows skipped (unknown type or empty date)")
@@ -104,12 +112,18 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
         {"month": month, "assetClass": cls, **{k: round(v, 2) if isinstance(v, float) else v for k, v in cell.items()}}
         for (month, cls), cell in sorted(flows.items())
     ]
+    fund_rows = [
+        {"fund": fund, "assetClass": cls, "year": year, "vintage": vintage.get(fund, year),
+         **{k: round(v, 2) for k, v in cell.items()}}
+        for (fund, cls, year), cell in sorted(fund_years.items())
+    ]
     data = {
         "unit": unit,
         "asOf": effective_as_of.isoformat(),
         "assetClasses": classes,
         "targets": targets,
         "flows": flow_rows,
+        "funds": fund_rows,
     }
     if note:
         data["note"] = note
@@ -141,7 +155,7 @@ def main() -> None:
     (DIST / "dashboard.html").write_text(single, encoding="utf-8")
 
     print(f"as of {data['asOf']}: {len(data['targets'])} target rows, {len(data['flows'])} monthly cells, "
-          f"{len(data['assetClasses'])} asset classes")
+          f"{len(data['funds'])} fund-year rows, {len(data['assetClasses'])} asset classes")
     print(f"wrote {DATA / 'data.js'} and {DIST / 'dashboard.html'}")
 
 
