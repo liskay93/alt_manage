@@ -2,7 +2,7 @@
 """대시보드 시연용 샘플 데이터를 생성한다.
 
 생성 파일
-  data/targets.csv       연도·자산군별 목표 약정
+  data/targets.csv       연도·자산군별 목표 (약정·집행·분배·순증)
   data/transactions.csv  약정·집행·분배 거래 내역 (펀드 단위)
 
 실제 데이터를 쓸 때는 이 스크립트를 실행하지 말고, 두 CSV를 같은 형식으로
@@ -22,14 +22,14 @@ random.seed(20260922)
 
 CLASSES = ["PE", "PD", "부동산", "인프라"]
 
-# 연도·자산군별 목표 약정 (억원). 목표는 2021년부터 관리.
+# 연도·자산군별 목표 (억원): (약정, 집행, 분배). 순증 목표 = 집행 − 분배. 목표는 2021년부터 관리.
 TARGETS = {
-    2021: {"PE": 800,  "PD": 500,  "부동산": 500, "인프라": 400},
-    2022: {"PE": 900,  "PD": 600,  "부동산": 500, "인프라": 500},
-    2023: {"PE": 1000, "PD": 800,  "부동산": 600, "인프라": 600},
-    2024: {"PE": 1100, "PD": 900,  "부동산": 500, "인프라": 700},
-    2025: {"PE": 1200, "PD": 1000, "부동산": 500, "인프라": 800},
-    2026: {"PE": 1400, "PD": 1200, "부동산": 500, "인프라": 900},
+    2021: {"PE": (800, 480, 60),   "PD": (500, 380, 30),  "부동산": (500, 470, 40), "인프라": (400, 170, 20)},
+    2022: {"PE": (900, 620, 200),  "PD": (600, 420, 80),  "부동산": (500, 430, 50), "인프라": (500, 230, 20)},
+    2023: {"PE": (1000, 680, 250), "PD": (800, 500, 120), "부동산": (600, 430, 100), "인프라": (600, 290, 30)},
+    2024: {"PE": (1100, 750, 450), "PD": (900, 750, 220), "부동산": (500, 450, 150), "인프라": (700, 350, 80)},
+    2025: {"PE": (1200, 900, 600), "PD": (1000, 800, 330), "부동산": (500, 500, 180), "인프라": (800, 500, 90)},
+    2026: {"PE": (1400, 1000, 900), "PD": (1200, 850, 550), "부동산": (500, 450, 300), "인프라": (900, 600, 250)},
 }
 # 목표가 없던 과거 빈티지: 집행·분배 이력이 있어야 하므로 약정 규모만 둔다.
 LEGACY = {
@@ -58,10 +58,10 @@ PACE = {
 }
 # 자산군별 분배 특성: (분배 시작 개월, 월별 분배 발생 확률, 집행액 대비 월 분배 비율 범위)
 DIST = {
-    "PE":   (30, 0.30, (0.03, 0.12)),
-    "PD":   (9,  0.70, (0.012, 0.03)),
-    "부동산": (12, 0.60, (0.010, 0.025)),
-    "인프라": (24, 0.40, (0.02, 0.06)),
+    "PE":   (30, 0.30, (0.03, 0.10)),
+    "PD":   (9,  0.60, (0.010, 0.025)),
+    "부동산": (12, 0.50, (0.008, 0.020)),
+    "인프라": (24, 0.40, (0.015, 0.05)),
 }
 
 
@@ -92,7 +92,7 @@ def main() -> None:
 
     vintages = sorted(set(LEGACY) | set(TARGETS))
     for year in vintages:
-        base = LEGACY.get(year) or TARGETS[year]
+        base = LEGACY.get(year) or {c: v[0] for c, v in TARGETS[year].items()}
         for cls in CLASSES:
             total = base[cls] * ACHIEVE[year]
             n_funds = random.choice([2, 3, 3, 4]) if cls == "PE" else random.choice([2, 2, 3])
@@ -146,7 +146,7 @@ def main() -> None:
                     cum_called = max([v for kk, v in called_by.items() if kk <= k] or [0])
                     if cum_called <= 0 or random.random() > prob:
                         continue
-                    growth = 1.0 + 0.6 * min(k - start, 48) / 48   # 후반부로 갈수록 회수 규모 증가
+                    growth = 1.0 + 0.4 * min(k - start, 60) / 60   # 후반부로 갈수록 회수 규모 증가
                     dist = int(round(cum_called * random.uniform(lo, hi) * growth))
                     dist_date = dt.date(d.year, d.month, random.randint(3, 27))
                     if dist >= 3 and dist_date <= AS_OF:
@@ -156,10 +156,11 @@ def main() -> None:
 
     with (DATA / "targets.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)
-        w.writerow(["year", "asset_class", "target"])
+        w.writerow(["year", "asset_class", "commitment", "drawdown", "distribution", "net"])
         for year in sorted(TARGETS):
             for cls in CLASSES:
-                w.writerow([year, cls, TARGETS[year][cls]])
+                commit, draw, dist = TARGETS[year][cls]
+                w.writerow([year, cls, commit, draw, dist, draw - dist])
 
     with (DATA / "transactions.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)

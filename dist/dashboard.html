@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>대체투자 약정 현황판</title>
-<meta name="description" content="연도별 목표 약정 달성률과 연중 약정·집행·분배 추이를 한눈에 보는 대체투자 대시보드">
+<meta name="description" content="약정·집행·분배·순증 네 지표를 목표·현황·달성률 관점으로 보는 대체투자 대시보드">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
   --ink:#161b23; --ink-2:#4b5563; --muted:#7a8494;
   --grid:#e6e9ee; --axis:#c9cfd8; --border:rgba(22,27,35,.10);
   --accent:#2a78d6;
-  --s-commit:#2a78d6; --s-call:#eb6834; --s-dist:#1baf7a; --s-prev:#b3b9c3;
+  --s-commit:#2a78d6; --s-call:#eb6834; --s-dist:#1baf7a; --s-net:#eda100; --s-prev:#b3b9c3;
   --track:#b7d3f6;
   --good:#006300; --bad:#c62828;
   --tip-bg:#161b23; --tip-ink:#ffffff; --tip-muted:#aab2bf;
@@ -30,7 +30,7 @@
     --ink:#f3f5f8; --ink-2:#b5bcc7; --muted:#848c98;
     --grid:#272c35; --axis:#3a404b; --border:rgba(255,255,255,.10);
     --accent:#3987e5;
-    --s-commit:#3987e5; --s-call:#d95926; --s-dist:#199e70; --s-prev:#4b525d;
+    --s-commit:#3987e5; --s-call:#d95926; --s-dist:#199e70; --s-net:#c98500; --s-prev:#4b525d;
     --track:#184f95;
     --good:#0ca30c; --bad:#e66767;
     --tip-bg:#f3f5f8; --tip-ink:#161b23; --tip-muted:#5c6470;
@@ -43,7 +43,7 @@
   --ink:#f3f5f8; --ink-2:#b5bcc7; --muted:#848c98;
   --grid:#272c35; --axis:#3a404b; --border:rgba(255,255,255,.10);
   --accent:#3987e5;
-  --s-commit:#3987e5; --s-call:#d95926; --s-dist:#199e70; --s-prev:#4b525d;
+  --s-commit:#3987e5; --s-call:#d95926; --s-dist:#199e70; --s-net:#c98500; --s-prev:#4b525d;
   --track:#184f95;
   --good:#0ca30c; --bad:#e66767;
   --tip-bg:#f3f5f8; --tip-ink:#161b23; --tip-muted:#5c6470;
@@ -51,8 +51,9 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
+[hidden]{display:none!important}
 body{background:var(--page);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-.app{max-width:1280px;margin-inline:auto;padding-block:28px 56px;padding-inline:clamp(16px,3vw,32px)}
+.app{max-width:1320px;margin-inline:auto;padding-block:28px 56px;padding-inline:clamp(16px,3vw,32px)}
 .masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px;margin-bottom:18px}
 .eyebrow{margin:0 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 h1{margin:0;font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:-.01em;text-wrap:balance}
@@ -68,34 +69,46 @@ h1{margin:0;font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:-.01
 .period{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:0 0 10px}
 .period h2{margin:0;font-size:13px;font-weight:600;color:var(--ink-2)}
 .period span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
-.tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px 12px;display:flex;flex-direction:column;gap:6px;min-height:124px;min-width:0}
-.tile-label{font-size:12px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:7px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:16px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.tile-label{font-size:12.5px;color:var(--ink-2);font-weight:600;display:flex;align-items:center;gap:7px}
 .tile-label .key{width:10px;height:10px;border-radius:3px;display:inline-block;flex:none}
+.tile-label .note{margin-left:auto;font-weight:500;color:var(--muted);font-size:11.5px}
 .tile-value{font-size:26px;font-weight:600;line-height:1.1;letter-spacing:-.01em;white-space:nowrap}
 .tile-value .unit{font-size:14px;color:var(--ink-2);font-weight:500;margin-left:2px}
-.tile-foot{font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto;line-height:1.4}
+.tile-value.neg{color:var(--bad)}
+.tile-target{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tile-foot{font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.4}
+.tile-foot .rate{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
 .delta{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .delta.up{color:var(--good)} .delta.down{color:var(--bad)} .delta.flat{color:var(--ink-2)}
-.meter{height:6px;border-radius:3px;background:var(--track);overflow:hidden;flex:1 1 60px;min-width:40px}
-.meter i{display:block;height:100%;background:var(--s-commit);border-radius:3px}
-.spark{width:100%;height:28px;display:block}
+.meter{position:relative;height:6px;border-radius:3px;background:var(--track);overflow:hidden;flex:1 1 60px;min-width:40px}
+.meter[data-c]{background:color-mix(in srgb,var(--mc) 24%,var(--surface))}
+.meter i{display:block;height:100%;background:var(--mc,var(--s-commit));border-radius:3px}
+.meter b{position:absolute;top:0;bottom:0;width:2px;background:var(--ink-2);margin-left:-1px}
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
 .card{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px 14px;box-shadow:var(--shadow);min-width:0}
-.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-12{grid-column:span 12}
-@media (max-width:920px){.span-5,.span-6,.span-7{grid-column:span 12}}
+.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+@media (max-width:920px){.span-6{grid-column:span 12}}
 .card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
 .card-head h2{margin:0;font-size:15px;font-weight:600}
 .card-head .sub{margin:2px 0 0;font-size:12px;color:var(--muted)}
 .tools{display:inline-flex;gap:2px;padding:2px;background:var(--surface-2);border-radius:7px;border:1px solid var(--border);flex:none}
 .tools button{padding:3px 9px;font-size:12px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2);margin-bottom:6px;min-height:18px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2);margin-bottom:8px}
 .legend:empty{display:none}
 .legend .item{display:inline-flex;align-items:center;gap:6px}
 .legend .sw{width:12px;height:12px;border-radius:3px;flex:none}
 .legend .sw.line{height:2.5px;width:14px;border-radius:1px}
+.legend .sw.dot{width:9px;height:9px;border-radius:50%}
 .legend .sw.dash{height:0;width:14px;border-top:1.5px dashed var(--muted);border-radius:0}
 .chart{position:relative;min-width:0}
+.panels{display:grid;gap:12px 20px}
+.panel{min-width:0}
+.panel-head{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:2px;font-variant-numeric:tabular-nums}
+.panel-head .key{width:10px;height:10px;border-radius:3px;flex:none}
+.panel-head .rate{margin-left:auto;color:var(--ink)}
+.panel-head .rate small{font-weight:500;color:var(--muted);margin-right:4px}
 .chart svg{display:block;width:100%;height:auto;font-family:var(--font);overflow:visible}
 .chart text{fill:var(--ink-2);font-size:11px;font-variant-numeric:tabular-nums;pointer-events:none}
 .chart path,.chart circle,.chart line{pointer-events:none}
@@ -112,24 +125,31 @@ h1{margin:0;font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:-.01
 .chart .lbl.muted{fill:var(--muted);font-weight:500}
 .chart .xlab{fill:var(--muted);text-anchor:middle}
 .chart .xlab.sel{fill:var(--ink);font-weight:600}
-.chart .xlab.sub{font-size:10.5px}
+.chart .xlab.sub{font-size:10px}
 .chart .empty{fill:var(--muted);font-size:13px;text-anchor:middle}
 .table-wrap{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
-th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--grid);white-space:nowrap;vertical-align:middle}
+th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--grid);white-space:nowrap;vertical-align:middle}
 th{font-weight:600;color:var(--muted);font-size:12px}
 th:first-child,td:first-child{text-align:left;padding-left:6px}
+thead tr.group th{text-align:center;color:var(--ink-2);border-bottom:0;padding-bottom:2px}
+thead tr.group th .key{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:1px}
+th.sep,td.sep{border-left:1px solid var(--grid)}
 tbody tr[tabindex]{cursor:pointer}
 tbody tr:hover{background:var(--surface-2)}
 tbody tr.sel td:first-child{font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
 tr.total td{font-weight:600;border-top:1px solid var(--axis);border-bottom:0}
-td .meter{display:inline-block;vertical-align:middle;width:52px;margin-right:8px}
+td .meter{display:inline-block;vertical-align:middle;width:44px;margin-right:7px}
 td.neg,.delta.neg{color:var(--bad)}
-.tooltip{position:fixed;z-index:10;pointer-events:none;background:var(--tip-bg);color:var(--tip-ink);border-radius:8px;padding:8px 11px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:280px;line-height:1.7}
+td .lead{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--ink)}
+td .lead .key{width:9px;height:9px;border-radius:2px;flex:none}
+.tooltip{position:fixed;z-index:10;pointer-events:none;background:var(--tip-bg);color:var(--tip-ink);border-radius:8px;padding:8px 11px;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:300px;line-height:1.7}
 .tooltip .t{color:var(--tip-muted);margin-bottom:2px;font-weight:600}
 .tooltip .r{display:flex;align-items:center;gap:8px}
 .tooltip .r .k{width:12px;height:3px;border-radius:2px;flex:none}
 .tooltip .r .k.rect{height:10px;border-radius:2px}
+.tooltip .r .k.dot{width:9px;height:9px;border-radius:50%}
+.tooltip .r .k.dash{height:0;border-top:1.5px dashed var(--tip-muted);border-radius:0}
 .tooltip .r .k.none{background:transparent}
 .tooltip .r .n{color:var(--tip-muted)}
 .tooltip .r .v{font-weight:600;font-variant-numeric:tabular-nums;margin-left:auto;padding-left:12px}
@@ -156,32 +176,39 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
   </div>
 
   <div class="period"><h2 id="periodTitle"></h2><span id="periodNote"></span></div>
-  <section class="kpis" id="kpis" aria-label="핵심 지표"></section>
+  <section class="kpis" id="kpis" aria-label="지표별 목표·현황·달성률"></section>
 
   <section class="grid">
-    <figure class="card span-5" data-card="yearly">
+    <figure class="card span-12" data-card="yearly">
       <figcaption class="card-head">
-        <div><h2>연도별 목표 약정 달성</h2><p class="sub">연한 막대는 목표, 진한 막대는 신규 약정 · 막대를 누르면 기준연도가 바뀝니다</p></div>
+        <div><h2>연도별 목표 대비 실적</h2><p class="sub">지표별로 연한 막대는 목표, 진한 막대는 실적(현황) · 막대를 누르면 기준연도가 바뀝니다</p></div>
         <div class="tools"><button type="button" data-view="chart" aria-pressed="true">차트</button><button type="button" data-view="table" aria-pressed="false">표</button></div>
       </figcaption>
       <div class="legend"></div>
-      <div class="chart"></div>
+      <div class="chart panels"></div>
       <div class="table-wrap" hidden></div>
     </figure>
 
-    <figure class="card span-7" data-card="cum">
+    <figure class="card span-12" data-card="cum">
       <figcaption class="card-head">
-        <div><h2>연중 누적 추이</h2><p class="sub">1월부터 누적한 약정·집행·분배와 연간 목표 약정</p></div>
+        <div><h2>연중 누적 추이</h2><p class="sub">1월부터 누적한 실적(색 선)과 연간 목표(점선), 전년 누적 실적(회색) · 마우스를 올리면 네 지표가 같은 달에 맞춰집니다</p></div>
         <div class="tools"><button type="button" data-view="chart" aria-pressed="true">차트</button><button type="button" data-view="table" aria-pressed="false">표</button></div>
       </figcaption>
       <div class="legend"></div>
-      <div class="chart"></div>
+      <div class="chart panels"></div>
       <div class="table-wrap" hidden></div>
+    </figure>
+
+    <figure class="card span-6" data-card="summary">
+      <figcaption class="card-head">
+        <div><h2>지표별 요약</h2><p class="sub"></p></div>
+      </figcaption>
+      <div class="table-wrap"></div>
     </figure>
 
     <figure class="card span-6" data-card="flow">
       <figcaption class="card-head">
-        <div><h2>월별 집행·분배</h2><p class="sub">위는 펀드로부터 받은 분배, 아래는 캐피털콜에 응한 집행</p></div>
+        <div><h2>월별 집행·분배·순증</h2><p class="sub">위는 집행(잔액 증가), 아래는 분배(잔액 감소), 점은 그 달의 순증</p></div>
         <div class="tools"><button type="button" data-view="chart" aria-pressed="true">차트</button><button type="button" data-view="table" aria-pressed="false">표</button></div>
       </figcaption>
       <div class="legend"></div>
@@ -189,9 +216,9 @@ footer{margin-top:24px;font-size:12px;color:var(--muted);display:flex;flex-wrap:
       <div class="table-wrap" hidden></div>
     </figure>
 
-    <figure class="card span-6" data-card="byClass">
+    <figure class="card span-12" data-card="byClass">
       <figcaption class="card-head">
-        <div><h2>자산군별 현황</h2><p class="sub">행을 누르면 해당 자산군으로 조회합니다</p></div>
+        <div><h2>자산군별 목표·현황·달성률</h2><p class="sub"></p></div>
       </figcaption>
       <div class="table-wrap"></div>
     </figure>
@@ -215,149 +242,197 @@ window.ALT_DATA = {
   {
    "year": 2021,
    "assetClass": "PE",
-   "target": 800.0
+   "commitment": 800.0,
+   "drawdown": 480.0,
+   "distribution": 60.0,
+   "net": 420.0
   },
   {
    "year": 2021,
    "assetClass": "PD",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 380.0,
+   "distribution": 30.0,
+   "net": 350.0
   },
   {
    "year": 2021,
    "assetClass": "부동산",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 470.0,
+   "distribution": 40.0,
+   "net": 430.0
   },
   {
    "year": 2021,
    "assetClass": "인프라",
-   "target": 400.0
+   "commitment": 400.0,
+   "drawdown": 170.0,
+   "distribution": 20.0,
+   "net": 150.0
   },
   {
    "year": 2022,
    "assetClass": "PE",
-   "target": 900.0
+   "commitment": 900.0,
+   "drawdown": 620.0,
+   "distribution": 200.0,
+   "net": 420.0
   },
   {
    "year": 2022,
    "assetClass": "PD",
-   "target": 600.0
+   "commitment": 600.0,
+   "drawdown": 420.0,
+   "distribution": 80.0,
+   "net": 340.0
   },
   {
    "year": 2022,
    "assetClass": "부동산",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 430.0,
+   "distribution": 50.0,
+   "net": 380.0
   },
   {
    "year": 2022,
    "assetClass": "인프라",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 230.0,
+   "distribution": 20.0,
+   "net": 210.0
   },
   {
    "year": 2023,
    "assetClass": "PE",
-   "target": 1000.0
+   "commitment": 1000.0,
+   "drawdown": 680.0,
+   "distribution": 250.0,
+   "net": 430.0
   },
   {
    "year": 2023,
    "assetClass": "PD",
-   "target": 800.0
+   "commitment": 800.0,
+   "drawdown": 500.0,
+   "distribution": 120.0,
+   "net": 380.0
   },
   {
    "year": 2023,
    "assetClass": "부동산",
-   "target": 600.0
+   "commitment": 600.0,
+   "drawdown": 430.0,
+   "distribution": 100.0,
+   "net": 330.0
   },
   {
    "year": 2023,
    "assetClass": "인프라",
-   "target": 600.0
+   "commitment": 600.0,
+   "drawdown": 290.0,
+   "distribution": 30.0,
+   "net": 260.0
   },
   {
    "year": 2024,
    "assetClass": "PE",
-   "target": 1100.0
+   "commitment": 1100.0,
+   "drawdown": 750.0,
+   "distribution": 450.0,
+   "net": 300.0
   },
   {
    "year": 2024,
    "assetClass": "PD",
-   "target": 900.0
+   "commitment": 900.0,
+   "drawdown": 750.0,
+   "distribution": 220.0,
+   "net": 530.0
   },
   {
    "year": 2024,
    "assetClass": "부동산",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 450.0,
+   "distribution": 150.0,
+   "net": 300.0
   },
   {
    "year": 2024,
    "assetClass": "인프라",
-   "target": 700.0
+   "commitment": 700.0,
+   "drawdown": 350.0,
+   "distribution": 80.0,
+   "net": 270.0
   },
   {
    "year": 2025,
    "assetClass": "PE",
-   "target": 1200.0
+   "commitment": 1200.0,
+   "drawdown": 900.0,
+   "distribution": 600.0,
+   "net": 300.0
   },
   {
    "year": 2025,
    "assetClass": "PD",
-   "target": 1000.0
+   "commitment": 1000.0,
+   "drawdown": 800.0,
+   "distribution": 330.0,
+   "net": 470.0
   },
   {
    "year": 2025,
    "assetClass": "부동산",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 500.0,
+   "distribution": 180.0,
+   "net": 320.0
   },
   {
    "year": 2025,
    "assetClass": "인프라",
-   "target": 800.0
+   "commitment": 800.0,
+   "drawdown": 500.0,
+   "distribution": 90.0,
+   "net": 410.0
   },
   {
    "year": 2026,
    "assetClass": "PE",
-   "target": 1400.0
+   "commitment": 1400.0,
+   "drawdown": 1000.0,
+   "distribution": 900.0,
+   "net": 100.0
   },
   {
    "year": 2026,
    "assetClass": "PD",
-   "target": 1200.0
+   "commitment": 1200.0,
+   "drawdown": 850.0,
+   "distribution": 550.0,
+   "net": 300.0
   },
   {
    "year": 2026,
    "assetClass": "부동산",
-   "target": 500.0
+   "commitment": 500.0,
+   "drawdown": 450.0,
+   "distribution": 300.0,
+   "net": 150.0
   },
   {
    "year": 2026,
    "assetClass": "인프라",
-   "target": 900.0
+   "commitment": 900.0,
+   "drawdown": 600.0,
+   "distribution": 250.0,
+   "net": 350.0
   }
  ],
  "flows": [
-  {
-   "month": "2018-01",
-   "assetClass": "부동산",
-   "commitment": 140.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-03",
-   "assetClass": "부동산",
-   "commitment": 120.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
   {
    "month": "2018-05",
    "assetClass": "PD",
@@ -367,12 +442,20 @@ window.ALT_DATA = {
    "commitCount": 1
   },
   {
-   "month": "2018-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 33.0,
+   "month": "2018-05",
+   "assetClass": "인프라",
+   "commitment": 100.0,
+   "drawdown": 0.0,
    "distribution": 0.0,
-   "commitCount": 0
+   "commitCount": 1
+  },
+  {
+   "month": "2018-06",
+   "assetClass": "인프라",
+   "commitment": 90.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
   },
   {
    "month": "2018-07",
@@ -384,11 +467,19 @@ window.ALT_DATA = {
   },
   {
    "month": "2018-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 10.0,
+   "assetClass": "인프라",
+   "commitment": 110.0,
+   "drawdown": 0.0,
    "distribution": 0.0,
-   "commitCount": 0
+   "commitCount": 1
+  },
+  {
+   "month": "2018-08",
+   "assetClass": "부동산",
+   "commitment": 210.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
   },
   {
    "month": "2018-09",
@@ -399,6 +490,22 @@ window.ALT_DATA = {
    "commitCount": 1
   },
   {
+   "month": "2018-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 7.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-09",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
    "month": "2018-10",
    "assetClass": "PD",
    "commitment": 180.0,
@@ -409,26 +516,10 @@ window.ALT_DATA = {
   {
    "month": "2018-10",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 17.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-10",
-   "assetClass": "인프라",
-   "commitment": 130.0,
-   "drawdown": 0.0,
+   "commitment": 190.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
    "commitCount": 1
-  },
-  {
-   "month": "2018-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 8.0,
-   "distribution": 0.0,
-   "commitCount": 0
   },
   {
    "month": "2018-11",
@@ -440,38 +531,6 @@ window.ALT_DATA = {
   },
   {
    "month": "2018-11",
-   "assetClass": "부동산",
-   "commitment": 140.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-11",
-   "assetClass": "인프라",
-   "commitment": 170.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-12",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2018-12",
-   "assetClass": "PE",
-   "commitment": 180.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2018-12",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 19.0,
@@ -479,10 +538,34 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2019-01",
+   "month": "2018-12",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 12.0,
+   "drawdown": 25.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-12",
+   "assetClass": "PE",
+   "commitment": 180.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2018-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2018-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 10.0,
    "distribution": 0.0,
    "commitCount": 0
   },
@@ -490,7 +573,7 @@ window.ALT_DATA = {
    "month": "2019-01",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 51.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
    "commitCount": 0
   },
@@ -498,36 +581,84 @@ window.ALT_DATA = {
    "month": "2019-01",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 11.0,
+   "drawdown": 7.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2019-02",
    "assetClass": "PD",
-   "commitment": 150.0,
-   "drawdown": 14.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2019-02",
-   "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 12.0,
+   "drawdown": 8.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2019-02",
-   "assetClass": "부동산",
-   "commitment": 210.0,
-   "drawdown": 13.0,
+   "assetClass": "PE",
+   "commitment": 230.0,
+   "drawdown": 12.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
    "month": "2019-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-03",
+   "assetClass": "PE",
+   "commitment": 200.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 54.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-04",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-04",
+   "assetClass": "부동산",
+   "commitment": 120.0,
+   "drawdown": 19.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-04",
    "assetClass": "인프라",
    "commitment": 170.0,
    "drawdown": 0.0,
@@ -535,215 +666,351 @@ window.ALT_DATA = {
    "commitCount": 1
   },
   {
-   "month": "2019-03",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-03",
+   "month": "2019-05",
    "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 5.0,
+   "commitment": 150.0,
+   "drawdown": 16.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-04",
+   "month": "2019-06",
    "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-04",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-05",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-05",
-   "assetClass": "PE",
-   "commitment": 350.0,
-   "drawdown": 0.0,
+   "commitment": 150.0,
+   "drawdown": 40.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-05",
-   "assetClass": "부동산",
+   "month": "2019-06",
+   "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 29.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-05",
+   "month": "2019-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-06",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 10.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-06",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-06",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 9.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-07",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 29.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-09",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-09",
-   "assetClass": "PE",
    "commitment": 0.0,
    "drawdown": 14.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
+   "month": "2019-07",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-07",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-07",
+   "assetClass": "부동산",
+   "commitment": 130.0,
+   "drawdown": 24.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "PD",
+   "commitment": 120.0,
+   "drawdown": 7.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-08",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-09",
+   "assetClass": "PD",
+   "commitment": 130.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-09",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
    "month": "2019-09",
    "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 33.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "PE",
+   "commitment": 180.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-11",
+   "assetClass": "인프라",
+   "commitment": 130.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2019-12",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 29.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2019-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-01",
+   "assetClass": "PD",
+   "commitment": 150.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-01",
+   "assetClass": "PE",
+   "commitment": 220.0,
+   "drawdown": 28.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 15.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-02",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 61.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-02",
+   "assetClass": "PE",
    "commitment": 0.0,
    "drawdown": 32.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-09",
-   "assetClass": "인프라",
-   "commitment": 130.0,
-   "drawdown": 6.0,
+   "month": "2020-02",
+   "assetClass": "부동산",
+   "commitment": 230.0,
+   "drawdown": 12.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-10",
+   "month": "2020-03",
    "assetClass": "PD",
-   "commitment": 140.0,
-   "drawdown": 0.0,
+   "commitment": 0.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
-   "commitCount": 1
+   "commitCount": 0
   },
   {
-   "month": "2019-10",
+   "month": "2020-03",
    "assetClass": "PE",
-   "commitment": 250.0,
-   "drawdown": 8.0,
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-04",
+   "assetClass": "PD",
+   "commitment": 160.0,
+   "drawdown": 25.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2019-10",
+   "month": "2020-04",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 48.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 48.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-04",
+   "assetClass": "인프라",
+   "commitment": 120.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-05",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 64.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-05",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-05",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 25.0,
@@ -751,863 +1018,215 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2019-10",
+   "month": "2020-05",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 12.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-11",
-   "assetClass": "PD",
-   "commitment": 120.0,
-   "drawdown": 30.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2019-11",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2019-12",
+   "month": "2020-06",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 14.0,
+   "drawdown": 11.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2019-12",
+   "month": "2020-06",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 37.0,
+   "drawdown": 14.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-12",
+   "month": "2020-06",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 38.0,
+   "drawdown": 56.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2019-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-01",
+   "month": "2020-07",
    "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-01",
-   "assetClass": "PE",
-   "commitment": 200.0,
-   "drawdown": 14.0,
+   "commitment": 150.0,
+   "drawdown": 29.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2020-01",
-   "assetClass": "부동산",
-   "commitment": 260.0,
+   "month": "2020-07",
+   "assetClass": "PE",
+   "commitment": 0.0,
    "drawdown": 23.0,
-   "distribution": 3.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 17.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-07",
+   "assetClass": "인프라",
+   "commitment": 130.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2020-01",
-   "assetClass": "인프라",
+   "month": "2020-08",
+   "assetClass": "PD",
    "commitment": 0.0,
    "drawdown": 27.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 37.0,
    "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 17.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 29.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-04",
-   "assetClass": "인프라",
-   "commitment": 140.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "PD",
-   "commitment": 120.0,
-   "drawdown": 40.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "PE",
-   "commitment": 170.0,
-   "drawdown": 16.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-05",
-   "assetClass": "인프라",
-   "commitment": 100.0,
-   "drawdown": 0.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "PE",
-   "commitment": 160.0,
-   "drawdown": 28.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 21.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "PD",
-   "commitment": 140.0,
-   "drawdown": 32.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 30.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-08",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 4.0,
    "commitCount": 0
   },
   {
    "month": "2020-08",
    "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 39.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 70.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-08",
-   "assetClass": "인프라",
-   "commitment": 100.0,
-   "drawdown": 16.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "PD",
-   "commitment": 190.0,
-   "drawdown": 30.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 19.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-09",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 40.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 17.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "PE",
-   "commitment": 180.0,
-   "drawdown": 36.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2020-12",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 67.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "PE",
-   "commitment": 230.0,
-   "drawdown": 19.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 71.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-01",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "PD",
-   "commitment": 270.0,
-   "drawdown": 21.0,
-   "distribution": 3.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 40.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-02",
-   "assetClass": "인프라",
-   "commitment": 220.0,
-   "drawdown": 11.0,
-   "distribution": 4.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 37.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-04",
-   "assetClass": "PD",
    "commitment": 250.0,
-   "drawdown": 45.0,
-   "distribution": 8.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2021-04",
-   "assetClass": "PE",
+   "month": "2020-08",
+   "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 53.0,
+   "drawdown": 56.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2021-04",
-   "assetClass": "부동산",
-   "commitment": 180.0,
-   "drawdown": 15.0,
-   "distribution": 7.0,
+   "month": "2020-09",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-09",
+   "assetClass": "PE",
+   "commitment": 220.0,
+   "drawdown": 25.0,
+   "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2021-04",
+   "month": "2020-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2020-09",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 7.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 29.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 15.0,
+   "drawdown": 31.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2021-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 45.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-05",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 35.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-06",
+   "month": "2020-10",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 45.0,
-   "distribution": 6.0,
+   "drawdown": 51.0,
+   "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2021-06",
+   "month": "2020-10",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 50.0,
+   "drawdown": 49.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2021-06",
+   "month": "2020-10",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 15.0,
-   "distribution": 8.0,
-   "commitCount": 0
+   "commitment": 220.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "commitCount": 1
   },
   {
-   "month": "2021-06",
+   "month": "2020-10",
    "assetClass": "인프라",
+   "commitment": 90.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2020-11",
+   "assetClass": "PD",
    "commitment": 0.0,
    "drawdown": 26.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2021-07",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 35.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-07",
+   "month": "2020-11",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 3.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-07",
-   "assetClass": "부동산",
-   "commitment": 160.0,
-   "drawdown": 21.0,
-   "distribution": 7.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-08",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-08",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-08",
-   "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 16.0,
-   "distribution": 9.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 34.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 64.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "PE",
-   "commitment": 190.0,
    "drawdown": 41.0,
    "distribution": 0.0,
-   "commitCount": 1
+   "commitCount": 0
   },
   {
-   "month": "2021-09",
+   "month": "2020-11",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 40.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-09",
-   "assetClass": "인프라",
-   "commitment": 200.0,
-   "drawdown": 5.0,
-   "distribution": 6.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "PE",
-   "commitment": 160.0,
-   "drawdown": 6.0,
-   "distribution": 0.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 6.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-11",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 27.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 13.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-11",
-   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 15.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 73.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "PE",
-   "commitment": 260.0,
-   "drawdown": 49.0,
-   "distribution": 15.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2021-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 16.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2021-12",
+   "month": "2020-11",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 4.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2022-01",
+   "month": "2020-12",
    "assetClass": "PD",
-   "commitment": 270.0,
-   "drawdown": 16.0,
-   "distribution": 13.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 45.0,
+   "distribution": 0.0,
+   "commitCount": 0
   },
   {
-   "month": "2022-01",
+   "month": "2020-12",
    "assetClass": "PE",
-   "commitment": 280.0,
-   "drawdown": 24.0,
-   "distribution": 7.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 65.0,
+   "distribution": 0.0,
+   "commitCount": 0
   },
   {
-   "month": "2022-01",
+   "month": "2020-12",
    "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 7.0,
-   "distribution": 17.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 11.0,
+   "distribution": 0.0,
+   "commitCount": 0
   },
   {
-   "month": "2022-01",
+   "month": "2020-12",
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 10.0,
@@ -1615,771 +1234,1187 @@ window.ALT_DATA = {
    "commitCount": 0
   },
   {
-   "month": "2022-02",
+   "month": "2021-01",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 21.0,
+   "drawdown": 28.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2022-02",
+   "month": "2021-01",
    "assetClass": "PE",
-   "commitment": 280.0,
-   "drawdown": 48.0,
+   "commitment": 220.0,
+   "drawdown": 28.0,
    "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2022-02",
+   "month": "2021-01",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 14.0,
+   "drawdown": 60.0,
+   "distribution": 6.0,
    "commitCount": 0
   },
   {
-   "month": "2022-02",
+   "month": "2021-01",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 3.0,
+   "drawdown": 7.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2022-03",
+   "month": "2021-02",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 68.0,
-   "distribution": 11.0,
+   "drawdown": 32.0,
+   "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2022-03",
+   "month": "2021-02",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 5.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2022-03",
+   "month": "2021-02",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 130.0,
-   "distribution": 3.0,
+   "drawdown": 47.0,
+   "distribution": 4.0,
    "commitCount": 0
   },
   {
-   "month": "2022-03",
+   "month": "2021-02",
    "assetClass": "인프라",
-   "commitment": 240.0,
-   "drawdown": 26.0,
+   "commitment": 0.0,
+   "drawdown": 8.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "부동산",
+   "commitment": 290.0,
+   "drawdown": 32.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-04",
+   "assetClass": "PE",
+   "commitment": 280.0,
+   "drawdown": 96.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-04",
+   "assetClass": "부동산",
+   "commitment": 230.0,
+   "drawdown": 8.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-04",
+   "assetClass": "인프라",
+   "commitment": 160.0,
+   "drawdown": 9.0,
    "distribution": 3.0,
    "commitCount": 1
   },
   {
-   "month": "2022-04",
+   "month": "2021-05",
+   "assetClass": "PD",
+   "commitment": 300.0,
+   "drawdown": 47.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-05",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 41.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 46.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-06",
    "assetClass": "PD",
    "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-06",
+   "assetClass": "PE",
+   "commitment": 160.0,
+   "drawdown": 27.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 72.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
    "drawdown": 12.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 39.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-07",
+   "assetClass": "인프라",
+   "commitment": 140.0,
+   "drawdown": 35.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-08",
+   "assetClass": "PD",
+   "commitment": 230.0,
+   "drawdown": 26.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-08",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 58.0,
    "distribution": 13.0,
    "commitCount": 0
   },
   {
+   "month": "2021-08",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 53.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-08",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 46.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 25.0,
+   "distribution": 9.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 59.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-09",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 5.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 33.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 46.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-10",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 19.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-11",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 40.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-11",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 36.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-11",
+   "assetClass": "인프라",
+   "commitment": 130.0,
+   "drawdown": 0.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-12",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 30.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-12",
+   "assetClass": "PE",
+   "commitment": 180.0,
+   "drawdown": 62.0,
+   "distribution": 12.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2021-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2021-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 14.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 38.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 44.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 26.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-02",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 35.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-02",
+   "assetClass": "PE",
+   "commitment": 300.0,
+   "drawdown": 38.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-02",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 7.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-03",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-03",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 20.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-03",
+   "assetClass": "부동산",
+   "commitment": 230.0,
+   "drawdown": 37.0,
+   "distribution": 4.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 15.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
    "month": "2022-04",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 35.0,
-   "distribution": 20.0,
+   "drawdown": 59.0,
+   "distribution": 15.0,
    "commitCount": 0
   },
   {
    "month": "2022-04",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 7.0,
+   "drawdown": 34.0,
+   "distribution": 10.0,
    "commitCount": 0
   },
   {
    "month": "2022-04",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 12.0,
+   "drawdown": 22.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-05",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 23.0,
    "distribution": 5.0,
    "commitCount": 0
   },
   {
    "month": "2022-05",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-05",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 43.0,
+   "drawdown": 26.0,
+   "distribution": 22.0,
    "commitCount": 0
   },
   {
    "month": "2022-05",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 53.0,
-   "distribution": 7.0,
+   "drawdown": 12.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2022-05",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 23.0,
+   "commitment": 170.0,
+   "drawdown": 6.0,
    "distribution": 0.0,
-   "commitCount": 0
+   "commitCount": 1
   },
   {
    "month": "2022-06",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 86.0,
-   "distribution": 20.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-06",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 48.0,
+   "drawdown": 40.0,
    "distribution": 6.0,
    "commitCount": 0
   },
   {
    "month": "2022-06",
-   "assetClass": "부동산",
+   "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 21.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-06",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 5.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-07",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 16.0,
+   "drawdown": 34.0,
    "distribution": 19.0,
    "commitCount": 0
   },
   {
-   "month": "2022-07",
-   "assetClass": "PE",
-   "commitment": 310.0,
-   "drawdown": 90.0,
-   "distribution": 18.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-07",
+   "month": "2022-06",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 66.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 12.0,
-   "distribution": 0.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 12.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 39.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "부동산",
-   "commitment": 290.0,
-   "drawdown": 14.0,
-   "distribution": 16.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-08",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 26.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-09",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-09",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 32.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 11.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-09",
-   "assetClass": "인프라",
-   "commitment": 250.0,
-   "drawdown": 47.0,
-   "distribution": 8.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-10",
-   "assetClass": "PD",
-   "commitment": 310.0,
    "drawdown": 28.0,
-   "distribution": 29.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2022-10",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 67.0,
-   "distribution": 61.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 8.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 31.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-11",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 46.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 7.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 19.0,
    "distribution": 6.0,
    "commitCount": 0
   },
   {
-   "month": "2022-12",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 30.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-12",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 69.0,
-   "distribution": 37.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2022-12",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-01",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 68.0,
-   "distribution": 22.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-01",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 27.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-01",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 9.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-01",
+   "month": "2022-06",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 4.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-02",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 33.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-02",
-   "assetClass": "PE",
-   "commitment": 330.0,
-   "drawdown": 72.0,
-   "distribution": 43.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-02",
-   "assetClass": "부동산",
-   "commitment": 150.0,
-   "drawdown": 0.0,
-   "distribution": 21.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-02",
-   "assetClass": "인프라",
-   "commitment": 180.0,
-   "drawdown": 16.0,
-   "distribution": 6.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 35.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 74.0,
-   "distribution": 40.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "부동산",
-   "commitment": 200.0,
-   "drawdown": 48.0,
-   "distribution": 16.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 29.0,
+   "drawdown": 11.0,
    "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2023-04",
-   "assetClass": "PD",
-   "commitment": 280.0,
-   "drawdown": 15.0,
-   "distribution": 14.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 44.0,
-   "distribution": 44.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 13.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 10.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-05",
+   "month": "2022-07",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 45.0,
-   "distribution": 25.0,
+   "drawdown": 18.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2023-05",
+   "month": "2022-07",
    "assetClass": "PE",
-   "commitment": 310.0,
-   "drawdown": 86.0,
-   "distribution": 17.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 61.0,
+   "distribution": 18.0,
+   "commitCount": 0
   },
   {
-   "month": "2023-05",
+   "month": "2022-07",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 35.0,
+   "drawdown": 37.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
-   "month": "2023-05",
+   "month": "2022-07",
    "assetClass": "인프라",
-   "commitment": 210.0,
-   "drawdown": 42.0,
-   "distribution": 9.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 22.0,
+   "distribution": 0.0,
+   "commitCount": 0
   },
   {
-   "month": "2023-06",
+   "month": "2022-08",
    "assetClass": "PD",
-   "commitment": 450.0,
-   "drawdown": 47.0,
-   "distribution": 26.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 53.0,
-   "distribution": 68.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 31.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-06",
-   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 23.0,
    "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2023-07",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 0.0,
-   "distribution": 22.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-07",
+   "month": "2022-08",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 61.0,
-   "distribution": 47.0,
+   "drawdown": 59.0,
+   "distribution": 50.0,
    "commitCount": 0
   },
   {
-   "month": "2023-07",
+   "month": "2022-08",
    "assetClass": "부동산",
-   "commitment": 200.0,
-   "drawdown": 54.0,
-   "distribution": 29.0,
+   "commitment": 250.0,
+   "drawdown": 26.0,
+   "distribution": 4.0,
    "commitCount": 1
   },
   {
-   "month": "2023-07",
+   "month": "2022-08",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 5.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-08",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 14.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-08",
-   "assetClass": "PE",
-   "commitment": 270.0,
-   "drawdown": 62.0,
-   "distribution": 29.0,
+   "commitment": 180.0,
+   "drawdown": 13.0,
+   "distribution": 0.0,
    "commitCount": 1
   },
   {
-   "month": "2023-08",
+   "month": "2022-09",
+   "assetClass": "PD",
+   "commitment": 290.0,
+   "drawdown": 30.0,
+   "distribution": 12.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-09",
+   "assetClass": "PE",
+   "commitment": 290.0,
+   "drawdown": 34.0,
+   "distribution": 28.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 22.0,
+   "drawdown": 56.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
-   "month": "2023-08",
+   "month": "2022-09",
    "assetClass": "인프라",
-   "commitment": 160.0,
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-10",
+   "assetClass": "PD",
+   "commitment": 300.0,
+   "drawdown": 32.0,
+   "distribution": 8.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-10",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
    "drawdown": 37.0,
-   "distribution": 11.0,
+   "distribution": 6.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-10",
+   "assetClass": "인프라",
+   "commitment": 140.0,
+   "drawdown": 36.0,
+   "distribution": 3.0,
    "commitCount": 1
   },
   {
-   "month": "2023-09",
+   "month": "2022-11",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 91.0,
+   "drawdown": 37.0,
+   "distribution": 9.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-11",
+   "assetClass": "PE",
+   "commitment": 290.0,
+   "drawdown": 51.0,
+   "distribution": 13.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2022-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 42.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-12",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 41.0,
+   "distribution": 11.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-12",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 73.0,
    "distribution": 35.0,
    "commitCount": 0
   },
   {
-   "month": "2023-09",
-   "assetClass": "PE",
+   "month": "2022-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2022-12",
+   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 21.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 42.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 71.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "부동산",
+   "commitment": 210.0,
+   "drawdown": 29.0,
+   "distribution": 7.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-01",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 9.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 9.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 29.0,
+   "distribution": 31.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 52.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 23.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 81.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 68.0,
+   "distribution": 18.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 47.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 25.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "PD",
+   "commitment": 210.0,
+   "drawdown": 28.0,
+   "distribution": 16.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "PE",
+   "commitment": 260.0,
+   "drawdown": 34.0,
+   "distribution": 48.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 33.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-04",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 27.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 10.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "PE",
+   "commitment": 200.0,
+   "drawdown": 58.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 35.0,
+   "distribution": 8.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-05",
+   "assetClass": "인프라",
+   "commitment": 280.0,
+   "drawdown": 6.0,
+   "distribution": 3.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 93.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 51.0,
+   "distribution": 17.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "부동산",
+   "commitment": 330.0,
+   "drawdown": 32.0,
+   "distribution": 17.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 21.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 36.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 44.0,
+   "distribution": 11.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 42.0,
    "distribution": 16.0,
    "commitCount": 0
   },
   {
-   "month": "2023-09",
+   "month": "2023-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 6.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 27.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 55.0,
+   "distribution": 43.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 32.0,
+   "drawdown": 34.0,
+   "distribution": 3.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-08",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 4.0,
    "commitCount": 0
   },
   {
    "month": "2023-09",
-   "assetClass": "인프라",
+   "assetClass": "PD",
+   "commitment": 230.0,
+   "drawdown": 30.0,
+   "distribution": 13.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-09",
+   "assetClass": "PE",
+   "commitment": 250.0,
+   "drawdown": 31.0,
+   "distribution": 32.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-09",
+   "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 13.0,
    "distribution": 13.0,
    "commitCount": 0
   },
   {
+   "month": "2023-09",
+   "assetClass": "인프라",
+   "commitment": 270.0,
+   "drawdown": 20.0,
+   "distribution": 0.0,
+   "commitCount": 1
+  },
+  {
    "month": "2023-10",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 50.0,
+   "drawdown": 37.0,
+   "distribution": 15.0,
    "commitCount": 0
   },
   {
    "month": "2023-10",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 23.0,
+   "drawdown": 57.0,
+   "distribution": 0.0,
    "commitCount": 0
   },
   {
    "month": "2023-10",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 23.0,
-   "distribution": 24.0,
+   "drawdown": 60.0,
+   "distribution": 7.0,
    "commitCount": 0
   },
   {
    "month": "2023-10",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 29.0,
-   "distribution": 13.0,
+   "drawdown": 15.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
    "month": "2023-11",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 33.0,
+   "drawdown": 24.0,
+   "distribution": 15.0,
    "commitCount": 0
   },
   {
    "month": "2023-11",
    "assetClass": "PE",
+   "commitment": 190.0,
+   "drawdown": 53.0,
+   "distribution": 29.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2023-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 59.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2023-11",
+   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 50.0,
-   "distribution": 72.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 18.0,
-   "distribution": 22.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2023-11",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 29.0,
    "distribution": 5.0,
    "commitCount": 0
   },
   {
    "month": "2023-12",
    "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 33.0,
-   "distribution": 27.0,
-   "commitCount": 0
+   "commitment": 290.0,
+   "drawdown": 45.0,
+   "distribution": 13.0,
+   "commitCount": 1
   },
   {
    "month": "2023-12",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 114.0,
-   "distribution": 44.0,
+   "drawdown": 80.0,
+   "distribution": 19.0,
    "commitCount": 0
   },
   {
    "month": "2023-12",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 63.0,
-   "distribution": 37.0,
+   "drawdown": 6.0,
+   "distribution": 6.0,
    "commitCount": 0
   },
   {
    "month": "2023-12",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 62.0,
-   "distribution": 10.0,
+   "drawdown": 50.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
    "month": "2024-01",
    "assetClass": "PD",
    "commitment": 270.0,
-   "drawdown": 85.0,
-   "distribution": 41.0,
+   "drawdown": 66.0,
+   "distribution": 13.0,
    "commitCount": 1
   },
   {
    "month": "2024-01",
    "assetClass": "PE",
    "commitment": 330.0,
-   "drawdown": 65.0,
-   "distribution": 44.0,
+   "drawdown": 36.0,
+   "distribution": 30.0,
    "commitCount": 1
   },
   {
    "month": "2024-01",
    "assetClass": "부동산",
-   "commitment": 190.0,
-   "drawdown": 54.0,
-   "distribution": 22.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 42.0,
+   "distribution": 9.0,
+   "commitCount": 0
   },
   {
    "month": "2024-01",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 7.0,
-   "commitCount": 0
+   "commitment": 280.0,
+   "drawdown": 22.0,
+   "distribution": 6.0,
+   "commitCount": 1
   },
   {
    "month": "2024-02",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 28.0,
+   "drawdown": 42.0,
+   "distribution": 17.0,
    "commitCount": 0
   },
   {
@@ -2387,527 +2422,527 @@ window.ALT_DATA = {
    "assetClass": "PE",
    "commitment": 0.0,
    "drawdown": 30.0,
-   "distribution": 16.0,
+   "distribution": 43.0,
    "commitCount": 0
   },
   {
    "month": "2024-02",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 56.0,
-   "distribution": 21.0,
+   "drawdown": 22.0,
+   "distribution": 12.0,
    "commitCount": 0
   },
   {
    "month": "2024-02",
    "assetClass": "인프라",
-   "commitment": 260.0,
+   "commitment": 210.0,
+   "drawdown": 23.0,
+   "distribution": 3.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 23.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 18.0,
+   "distribution": 50.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 66.0,
+   "distribution": 8.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 61.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 58.0,
+   "distribution": 13.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 62.0,
+   "distribution": 33.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 18.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-04",
+   "assetClass": "인프라",
+   "commitment": 250.0,
    "drawdown": 21.0,
-   "distribution": 4.0,
+   "distribution": 7.0,
    "commitCount": 1
   },
   {
-   "month": "2024-03",
+   "month": "2024-05",
    "assetClass": "PD",
    "commitment": 0.0,
+   "drawdown": 74.0,
+   "distribution": 25.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-05",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 73.0,
+   "distribution": 14.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-05",
+   "assetClass": "부동산",
+   "commitment": 270.0,
    "drawdown": 41.0,
-   "distribution": 40.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 87.0,
-   "distribution": 67.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-03",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 69.0,
-   "distribution": 32.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-03",
-   "assetClass": "인프라",
-   "commitment": 200.0,
-   "drawdown": 37.0,
-   "distribution": 17.0,
+   "distribution": 12.0,
    "commitCount": 1
   },
   {
-   "month": "2024-04",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 42.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-04",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 46.0,
-   "distribution": 35.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-04",
-   "assetClass": "부동산",
-   "commitment": 130.0,
-   "drawdown": 28.0,
-   "distribution": 20.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2024-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 34.0,
-   "distribution": 15.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-05",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 96.0,
-   "distribution": 44.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-05",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 58.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-05",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 41.0,
-   "distribution": 34.0,
-   "commitCount": 0
-  },
-  {
    "month": "2024-05",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 31.0,
+   "drawdown": 23.0,
+   "distribution": 9.0,
    "commitCount": 0
   },
   {
    "month": "2024-06",
    "assetClass": "PD",
    "commitment": 320.0,
-   "drawdown": 41.0,
-   "distribution": 43.0,
+   "drawdown": 60.0,
+   "distribution": 20.0,
    "commitCount": 1
   },
   {
    "month": "2024-06",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 58.0,
-   "distribution": 83.0,
+   "drawdown": 76.0,
+   "distribution": 18.0,
    "commitCount": 0
   },
   {
    "month": "2024-06",
    "assetClass": "부동산",
-   "commitment": 200.0,
-   "drawdown": 22.0,
-   "distribution": 25.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 13.0,
+   "distribution": 17.0,
+   "commitCount": 0
   },
   {
    "month": "2024-06",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 22.0,
+   "drawdown": 81.0,
+   "distribution": 5.0,
    "commitCount": 0
   },
   {
    "month": "2024-07",
    "assetClass": "PD",
    "commitment": 360.0,
-   "drawdown": 34.0,
-   "distribution": 57.0,
+   "drawdown": 59.0,
+   "distribution": 18.0,
    "commitCount": 1
   },
   {
    "month": "2024-07",
    "assetClass": "PE",
    "commitment": 210.0,
-   "drawdown": 55.0,
-   "distribution": 24.0,
+   "drawdown": 19.0,
+   "distribution": 65.0,
    "commitCount": 1
   },
   {
    "month": "2024-07",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 42.0,
-   "distribution": 38.0,
-   "commitCount": 0
+   "commitment": 260.0,
+   "drawdown": 51.0,
+   "distribution": 23.0,
+   "commitCount": 1
   },
   {
    "month": "2024-07",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 12.0,
+   "drawdown": 42.0,
+   "distribution": 8.0,
    "commitCount": 0
   },
   {
    "month": "2024-08",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 42.0,
+   "drawdown": 87.0,
+   "distribution": 20.0,
    "commitCount": 0
   },
   {
    "month": "2024-08",
    "assetClass": "PE",
    "commitment": 300.0,
-   "drawdown": 36.0,
-   "distribution": 49.0,
+   "drawdown": 74.0,
+   "distribution": 62.0,
    "commitCount": 1
   },
   {
    "month": "2024-08",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 55.0,
-   "distribution": 29.0,
+   "drawdown": 46.0,
+   "distribution": 12.0,
    "commitCount": 0
   },
   {
    "month": "2024-08",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 57.0,
-   "distribution": 30.0,
+   "drawdown": 24.0,
+   "distribution": 15.0,
    "commitCount": 0
   },
   {
    "month": "2024-09",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 21.0,
-   "distribution": 33.0,
+   "drawdown": 60.0,
+   "distribution": 17.0,
    "commitCount": 0
   },
   {
    "month": "2024-09",
    "assetClass": "PE",
    "commitment": 330.0,
-   "drawdown": 49.0,
-   "distribution": 74.0,
+   "drawdown": 75.0,
+   "distribution": 38.0,
    "commitCount": 1
   },
   {
    "month": "2024-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 54.0,
-   "distribution": 55.0,
+   "drawdown": 59.0,
+   "distribution": 22.0,
    "commitCount": 0
   },
   {
    "month": "2024-09",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 34.0,
-   "distribution": 10.0,
+   "drawdown": 36.0,
+   "distribution": 3.0,
    "commitCount": 0
   },
   {
    "month": "2024-10",
    "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 109.0,
-   "distribution": 65.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 113.0,
-   "distribution": 55.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 48.0,
-   "distribution": 26.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 19.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 95.0,
-   "distribution": 41.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 107.0,
-   "distribution": 95.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 14.0,
-   "distribution": 32.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-11",
-   "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 51.0,
    "distribution": 20.0,
    "commitCount": 0
   },
   {
-   "month": "2024-12",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 59.0,
-   "distribution": 52.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2024-12",
+   "month": "2024-10",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 86.0,
-   "distribution": 51.0,
+   "drawdown": 76.0,
+   "distribution": 82.0,
    "commitCount": 0
   },
   {
-   "month": "2024-12",
+   "month": "2024-10",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 82.0,
-   "distribution": 24.0,
+   "drawdown": 29.0,
+   "distribution": 14.0,
    "commitCount": 0
   },
   {
-   "month": "2024-12",
+   "month": "2024-10",
    "assetClass": "인프라",
-   "commitment": 280.0,
-   "drawdown": 37.0,
-   "distribution": 34.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 113.0,
-   "distribution": 40.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 67.0,
-   "distribution": 31.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "부동산",
-   "commitment": 210.0,
-   "drawdown": 17.0,
-   "distribution": 42.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-01",
-   "assetClass": "인프라",
-   "commitment": 230.0,
-   "drawdown": 24.0,
-   "distribution": 27.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-02",
-   "assetClass": "PD",
-   "commitment": 410.0,
-   "drawdown": 34.0,
-   "distribution": 41.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-02",
-   "assetClass": "PE",
    "commitment": 0.0,
    "drawdown": 54.0,
-   "distribution": 124.0,
+   "distribution": 14.0,
    "commitCount": 0
   },
   {
-   "month": "2025-02",
-   "assetClass": "부동산",
-   "commitment": 240.0,
-   "drawdown": 44.0,
-   "distribution": 22.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-02",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 22.0,
-   "distribution": 6.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-03",
+   "month": "2024-11",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 80.0,
-   "distribution": 52.0,
+   "drawdown": 90.0,
+   "distribution": 28.0,
    "commitCount": 0
   },
   {
-   "month": "2025-03",
+   "month": "2024-11",
    "assetClass": "PE",
-   "commitment": 530.0,
-   "drawdown": 57.0,
-   "distribution": 70.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-03",
-   "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 32.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-03",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 35.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-04",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 60.0,
+   "drawdown": 85.0,
    "distribution": 56.0,
    "commitCount": 0
   },
   {
-   "month": "2025-04",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 93.0,
-   "distribution": 126.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-04",
+   "month": "2024-11",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 52.0,
-   "distribution": 39.0,
+   "drawdown": 57.0,
+   "distribution": 10.0,
    "commitCount": 0
   },
   {
-   "month": "2025-04",
+   "month": "2024-11",
    "assetClass": "인프라",
-   "commitment": 190.0,
-   "drawdown": 83.0,
-   "distribution": 16.0,
+   "commitment": 0.0,
+   "drawdown": 14.0,
+   "distribution": 5.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 132.0,
+   "distribution": 23.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 68.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 35.0,
+   "distribution": 9.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2024-12",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 0.0,
+   "distribution": 9.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-01",
+   "assetClass": "PD",
+   "commitment": 290.0,
+   "drawdown": 14.0,
+   "distribution": 33.0,
    "commitCount": 1
   },
   {
-   "month": "2025-05",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 77.0,
-   "distribution": 45.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-05",
+   "month": "2025-01",
    "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 61.0,
-   "distribution": 93.0,
-   "commitCount": 0
+   "commitment": 490.0,
+   "drawdown": 65.0,
+   "distribution": 44.0,
+   "commitCount": 1
   },
   {
-   "month": "2025-05",
+   "month": "2025-01",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 65.0,
-   "distribution": 42.0,
+   "drawdown": 30.0,
+   "distribution": 13.0,
    "commitCount": 0
   },
   {
-   "month": "2025-05",
+   "month": "2025-01",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 47.0,
+   "drawdown": 54.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "PD",
+   "commitment": 210.0,
+   "drawdown": 56.0,
+   "distribution": 23.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 84.0,
    "distribution": 39.0,
    "commitCount": 0
   },
   {
-   "month": "2025-06",
+   "month": "2025-02",
+   "assetClass": "부동산",
+   "commitment": 170.0,
+   "drawdown": 27.0,
+   "distribution": 10.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-02",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 91.0,
+   "distribution": 0.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-03",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 57.0,
+   "drawdown": 83.0,
+   "distribution": 34.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 66.0,
+   "distribution": 27.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "부동산",
+   "commitment": 270.0,
+   "drawdown": 21.0,
+   "distribution": 15.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 7.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 115.0,
+   "distribution": 30.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 96.0,
    "distribution": 61.0,
    "commitCount": 0
   },
   {
+   "month": "2025-04",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 82.0,
+   "distribution": 15.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-04",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 57.0,
+   "distribution": 29.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 75.0,
+   "distribution": 48.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 28.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-05",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 20.0,
+   "distribution": 10.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-06",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 96.0,
+   "distribution": 25.0,
+   "commitCount": 0
+  },
+  {
    "month": "2025-06",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 69.0,
-   "distribution": 51.0,
+   "drawdown": 53.0,
+   "distribution": 71.0,
    "commitCount": 0
   },
   {
    "month": "2025-06",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 32.0,
+   "drawdown": 44.0,
+   "distribution": 24.0,
    "commitCount": 0
   },
   {
@@ -2915,487 +2950,487 @@ window.ALT_DATA = {
    "assetClass": "인프라",
    "commitment": 0.0,
    "drawdown": 25.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 36.0,
+   "distribution": 21.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "PE",
+   "commitment": 580.0,
+   "drawdown": 89.0,
+   "distribution": 46.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 89.0,
+   "distribution": 12.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-07",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 32.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-08",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 134.0,
    "distribution": 28.0,
    "commitCount": 0
   },
   {
-   "month": "2025-07",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 78.0,
-   "distribution": 61.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-07",
+   "month": "2025-08",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 42.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-07",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 30.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-07",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 35.0,
+   "drawdown": 59.0,
+   "distribution": 57.0,
    "commitCount": 0
   },
   {
    "month": "2025-08",
-   "assetClass": "PD",
+   "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 39.0,
-   "distribution": 64.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-08",
-   "assetClass": "PE",
-   "commitment": 540.0,
-   "drawdown": 16.0,
-   "distribution": 84.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-08",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 58.0,
+   "distribution": 18.0,
    "commitCount": 0
   },
   {
    "month": "2025-08",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 54.0,
-   "distribution": 27.0,
+   "drawdown": 52.0,
+   "distribution": 11.0,
    "commitCount": 0
   },
   {
    "month": "2025-09",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 51.0,
-   "distribution": 61.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 79.0,
-   "distribution": 77.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 32.0,
-   "distribution": 37.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-09",
-   "assetClass": "인프라",
-   "commitment": 290.0,
-   "drawdown": 57.0,
-   "distribution": 39.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 108.0,
-   "distribution": 63.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 126.0,
-   "distribution": 92.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-10",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 17.0,
+   "drawdown": 53.0,
    "distribution": 31.0,
    "commitCount": 0
   },
   {
-   "month": "2025-10",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 29.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-11",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 11.0,
-   "distribution": 40.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2025-11",
+   "month": "2025-09",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 89.0,
-   "distribution": 91.0,
+   "drawdown": 113.0,
+   "distribution": 99.0,
    "commitCount": 0
   },
   {
-   "month": "2025-11",
+   "month": "2025-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 59.0,
+   "drawdown": 29.0,
+   "distribution": 11.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-09",
+   "assetClass": "인프라",
+   "commitment": 410.0,
+   "drawdown": 68.0,
+   "distribution": 10.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 57.0,
    "distribution": 38.0,
    "commitCount": 0
   },
   {
+   "month": "2025-10",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 43.0,
+   "distribution": 44.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 46.0,
+   "distribution": 16.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-10",
+   "assetClass": "인프라",
+   "commitment": 300.0,
+   "drawdown": 42.0,
+   "distribution": 9.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "PD",
+   "commitment": 380.0,
+   "drawdown": 62.0,
+   "distribution": 23.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 102.0,
+   "distribution": 104.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2025-11",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 44.0,
+   "distribution": 19.0,
+   "commitCount": 0
+  },
+  {
    "month": "2025-11",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 36.0,
-   "distribution": 40.0,
+   "drawdown": 12.0,
+   "distribution": 10.0,
    "commitCount": 0
   },
   {
    "month": "2025-12",
    "assetClass": "PD",
-   "commitment": 480.0,
-   "drawdown": 64.0,
-   "distribution": 39.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 103.0,
+   "distribution": 45.0,
+   "commitCount": 0
   },
   {
    "month": "2025-12",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 60.0,
-   "distribution": 54.0,
+   "drawdown": 71.0,
+   "distribution": 41.0,
    "commitCount": 0
   },
   {
    "month": "2025-12",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 38.0,
-   "distribution": 40.0,
+   "drawdown": 44.0,
+   "distribution": 21.0,
    "commitCount": 0
   },
   {
    "month": "2025-12",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 29.0,
+   "drawdown": 44.0,
+   "distribution": 11.0,
    "commitCount": 0
   },
   {
    "month": "2026-01",
    "assetClass": "PD",
-   "commitment": 380.0,
-   "drawdown": 88.0,
-   "distribution": 86.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-01",
-   "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 107.0,
+   "drawdown": 67.0,
    "distribution": 43.0,
    "commitCount": 0
   },
   {
    "month": "2026-01",
-   "assetClass": "부동산",
+   "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 25.0,
+   "drawdown": 99.0,
+   "distribution": 49.0,
    "commitCount": 0
   },
   {
    "month": "2026-01",
+   "assetClass": "부동산",
+   "commitment": 190.0,
+   "drawdown": 21.0,
+   "distribution": 14.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-01",
    "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 43.0,
-   "distribution": 16.0,
-   "commitCount": 0
+   "commitment": 360.0,
+   "drawdown": 74.0,
+   "distribution": 28.0,
+   "commitCount": 1
   },
   {
    "month": "2026-02",
    "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 64.0,
-   "distribution": 73.0,
+   "drawdown": 71.0,
+   "distribution": 46.0,
    "commitCount": 0
   },
   {
    "month": "2026-02",
    "assetClass": "PE",
-   "commitment": 300.0,
-   "drawdown": 52.0,
-   "distribution": 142.0,
+   "commitment": 240.0,
+   "drawdown": 89.0,
+   "distribution": 94.0,
    "commitCount": 1
   },
   {
    "month": "2026-02",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 16.0,
-   "distribution": 25.0,
+   "drawdown": 0.0,
+   "distribution": 21.0,
    "commitCount": 0
   },
   {
    "month": "2026-02",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 17.0,
+   "drawdown": 50.0,
    "distribution": 30.0,
    "commitCount": 0
   },
   {
    "month": "2026-03",
    "assetClass": "PD",
+   "commitment": 260.0,
+   "drawdown": 39.0,
+   "distribution": 52.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "PE",
+   "commitment": 420.0,
+   "drawdown": 93.0,
+   "distribution": 42.0,
+   "commitCount": 1
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 86.0,
+   "distribution": 28.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-03",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 62.0,
+   "distribution": 24.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-04",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 93.0,
+   "distribution": 56.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-04",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 105.0,
    "distribution": 59.0,
    "commitCount": 0
   },
   {
-   "month": "2026-03",
-   "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 61.0,
-   "distribution": 131.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-03",
+   "month": "2026-04",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 45.0,
-   "distribution": 38.0,
+   "drawdown": 59.0,
+   "distribution": 35.0,
    "commitCount": 0
   },
   {
-   "month": "2026-03",
+   "month": "2026-04",
    "assetClass": "인프라",
-   "commitment": 210.0,
-   "drawdown": 53.0,
-   "distribution": 37.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "PD",
    "commitment": 0.0,
-   "drawdown": 47.0,
-   "distribution": 55.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "PE",
-   "commitment": 300.0,
-   "drawdown": 98.0,
-   "distribution": 83.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-04",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 16.0,
+   "drawdown": 35.0,
    "distribution": 20.0,
    "commitCount": 0
   },
   {
-   "month": "2026-04",
-   "assetClass": "인프라",
-   "commitment": 0.0,
-   "drawdown": 27.0,
-   "distribution": 36.0,
-   "commitCount": 0
-  },
-  {
    "month": "2026-05",
    "assetClass": "PD",
-   "commitment": 210.0,
-   "drawdown": 127.0,
-   "distribution": 78.0,
+   "commitment": 260.0,
+   "drawdown": 72.0,
+   "distribution": 58.0,
    "commitCount": 1
   },
   {
    "month": "2026-05",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 59.0,
-   "distribution": 72.0,
+   "drawdown": 62.0,
+   "distribution": 42.0,
    "commitCount": 0
   },
   {
    "month": "2026-05",
    "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 31.0,
-   "distribution": 45.0,
-   "commitCount": 0
+   "commitment": 160.0,
+   "drawdown": 41.0,
+   "distribution": 36.0,
+   "commitCount": 1
   },
   {
    "month": "2026-05",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 36.0,
+   "drawdown": 74.0,
+   "distribution": 39.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 47.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "PE",
+   "commitment": 0.0,
+   "drawdown": 53.0,
+   "distribution": 133.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "부동산",
+   "commitment": 0.0,
+   "drawdown": 49.0,
+   "distribution": 24.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-06",
+   "assetClass": "인프라",
+   "commitment": 0.0,
+   "drawdown": 34.0,
+   "distribution": 41.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-07",
+   "assetClass": "PD",
+   "commitment": 0.0,
+   "drawdown": 79.0,
    "distribution": 53.0,
    "commitCount": 0
   },
   {
-   "month": "2026-06",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 28.0,
-   "distribution": 79.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "PE",
-   "commitment": 380.0,
-   "drawdown": 104.0,
-   "distribution": 83.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "부동산",
-   "commitment": 0.0,
-   "drawdown": 20.0,
-   "distribution": 46.0,
-   "commitCount": 0
-  },
-  {
-   "month": "2026-06",
-   "assetClass": "인프라",
-   "commitment": 230.0,
-   "drawdown": 101.0,
-   "distribution": 65.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-07",
-   "assetClass": "PD",
-   "commitment": 240.0,
-   "drawdown": 110.0,
-   "distribution": 75.0,
-   "commitCount": 1
-  },
-  {
    "month": "2026-07",
    "assetClass": "PE",
-   "commitment": 0.0,
-   "drawdown": 105.0,
-   "distribution": 105.0,
-   "commitCount": 0
+   "commitment": 320.0,
+   "drawdown": 121.0,
+   "distribution": 88.0,
+   "commitCount": 1
   },
   {
    "month": "2026-07",
    "assetClass": "부동산",
    "commitment": 0.0,
    "drawdown": 11.0,
-   "distribution": 38.0,
+   "distribution": 43.0,
    "commitCount": 0
   },
   {
    "month": "2026-07",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 57.0,
+   "drawdown": 48.0,
+   "distribution": 33.0,
    "commitCount": 0
   },
   {
    "month": "2026-08",
    "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 69.0,
-   "distribution": 96.0,
-   "commitCount": 0
+   "commitment": 310.0,
+   "drawdown": 26.0,
+   "distribution": 52.0,
+   "commitCount": 1
   },
   {
    "month": "2026-08",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 108.0,
-   "distribution": 63.0,
+   "drawdown": 67.0,
+   "distribution": 95.0,
    "commitCount": 0
   },
   {
    "month": "2026-08",
    "assetClass": "부동산",
-   "commitment": 170.0,
-   "drawdown": 27.0,
-   "distribution": 47.0,
-   "commitCount": 1
+   "commitment": 0.0,
+   "drawdown": 35.0,
+   "distribution": 19.0,
+   "commitCount": 0
   },
   {
    "month": "2026-08",
    "assetClass": "인프라",
-   "commitment": 200.0,
+   "commitment": 0.0,
+   "drawdown": 24.0,
+   "distribution": 4.0,
+   "commitCount": 0
+  },
+  {
+   "month": "2026-09",
+   "assetClass": "PD",
+   "commitment": 0.0,
    "drawdown": 42.0,
-   "distribution": 37.0,
-   "commitCount": 1
-  },
-  {
-   "month": "2026-09",
-   "assetClass": "PD",
-   "commitment": 0.0,
-   "drawdown": 24.0,
-   "distribution": 36.0,
+   "distribution": 35.0,
    "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "PE",
    "commitment": 0.0,
-   "drawdown": 19.0,
-   "distribution": 93.0,
+   "drawdown": 54.0,
+   "distribution": 76.0,
    "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "부동산",
    "commitment": 0.0,
-   "drawdown": 13.0,
-   "distribution": 24.0,
+   "drawdown": 9.0,
+   "distribution": 19.0,
    "commitCount": 0
   },
   {
    "month": "2026-09",
    "assetClass": "인프라",
    "commitment": 0.0,
-   "drawdown": 17.0,
-   "distribution": 25.0,
+   "drawdown": 36.0,
+   "distribution": 12.0,
    "commitCount": 0
   }
  ],
@@ -3414,7 +3449,13 @@ window.ALT_DATA = {
     return;
   }
 
-  // ---------- 기본 정보 ----------
+  // ---------- 지표 정의 ----------
+  const METRICS = [
+    { key: 'commit', tkey: 'commitment', label: '약정', color: 'var(--s-commit)', note: '신규 약정' },
+    { key: 'call', tkey: 'drawdown', label: '집행', color: 'var(--s-call)', note: '캐피털콜 납입' },
+    { key: 'dist', tkey: 'distribution', label: '분배', color: 'var(--s-dist)', note: '회수' },
+    { key: 'net', tkey: 'net', label: '순증', color: 'var(--s-net)', note: '집행 − 분배' },
+  ];
   const UNIT = D.unit || '억원';
   const U = UNIT.endsWith('원') ? UNIT.slice(0, -1) : UNIT;
   const asOf = parseDate(D.asOf);
@@ -3430,7 +3471,7 @@ window.ALT_DATA = {
     yearsWithFlows.add(+f.month.slice(0, 4));
   }
 
-  // ---------- 상태 (기준연도 · 자산군 · 카드별 보기) ----------
+  // ---------- 상태 ----------
   const KEY = 'alt-dashboard-state';
   function loadState() { try { const s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? s : null; } catch (e) { return null; } }
   function saveState() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 저장 불가 환경 */ } }
@@ -3444,31 +3485,47 @@ window.ALT_DATA = {
   // ---------- 집계 ----------
   function parseDate(s) { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(); }
   function lastMonth(year) { return year < asOfY ? 12 : year === asOfY ? asOfM : 0; }
+  function zero() { return { commit: 0, call: 0, dist: 0, net: 0, n: 0 }; }
   function cellSum(year, m, cls) {
     const ym = year + '-' + String(m).padStart(2, '0');
     const list = cls === ALL ? CLASSES : [cls];
-    const out = { commit: 0, call: 0, dist: 0, n: 0 };
+    const o = zero();
     for (const c of list) {
       const f = flowMap.get(ym + '|' + c);
       if (!f) continue;
-      out.commit += +f.commitment || 0; out.call += +f.drawdown || 0; out.dist += +f.distribution || 0; out.n += +f.commitCount || 0;
+      o.commit += +f.commitment || 0; o.call += +f.drawdown || 0; o.dist += +f.distribution || 0; o.n += +f.commitCount || 0;
     }
-    return out;
+    o.net = o.call - o.dist;
+    return o;
   }
   function monthly(year, cls) { const L = lastMonth(year); return Array.from({ length: 12 }, (_, i) => i < L ? cellSum(year, i + 1, cls) : null); }
   function cumulative(arr) {
-    let c = { commit: 0, call: 0, dist: 0, n: 0 };
-    return arr.map(v => v ? (c = { commit: c.commit + v.commit, call: c.call + v.call, dist: c.dist + v.dist, n: c.n + v.n }) : null);
+    let c = zero();
+    return arr.map(v => v ? (c = { commit: c.commit + v.commit, call: c.call + v.call, dist: c.dist + v.dist, net: c.net + v.net, n: c.n + v.n }) : null);
   }
-  function targetFor(year, cls) { return D.targets.filter(t => +t.year === year && (cls === ALL || t.assetClass === cls)).reduce((s, t) => s + (+t.target || 0), 0); }
+  function status(year, cls) { const L = lastMonth(year), cum = cumulative(monthly(year, cls)); return (L > 0 && cum[L - 1]) || zero(); }
+  function prevSame(year, cls) {
+    if (!yearsWithFlows.has(year - 1)) return null;
+    const L = lastMonth(year), cum = cumulative(monthly(year - 1, cls));
+    return (L > 0 && cum[L - 1]) || zero();
+  }
+  function targetsOf(year, cls) {
+    const o = { commitment: 0, drawdown: 0, distribution: 0, net: 0 };
+    for (const t of D.targets) {
+      if (+t.year !== year || (cls !== ALL && t.assetClass !== cls)) continue;
+      o.commitment += +t.commitment || +t.target || 0; o.drawdown += +t.drawdown || 0; o.distribution += +t.distribution || 0; o.net += +t.net || 0;
+    }
+    return o;
+  }
+  function ratio(actual, target) { return target ? actual / target : null; }
   function periodOf(year) { const L = lastMonth(year); return L >= 12 ? '1~12월' : L > 0 ? '1~' + L + '월' : '데이터 없음'; }
 
   // ---------- 서식 ----------
   const nf = new Intl.NumberFormat('ko-KR', { maximumFractionDigits: 0 });
-  function fmt(v) { return (v == null || isNaN(v)) ? '–' : nf.format(Math.round(v)); }
+  function fmt(v) { if (v == null || isNaN(v)) return '–'; const r = Math.round(v); return (r < 0 ? '−' : '') + nf.format(Math.abs(r)); }
   function fmtU(v) { return (v == null || isNaN(v)) ? '–' : fmt(v) + U; }
-  function fmtSigned(v) { if (v == null || isNaN(v)) return '–'; const r = Math.round(v); return (r > 0 ? '+' : r < 0 ? '−' : '') + fmt(Math.abs(r)); }
-  function fmtPct(v, d) { return (v == null || !isFinite(v)) ? '–' : (v * 100).toFixed(d || 0) + '%'; }
+  function fmtSigned(v) { if (v == null || isNaN(v)) return '–'; const r = Math.round(v); return (r > 0 ? '+' : '') + fmt(r); }
+  function fmtPct(v, d) { if (v == null || !isFinite(v)) return '–'; const p = v * 100; return (p < 0 ? '−' : '') + Math.abs(p).toFixed(d || 0) + '%'; }
 
   // ---------- DOM 도우미 ----------
   const NS = 'http://www.w3.org/2000/svg';
@@ -3484,12 +3541,15 @@ window.ALT_DATA = {
     if (children) for (const c of children) if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
     return e;
   }
+  function keySwatch(color, cls) { const k = el('span', { class: cls || 'key' }); k.style.background = color; return k; }
   function barPath(x, y, w, h, r, dir) {
     if (h <= 0) return '';
     r = Math.min(r, w / 2, h);
     if (dir === 'down') return 'M' + x + ',' + y + ' V' + (y + h - r) + ' Q' + x + ',' + (y + h) + ' ' + (x + r) + ',' + (y + h) + ' H' + (x + w - r) + ' Q' + (x + w) + ',' + (y + h) + ' ' + (x + w) + ',' + (y + h - r) + ' V' + y + ' Z';
     return 'M' + x + ',' + (y + h) + ' V' + (y + r) + ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y + ' H' + (x + w - r) + ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + ' V' + (y + h) + ' Z';
   }
+  // 기준선에서 v까지 자라는 막대 (음수면 아래로)
+  function vbar(x, w, v, y, y0) { return v >= 0 ? barPath(x, y(v), w, y0 - y(v), 4, 'up') : barPath(x, y0, w, y(v) - y0, 4, 'down'); }
   function niceTicks(max, count) {
     max = Math.max(max, 1); count = count || 4;
     const raw = max / count, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
@@ -3498,6 +3558,13 @@ window.ALT_DATA = {
     for (let v = 0; v < max + step * 0.999 && ticks.length < 20; v += step) ticks.push(Math.round(v * 1e6) / 1e6);
     if (ticks[ticks.length - 1] < max) ticks.push(Math.round((ticks[ticks.length - 1] + step) * 1e6) / 1e6);
     return ticks;
+  }
+  // 양·음 값을 모두 담는 눈금: [최소, 최대] 와 눈금 목록
+  function scaleFor(vals, count) {
+    const hi = Math.max(0, ...vals), lo = Math.min(0, ...vals);
+    const pos = hi > 0 ? niceTicks(hi, count) : [0];
+    const neg = lo < 0 ? niceTicks(-lo, Math.max(1, Math.round(count * (-lo) / Math.max(hi, -lo)))).slice(1).map(v => -v) : [];
+    return { lo: neg.length ? neg[neg.length - 1] : 0, hi: pos[pos.length - 1], ticks: [...neg.reverse(), ...pos] };
   }
   function resolveLabels(labels, gap, minY, maxY) {
     labels.sort((a, b) => a.y - b.y);
@@ -3513,15 +3580,41 @@ window.ALT_DATA = {
       return el('span', { class: 'item' }, [sw, el('span', { text: it.label })]);
     }));
   }
-  function table(headers, rows, opts) {
+  function meterEl(r, color, pace) {
+    const m = el('span', { class: 'meter', role: 'img', 'aria-label': '달성률 ' + fmtPct(r) + (pace != null ? ', 연간 진도 ' + Math.round(pace * 100) + '%' : '') }, [el('i')]);
+    if (color) { m.dataset.c = '1'; m.style.setProperty('--mc', color); }
+    m.firstChild.style.width = (r == null ? 0 : Math.min(100, Math.max(0, r * 100))) + '%';
+    if (pace != null && pace > 0 && pace < 1) { const b = el('b'); b.style.left = (pace * 100) + '%'; m.appendChild(b); }
+    return m;
+  }
+  // 표: cols 는 문자열 배열, opts.groups 는 [{label, span, color}] 로 위쪽 헤더 행을 만든다
+  function table(cols, rows, opts) {
     opts = opts || {};
     const t = el('table');
-    if (opts.caption) t.appendChild(el('caption', { class: 'sr-only', text: opts.caption }));
-    t.appendChild(el('thead', null, [el('tr', null, headers.map(h => el('th', { scope: 'col', text: h })))]));
+    const thead = el('thead');
+    const sepAt = new Set();
+    if (opts.groups) {
+      let c = 0;
+      thead.appendChild(el('tr', { class: 'group' }, opts.groups.map((g, gi) => {
+        if (gi > 0) sepAt.add(c);
+        c += g.span;
+        const th = el('th', { colspan: g.span, class: gi > 0 ? 'sep' : '' });
+        if (g.color) th.appendChild(keySwatch(g.color));
+        th.appendChild(document.createTextNode(g.label));
+        return th;
+      })));
+    }
+    thead.appendChild(el('tr', null, cols.map((h, i) => el('th', { scope: 'col', text: h, class: sepAt.has(i) ? 'sep' : '' }))));
+    t.appendChild(thead);
     const tb = el('tbody');
     rows.forEach((r, i) => {
       const tr = el('tr', { class: (opts.totalLast && i === rows.length - 1 ? 'total ' : '') + (opts.rowClass ? opts.rowClass(r, i) : '') });
-      r.forEach((c, j) => { const td = el('td'); if (c && c.nodeType) td.appendChild(c); else { td.textContent = c; if (typeof c === 'string' && c.startsWith('−')) td.classList.add('neg'); } if (j === 0) td.setAttribute('scope', 'row'); tr.appendChild(td); });
+      r.forEach((c, j) => {
+        const td = el('td', { class: sepAt.has(j) ? 'sep' : '' });
+        if (c && c.nodeType) td.appendChild(c); else { td.textContent = c; if (typeof c === 'string' && c.startsWith('−')) td.classList.add('neg'); }
+        if (j === 0) td.setAttribute('scope', 'row');
+        tr.appendChild(td);
+      });
       if (opts.onRow) opts.onRow(tr, r, i);
       tb.appendChild(tr);
     });
@@ -3533,8 +3626,8 @@ window.ALT_DATA = {
   const tip = document.getElementById('tooltip');
   function showTip(title, rows, x, y) {
     tip.replaceChildren(el('div', { class: 't', text: title }), ...rows.map(r => {
-      const k = el('span', { class: 'k ' + (r.color ? (r.shape || 'line') : 'none') });
-      if (r.color) k.style.background = r.color;
+      const k = el('span', { class: 'k ' + (r.shape === 'dash' ? 'dash' : r.color ? (r.shape || 'line') : 'none') });
+      if (r.color && r.shape !== 'dash') k.style.background = r.color;
       return el('div', { class: 'r' + (r.strong ? ' strong' : '') }, [k, el('span', { class: 'n', text: r.label }), el('span', { class: 'v', text: r.value })]);
     }));
     tip.hidden = false;
@@ -3555,9 +3648,12 @@ window.ALT_DATA = {
     $('#meta').textContent = '기준일 ' + D.asOf + ' · 단위 ' + UNIT;
     const L = lastMonth(state.year);
     $('#periodTitle').textContent = state.year + '년 ' + periodOf(state.year) + ' 누적 · ' + (state.cls === ALL ? '전체 자산군' : state.cls);
-    $('#periodNote').textContent = state.year === asOfY && L < 12 ? '진행 중인 연도 · 전년 동기(1~' + L + '월)와 비교' : state.year < asOfY ? '마감 연도 · 전년 전체와 비교' : '데이터 기준일 이후 연도';
+    $('#periodNote').textContent = state.year === asOfY && L < 12
+      ? '진행 중 · 연간 진도 ' + Math.round(L / 12 * 100) + '% (' + L + '/12개월) · 전년 동기(1~' + L + '월)와 비교'
+      : state.year < asOfY ? '마감 연도 · 전년 전체와 비교' : '데이터 기준일 이후 연도';
     const notes = [];
     if (D.note) notes.push(D.note);
+    notes.push('순증 = 집행 − 분배 (투자잔액 증가분)');
     notes.push('데이터 갱신: data/targets.csv · data/transactions.csv 수정 후 scripts/build.py 실행');
     $('#foot').replaceChildren(...notes.map(n => el('span', { text: n })));
   }
@@ -3573,64 +3669,34 @@ window.ALT_DATA = {
     seg($('#classSeg'), [{ value: ALL, label: ALL }, ...CLASSES.map(c => ({ value: c, label: c }))], state.cls, c => { state.cls = c; saveState(); renderAll(); });
   }
 
-  // ---------- 핵심 지표 ----------
-  function spark(vals, color) {
-    const w = 120, h = 28, n = vals.length, gap = 2, bw = (w - gap * (n - 1)) / n;
-    const max = Math.max(1, ...vals.map(v => v == null ? 0 : v));
-    let last = -1; vals.forEach((v, i) => { if (v != null) last = i; });
-    const s = svg('svg', { viewBox: '0 0 ' + w + ' ' + h, class: 'spark', 'aria-hidden': 'true', preserveAspectRatio: 'none' });
-    vals.forEach((v, i) => {
-      if (v == null) return;
-      const bh = Math.max(1.5, (v / max) * (h - 2));
-      s.appendChild(svg('rect', { x: i * (bw + gap), y: h - bh, width: bw, height: bh, fill: i === last ? color : 'var(--s-prev)' }));
-    });
-    return s;
-  }
-  function deltaEl(cur, prev, colored) {
+  // ---------- 지표 타일: 목표 · 현황 · 달성률 ----------
+  function deltaEl(cur, prev) {
     if (prev == null) return el('span', { class: 'delta flat', text: '전년 동기 자료 없음' });
     if (!prev) return el('span', { class: 'delta flat', text: cur ? '전년 동기 0' : '변동 없음' });
-    const r = cur / prev - 1, dir = r > 0.0005 ? 'up' : r < -0.0005 ? 'down' : 'flat';
+    const r = cur / Math.abs(prev) - Math.sign(prev), dir = r > 0.0005 ? 'up' : r < -0.0005 ? 'down' : 'flat';
     const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '■';
-    return el('span', { class: 'delta ' + (colored ? dir : 'flat'), text: arrow + ' ' + Math.abs(r * 100).toFixed(1) + '%', 'aria-label': (dir === 'up' ? '증가 ' : dir === 'down' ? '감소 ' : '보합 ') + Math.abs(r * 100).toFixed(1) + '%' });
-  }
-  function tile(o) {
-    const lab = el('div', { class: 'tile-label' });
-    if (o.color) { const k = el('span', { class: 'key' }); k.style.background = o.color; lab.appendChild(k); }
-    lab.appendChild(el('span', { text: o.label }));
-    const val = el('div', { class: 'tile-value' }, [o.value, el('span', { class: 'unit', text: o.unit == null ? U : o.unit })]);
-    const t = el('div', { class: 'tile' }, [lab, val]);
-    if (o.spark) t.appendChild(o.spark);
-    if (o.foot) t.appendChild(el('div', { class: 'tile-foot' }, o.foot));
-    return t;
+    return el('span', { class: 'delta ' + dir, text: arrow + ' ' + Math.abs(r * 100).toFixed(1) + '%', 'aria-label': (dir === 'up' ? '증가 ' : dir === 'down' ? '감소 ' : '보합 ') + Math.abs(r * 100).toFixed(1) + '%' });
   }
   function renderKpis() {
     const y = state.year, cls = state.cls, L = lastMonth(y);
-    const mon = monthly(y, cls), cum = cumulative(mon);
-    const now = (L > 0 && cum[L - 1]) || { commit: 0, call: 0, dist: 0, n: 0 };
-    const target = targetFor(y, cls);
-    const hasPrev = yearsWithFlows.has(y - 1);
-    const pcum = hasPrev ? cumulative(monthly(y - 1, cls)) : null;
-    const prev = (pcum && L > 0 && pcum[L - 1]) || (hasPrev ? { commit: 0, call: 0, dist: 0 } : null);
-    const ratio = target > 0 ? now.commit / target : null;
-    const meter = el('span', { class: 'meter', role: 'img', 'aria-label': '목표 달성률 ' + fmtPct(ratio) }, [el('i')]);
-    meter.firstChild.style.width = (ratio == null ? 0 : Math.min(100, ratio * 100)) + '%';
-    const net = now.dist - now.call;
-    const netVal = fmtSigned(net);
-    const tiles = [
-      tile({ label: '연간 목표 약정', value: target > 0 ? fmt(target) : '–', unit: target > 0 ? U : '', foot: [el('span', { text: (cls === ALL ? CLASSES.length + '개 자산군 합계' : cls + ' 목표') + ' · ' + y + '년' })] }),
-      tile({ label: '신규 약정', color: 'var(--s-commit)', value: fmt(now.commit), foot: [meter, el('span', { class: 'delta flat', text: '목표 대비 ' + fmtPct(ratio) })] }),
-      tile({ label: '집행 (캐피털콜)', color: 'var(--s-call)', value: fmt(now.call), spark: spark(mon.map(v => v && v.call), 'var(--s-call)'), foot: [deltaEl(now.call, prev && prev.call, false), el('span', { text: '전년 동기 대비' })] }),
-      tile({ label: '분배 (회수)', color: 'var(--s-dist)', value: fmt(now.dist), spark: spark(mon.map(v => v && v.dist), 'var(--s-dist)'), foot: [deltaEl(now.dist, prev && prev.dist, true), el('span', { text: '전년 동기 대비' })] }),
-      tile({ label: '순현금흐름', value: netVal, foot: [el('span', { class: 'delta ' + (net < 0 ? 'neg' : 'flat'), text: net >= 0 ? '순유입' : '순유출' }), el('span', { text: '분배 − 집행 · 신규 약정 ' + now.n + '건' })] }),
-    ];
-    if (net < 0) tiles[4].querySelector('.tile-value').classList.add('neg');
-    $('#kpis').replaceChildren(...tiles);
-    // 신규 약정 타일에도 전년 동기 비교를 붙인다
-    tiles[1].querySelector('.tile-foot').append(deltaEl(now.commit, prev && prev.commit, true), el('span', { text: '전년 동기 대비' }));
+    const st = status(y, cls), tg = targetsOf(y, cls), pv = prevSame(y, cls);
+    const pace = y === asOfY && L < 12 ? L / 12 : null;
+    $('#kpis').replaceChildren(...METRICS.map(mt => {
+      const actual = st[mt.key], target = tg[mt.tkey], r = ratio(actual, target);
+      const val = el('div', { class: 'tile-value' + (actual < 0 ? ' neg' : '') }, [fmt(actual), el('span', { class: 'unit', text: U })]);
+      const remain = target ? target - actual : null;
+      return el('div', { class: 'tile' }, [
+        el('div', { class: 'tile-label' }, [keySwatch(mt.color), el('span', { text: mt.label + ' 현황' }), el('span', { class: 'note', text: mt.note })]),
+        val,
+        el('div', { class: 'tile-target', text: target ? '목표 ' + fmtU(target) + ' · 잔여 ' + fmtU(remain) : '목표 없음' }),
+        el('div', { class: 'tile-foot' }, [meterEl(r, mt.color, pace), el('span', { class: 'rate', text: fmtPct(r) })]),
+        el('div', { class: 'tile-foot' }, [deltaEl(actual, pv && pv[mt.key]), el('span', { text: '전년 동기 대비' })]),
+      ]);
+    }));
   }
 
   // ---------- 카드 공통 ----------
-  function cardParts(id) { const card = $('[data-card="' + id + '"]'); return { card, chart: $('.chart', card), tableWrap: $('.table-wrap', card), legend: $('.legend', card) }; }
+  function cardParts(id) { const card = $('[data-card="' + id + '"]'); return { card, chart: $('.chart', card), tableWrap: $('.table-wrap', card), legend: $('.legend', card), sub: $('.sub', card) }; }
   function applyView(id) {
     const { card, chart, tableWrap } = cardParts(id);
     const view = state.views[id] === 'table' ? 'table' : 'chart';
@@ -3642,237 +3708,263 @@ window.ALT_DATA = {
     const id = b.closest('[data-card]').dataset.card;
     state.views[id] = b.dataset.view; saveState(); applyView(id);
   }));
+  function panelGrid(host, cols) { host.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))'; }
+  function metricGroups(first) { return [{ label: first, span: 1 }, ...METRICS.map(mt => ({ label: mt.label, span: 3, color: mt.color }))]; }
+  function metricCols() { return METRICS.flatMap(() => ['목표', '현황', '달성률']); }
+  function tripleCells(actual, target, color) { const r = ratio(actual, target); return [fmt(target), fmt(actual), rateCell(r, color)]; }
+  function rateCell(r, color) { const w = el('span'); w.append(meterEl(r, color), fmtPct(r)); return w; }
 
-  // ---------- 차트 1: 연도별 목표 약정 달성 ----------
-  function yearlyRows() {
-    return YEARS.map(y => {
-      const L = lastMonth(y), cum = cumulative(monthly(y, state.cls));
-      const actual = L > 0 && cum[L - 1] ? cum[L - 1].commit : 0, target = targetFor(y, state.cls);
-      return { year: y, target, actual, ratio: target > 0 ? actual / target : null, months: L };
-    });
-  }
-  function renderYearly() {
-    const { chart: host, tableWrap, legend } = cardParts('yearly');
-    const rows = yearlyRows();
-    legendInto(legend, [{ label: '목표 약정', color: 'var(--track)' }, { label: '신규 약정', color: 'var(--s-commit)' }]);
-    const W = Math.max(280, host.clientWidth || 560), H = 300;
-    const m = { t: 30, r: 12, b: 50, l: 52 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
-    const ticks = niceTicks(Math.max(1, ...rows.map(r => Math.max(r.target, r.actual))), 4), top = ticks[ticks.length - 1];
-    const y = v => m.t + ph - (v / top) * ph, y0 = y(0);
-    const band = pw / rows.length, bw = Math.min(24, Math.max(8, band * 0.42));
-    const s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': '연도별 목표 약정 대비 신규 약정' });
-    for (const t of ticks) {
+  // ---------- 차트 1: 연도별 목표 대비 실적 (지표별 소형 차트) ----------
+  function yearlyPanel(mt, rows, W) {
+    const H = 210, m = { t: 24, r: 6, b: 34, l: 42 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+    const sc = scaleFor(rows.flatMap(r => [r.tg[mt.tkey], r.st[mt.key]]), 3);
+    const y = v => m.t + ((sc.hi - v) / (sc.hi - sc.lo)) * ph, y0 = y(0);
+    const band = pw / rows.length, bw = Math.min(20, Math.max(6, band * 0.44));
+    const s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': mt.label + ' 연도별 목표 대비 실적' });
+    for (const t of sc.ticks) {
       s.appendChild(svg('line', { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), class: t === 0 ? 'baseline' : 'gridline' }));
-      s.appendChild(svg('text', { x: m.l - 8, y: y(t) + 4, 'text-anchor': 'end', class: 'tick' }, [fmt(t)]));
+      s.appendChild(svg('text', { x: m.l - 6, y: y(t) + 4, 'text-anchor': 'end', class: 'tick' }, [fmt(t)]));
     }
+    const track = 'color-mix(in srgb, ' + mt.color + ' 28%, var(--surface))';
     rows.forEach((r, i) => {
       const cx = m.l + band * (i + 0.5), x = cx - bw / 2, sel = r.year === state.year;
-      const g = svg('g', { class: 'bar-g' + (sel ? ' sel' : '') });
+      const target = r.tg[mt.tkey], actual = r.st[mt.key], rt = ratio(actual, target);
       const partial = r.year === asOfY && r.months < 12;
-      const hit = svg('rect', { x: m.l + band * i, y: m.t - 20, width: band, height: ph + 20 + m.b - 6, class: 'hit', tabindex: 0, role: 'button', 'aria-pressed': String(sel), 'aria-label': r.year + '년 목표 ' + fmtU(r.target) + ', 신규 약정 ' + fmtU(r.actual) + ', 달성률 ' + fmtPct(r.ratio) + '. 기준연도로 선택' });
+      const g = svg('g', { class: 'bar-g' + (sel ? ' sel' : '') });
+      const hit = svg('rect', { x: m.l + band * i, y: m.t - 16, width: band, height: ph + 16 + m.b - 4, class: 'hit', tabindex: 0, role: 'button', 'aria-pressed': String(sel), 'aria-label': r.year + '년 ' + mt.label + ' 목표 ' + fmtU(target) + ', 실적 ' + fmtU(actual) + ', 달성률 ' + fmtPct(rt) + '. 기준연도로 선택' });
       g.appendChild(hit);
-      if (r.target > 0) g.appendChild(svg('path', { d: barPath(x, y(r.target), bw, y0 - y(r.target), 4, 'up'), fill: 'var(--track)', class: 'track' }));
-      if (r.actual > 0) g.appendChild(svg('path', { d: barPath(x, y(r.actual), bw, y0 - y(r.actual), 4, 'up'), fill: 'var(--s-commit)', class: 'mark' }));
-      const topV = Math.max(r.target, r.actual);
-      if (r.ratio != null) g.appendChild(svg('text', { x: cx, y: y(topV) - 7, 'text-anchor': 'middle', class: 'lbl' }, [fmtPct(r.ratio)]));
-      else if (r.actual > 0) g.appendChild(svg('text', { x: cx, y: y(topV) - 7, 'text-anchor': 'middle', class: 'lbl muted' }, [fmt(r.actual)]));
-      g.appendChild(svg('text', { x: cx, y: H - m.b + 18, class: 'xlab' + (sel ? ' sel' : '') }, [String(r.year) + (partial ? '(' + r.months + '월)' : '')]));
-      if (band >= 58) g.appendChild(svg('text', { x: cx, y: H - m.b + 33, class: 'xlab sub' }, [r.target > 0 ? '목표 ' + fmt(r.target) : '목표 없음']));
-      if (sel) g.appendChild(svg('rect', { x: cx - 14, y: H - m.b + 39, width: 28, height: 2, rx: 1, fill: 'var(--accent)' }));
-      const rowsTip = () => [
-        { color: 'var(--track)', shape: 'rect', label: '목표 약정', value: fmtU(r.target) },
-        { color: 'var(--s-commit)', shape: 'rect', label: partial ? '신규 약정 (1~' + r.months + '월)' : '신규 약정', value: fmtU(r.actual) },
-        { label: '달성률', value: fmtPct(r.ratio), strong: true },
+      if (target) { const p = svg('path', { d: vbar(x, bw, target, y, y0), class: 'track' }); p.style.fill = track; g.appendChild(p); }
+      if (actual) g.appendChild(svg('path', { d: vbar(x, bw, actual, y, y0), fill: mt.color, class: 'mark' }));
+      const ext = Math.max(target || 0, actual || 0), low = Math.min(target || 0, actual || 0);
+      const labelText = rt != null ? fmtPct(rt) : (actual ? fmt(actual) : '');
+      if (labelText && (band >= 34 || sel)) {
+        const above = ext > 0 || low === 0;
+        s.appendChild(svg('text', { x: cx, y: above ? y(ext) - 6 : y(low) + 13, 'text-anchor': 'middle', class: 'lbl' + (rt == null ? ' muted' : '') }, [labelText]));
+      }
+      g.appendChild(svg('text', { x: cx, y: H - m.b + 16, class: 'xlab' + (sel ? ' sel' : '') }, [String(r.year)]));
+      if (partial) g.appendChild(svg('text', { x: cx, y: H - m.b + 28, class: 'xlab sub' }, ['1~' + r.months + '월']));
+      if (sel) g.appendChild(svg('rect', { x: cx - 12, y: H - m.b + (partial ? 31 : 20), width: 24, height: 2, rx: 1, fill: 'var(--accent)' }));
+      const rowsTip = [
+        { color: track, shape: 'rect', label: '목표', value: fmtU(target) },
+        { color: mt.color, shape: 'rect', label: partial ? '실적 (1~' + r.months + '월)' : '실적', value: fmtU(actual) },
+        { label: '달성률', value: fmtPct(rt), strong: true },
       ];
-      hit.addEventListener('pointerenter', e => showTip(r.year + '년', rowsTip(), e.clientX, e.clientY));
+      const title = r.year + '년 ' + mt.label;
+      hit.addEventListener('pointerenter', e => showTip(title, rowsTip, e.clientX, e.clientY));
       hit.addEventListener('pointermove', e => positionTip(e.clientX, e.clientY));
       hit.addEventListener('pointerleave', hideTip);
-      hit.addEventListener('focus', () => { const p = svgPoint(s, W, H, cx, y(topV)); showTip(r.year + '년', rowsTip(), p[0], p[1]); });
+      hit.addEventListener('focus', () => { const p = svgPoint(s, W, H, cx, y(Math.max(ext, 0))); showTip(title, rowsTip, p[0], p[1]); });
       hit.addEventListener('blur', hideTip);
       const select = () => { if (state.year !== r.year) { state.year = r.year; saveState(); hideTip(); renderAll(); } };
       hit.addEventListener('click', select);
       hit.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); } });
       s.appendChild(g);
     });
-    host.replaceChildren(s);
-    tableWrap.replaceChildren(table(['연도', '목표 약정 (' + U + ')', '신규 약정 (' + U + ')', '달성률'],
-      rows.map(r => [r.year + '년' + (r.year === asOfY && r.months < 12 ? ' (1~' + r.months + '월)' : ''), fmt(r.target), fmt(r.actual), fmtPct(r.ratio)]),
-      { rowClass: r => (r[0].startsWith(String(state.year)) ? 'sel' : '') }));
+    return s;
+  }
+  function renderYearly() {
+    const { chart: host, tableWrap, legend } = cardParts('yearly');
+    const rows = YEARS.map(y => ({ year: y, months: lastMonth(y), st: status(y, state.cls), tg: targetsOf(y, state.cls) }));
+    legendInto(legend, []);
+    const W = Math.max(280, host.clientWidth || 1100), gap = 20;
+    const cols = W >= 980 ? 4 : W >= 560 ? 2 : 1, pw = (W - gap * (cols - 1)) / cols;
+    panelGrid(host, cols);
+    host.replaceChildren(...METRICS.map(mt => {
+      const cur = rows.find(r => r.year === state.year);
+      const rt = cur ? ratio(cur.st[mt.key], cur.tg[mt.tkey]) : null;
+      return el('div', { class: 'panel' }, [
+        el('div', { class: 'panel-head' }, [keySwatch(mt.color), el('span', { text: mt.label }), el('span', { class: 'rate' }, [el('small', { text: state.year + '년 달성률' }), fmtPct(rt)])]),
+        yearlyPanel(mt, rows, Math.floor(pw)),
+      ]);
+    }));
+    tableWrap.replaceChildren(table(['연도', ...metricCols()],
+      rows.map(r => [r.year + '년' + (r.year === asOfY && r.months < 12 ? ' (1~' + r.months + '월)' : ''), ...METRICS.flatMap(mt => tripleCells(r.st[mt.key], r.tg[mt.tkey], mt.color))]),
+      { groups: metricGroups('연도'), rowClass: r => (r[0].startsWith(String(state.year)) ? 'sel' : '') }));
     applyView('yearly');
   }
 
-  // ---------- 차트 2: 연중 누적 추이 ----------
+  // ---------- 차트 2: 연중 누적 추이 (지표별 소형 차트, 크로스헤어 동기화) ----------
   function renderCum() {
     const { chart: host, tableWrap, legend } = cardParts('cum');
     const yv = state.year, cls = state.cls;
     const cur = cumulative(monthly(yv, cls));
     const hasPrev = yearsWithFlows.has(yv - 1);
     const prev = hasPrev ? cumulative(monthly(yv - 1, cls)) : null;
-    const target = targetFor(yv, cls);
-    const series = [
-      { key: 'commit', label: '약정 누적', color: 'var(--s-commit)', vals: cur.map(v => v ? v.commit : null) },
-      { key: 'call', label: '집행 누적', color: 'var(--s-call)', vals: cur.map(v => v ? v.call : null) },
-      { key: 'dist', label: '분배 누적', color: 'var(--s-dist)', vals: cur.map(v => v ? v.dist : null) },
-    ];
-    if (prev) series.push({ key: 'prev', label: (yv - 1) + '년 약정 누적', color: 'var(--s-prev)', vals: prev.map(v => v ? v.commit : null), context: true });
-    legendInto(legend, [...series.map(sr => ({ label: sr.label, color: sr.color, shape: 'line' })), target > 0 ? { label: '연간 목표 약정', shape: 'dash' } : null].filter(Boolean));
-
-    const W = Math.max(320, host.clientWidth || 700), H = 320, narrow = W < 520;
-    const m = { t: 18, r: narrow ? 64 : 108, b: 30, l: 52 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
-    const allVals = series.flatMap(sr => sr.vals.filter(v => v != null));
-    const ticks = niceTicks(Math.max(1, target, ...allVals), 4), top = ticks[ticks.length - 1];
-    const y = v => m.t + ph - (v / top) * ph, x = i => m.l + (pw / 11) * i;
-    const s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': yv + '년 연중 누적 약정·집행·분배 추이' });
-    for (const t of ticks) {
-      s.appendChild(svg('line', { x1: m.l, x2: m.l + pw, y1: y(t), y2: y(t), class: t === 0 ? 'baseline' : 'gridline' }));
-      s.appendChild(svg('text', { x: m.l - 8, y: y(t) + 4, 'text-anchor': 'end', class: 'tick' }, [fmt(t)]));
-    }
-    for (let i = 0; i < 12; i++) { if (narrow && i % 2) continue; s.appendChild(svg('text', { x: x(i), y: H - m.b + 18, class: 'xlab' }, [(i + 1) + '월'])); }
-    if (target > 0) s.appendChild(svg('line', { x1: m.l, x2: m.l + pw, y1: y(target), y2: y(target), class: 'ref' }));
-    const labels = [];
-    if (target > 0) labels.push({ y: y(target), py: y(target), px: m.l + pw, text: (narrow ? '' : '목표 ') + fmt(target), cls: 'lbl muted' });
-    if (!allVals.length) s.appendChild(svg('text', { x: m.l + pw / 2, y: m.t + ph / 2, class: 'empty' }, ['해당 기간 데이터가 없습니다']));
-    for (const sr of series) {
-      let d = '', li = -1;
-      sr.vals.forEach((v, i) => { if (v == null) return; d += (li < 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1); li = i; });
-      sr.last = li;
-      if (li < 0) continue;
-      s.appendChild(svg('path', { d, fill: 'none', stroke: sr.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
-      if (!sr.context) {
-        s.appendChild(svg('circle', { cx: x(li), cy: y(sr.vals[li]), r: 4.5, fill: sr.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
-        labels.push({ y: y(sr.vals[li]), py: y(sr.vals[li]), px: x(li), text: fmt(sr.vals[li]), cls: 'lbl' });
+    const tg = targetsOf(yv, cls);
+    legendInto(legend, [{ label: yv + '년 누적 실적 (지표 색)', shape: 'line', color: 'var(--ink-2)' }, hasPrev ? { label: (yv - 1) + '년 누적 실적', shape: 'line', color: 'var(--s-prev)' } : null, { label: '연간 목표', shape: 'dash' }].filter(Boolean));
+    const W = Math.max(280, host.clientWidth || 1100), gap = 20;
+    const cols = W >= 820 ? 2 : 1, pw = Math.floor((W - gap * (cols - 1)) / cols);
+    panelGrid(host, cols);
+    const panels = [];
+    const hideAll = () => { for (const p of panels) p.cross.setAttribute('visibility', 'hidden'); hideTip(); active = -1; };
+    let active = -1;
+    function showAt(i, k, cx, cy) {
+      active = i;
+      for (const p of panels) {
+        const v = p.vals[i], pv = p.pvals ? p.pvals[i] : null;
+        p.cl.setAttribute('x1', p.x(i)); p.cl.setAttribute('x2', p.x(i));
+        if (v == null) p.dot.setAttribute('visibility', 'hidden'); else { p.dot.removeAttribute('visibility'); p.dot.setAttribute('cx', p.x(i)); p.dot.setAttribute('cy', p.y(v)); }
+        if (p.pdot) { if (pv == null) p.pdot.setAttribute('visibility', 'hidden'); else { p.pdot.removeAttribute('visibility'); p.pdot.setAttribute('cx', p.x(i)); p.pdot.setAttribute('cy', p.y(pv)); } }
+        p.cross.removeAttribute('visibility');
       }
-    }
-    resolveLabels(labels, 15, m.t + 4, m.t + ph);
-    const lx = m.l + pw + 10;
-    for (const L of labels) {
-      if (Math.abs(L.y - L.py) > 2 || L.px < m.l + pw - 1) s.appendChild(svg('line', { x1: L.px + 6, y1: L.py, x2: lx - 3, y2: L.y, stroke: 'var(--axis)', 'stroke-width': 1 }));
-      s.appendChild(svg('text', { x: lx, y: L.y + 4, class: L.cls }, [L.text]));
-    }
-    // 크로스헤어 + 툴팁
-    const cross = svg('g', { visibility: 'hidden' });
-    const cl = svg('line', { y1: m.t, y2: m.t + ph, class: 'crossline' });
-    cross.appendChild(cl);
-    const dots = series.map(sr => { const c = svg('circle', { r: 4, fill: sr.color, stroke: 'var(--surface)', 'stroke-width': 2 }); cross.appendChild(c); return c; });
-    s.appendChild(cross);
-    const overlay = svg('rect', { x: m.l, y: m.t, width: pw, height: ph, class: 'hit explore', tabindex: 0, role: 'application', 'aria-label': '월별 값 탐색. 좌우 화살표로 이동' });
-    s.appendChild(overlay);
-    let ci = -1;
-    const lastIdx = Math.max(-1, ...series.map(sr => sr.last));
-    const hide = () => { ci = -1; cross.setAttribute('visibility', 'hidden'); hideTip(); };
-    function showAt(i, cx, cy) {
-      ci = i;
+      const p = panels[k], v = p.vals[i], pv = p.pvals ? p.pvals[i] : null;
       const rows = [];
-      series.forEach((sr, k) => {
-        const v = sr.vals[i];
-        if (v == null) { dots[k].setAttribute('visibility', 'hidden'); return; }
-        dots[k].removeAttribute('visibility'); dots[k].setAttribute('cx', x(i)); dots[k].setAttribute('cy', y(v));
-        rows.push({ color: sr.color, shape: 'line', label: sr.label, value: fmtU(v) });
-      });
-      if (!rows.length) { hide(); return; }
-      if (target > 0 && series[0].vals[i] != null) rows.push({ label: '목표 대비 약정', value: fmtPct(series[0].vals[i] / target), strong: true });
-      cl.setAttribute('x1', x(i)); cl.setAttribute('x2', x(i)); cross.removeAttribute('visibility');
-      showTip(yv + '년 ' + (i + 1) + '월 누적', rows, cx, cy);
+      if (v != null) rows.push({ color: p.mt.color, shape: 'line', label: '누적 실적', value: fmtU(v) });
+      if (p.target) rows.push({ shape: 'dash', label: '연간 목표', value: fmtU(p.target) });
+      if (v != null && p.target) rows.push({ label: '달성률', value: fmtPct(v / p.target), strong: true });
+      if (pv != null) rows.push({ color: 'var(--s-prev)', shape: 'line', label: (yv - 1) + '년 동기 누적', value: fmtU(pv) });
+      if (!rows.length) { hideAll(); return; }
+      showTip(yv + '년 ' + (i + 1) + '월 · ' + p.mt.label, rows, cx, cy);
     }
-    overlay.addEventListener('pointermove', e => {
-      const r = s.getBoundingClientRect(), sx = (e.clientX - r.left) * (W / r.width);
-      const i = Math.max(0, Math.min(11, Math.round((sx - m.l) / (pw / 11))));
-      if (i !== ci) showAt(i, e.clientX, e.clientY); else positionTip(e.clientX, e.clientY);
-    });
-    overlay.addEventListener('pointerleave', hide);
-    overlay.addEventListener('focus', () => { if (lastIdx >= 0) { const p = svgPoint(s, W, H, x(lastIdx), m.t + 10); showAt(lastIdx, p[0], p[1]); } });
-    overlay.addEventListener('blur', hide);
-    overlay.addEventListener('keydown', e => {
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      e.preventDefault();
-      let i = ci < 0 ? lastIdx : ci + (e.key === 'ArrowRight' ? 1 : -1);
-      i = Math.max(0, Math.min(11, i));
-      const p = svgPoint(s, W, H, x(i), m.t + 10); showAt(i, p[0], p[1]);
-    });
-    host.replaceChildren(s);
-    tableWrap.replaceChildren(table(['월', ...series.map(sr => sr.label + ' (' + U + ')'), ...(target > 0 ? ['목표 대비 약정'] : [])],
-      Array.from({ length: 12 }, (_, i) => [(i + 1) + '월', ...series.map(sr => fmt(sr.vals[i])), ...(target > 0 ? [series[0].vals[i] == null ? '–' : fmtPct(series[0].vals[i] / target)] : [])])));
+    host.replaceChildren(...METRICS.map((mt, k) => {
+      const vals = cur.map(v => v ? v[mt.key] : null), pvals = prev ? prev.map(v => v ? v[mt.key] : null) : null, target = tg[mt.tkey];
+      const W1 = pw, H = 230, narrow = W1 < 460, m = { t: 14, r: narrow ? 58 : 84, b: 26, l: 44 }, ppw = W1 - m.l - m.r, ph = H - m.t - m.b;
+      const all = [...vals.filter(v => v != null), ...(pvals ? pvals.filter(v => v != null) : []), target || 0];
+      const sc = scaleFor(all, 3);
+      const y = v => m.t + ((sc.hi - v) / (sc.hi - sc.lo)) * ph, x = i => m.l + (ppw / 11) * i;
+      const s = svg('svg', { viewBox: '0 0 ' + W1 + ' ' + H, width: W1, height: H, role: 'group', 'aria-label': yv + '년 ' + mt.label + ' 누적 추이' });
+      for (const t of sc.ticks) {
+        s.appendChild(svg('line', { x1: m.l, x2: m.l + ppw, y1: y(t), y2: y(t), class: t === 0 ? 'baseline' : 'gridline' }));
+        s.appendChild(svg('text', { x: m.l - 6, y: y(t) + 4, 'text-anchor': 'end', class: 'tick' }, [fmt(t)]));
+      }
+      for (let i = 0; i < 12; i++) { if (narrow && i % 2) continue; s.appendChild(svg('text', { x: x(i), y: H - m.b + 16, class: 'xlab' }, [(i + 1) + '월'])); }
+      const labels = [];
+      if (target) {
+        s.appendChild(svg('line', { x1: m.l, x2: m.l + ppw, y1: y(target), y2: y(target), class: 'ref' }));
+        labels.push({ y: y(target), py: y(target), px: m.l + ppw, text: (narrow ? '' : '목표 ') + fmt(target), cls: 'lbl muted' });
+      }
+      const line = (arr, color) => { let d = '', li = -1; arr.forEach((v, i) => { if (v == null) return; d += (li < 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1); li = i; }); if (li >= 0) s.appendChild(svg('path', { d, fill: 'none', stroke: color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' })); return li; };
+      if (pvals) line(pvals, 'var(--s-prev)');
+      const li = line(vals, mt.color);
+      if (li >= 0) {
+        s.appendChild(svg('circle', { cx: x(li), cy: y(vals[li]), r: 4.5, fill: mt.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+        labels.push({ y: y(vals[li]), py: y(vals[li]), px: x(li), text: fmt(vals[li]), cls: 'lbl' });
+      } else if (!pvals) {
+        s.appendChild(svg('text', { x: m.l + ppw / 2, y: m.t + ph / 2, class: 'empty' }, ['데이터 없음']));
+      }
+      resolveLabels(labels, 15, m.t + 4, m.t + ph);
+      const lx = m.l + ppw + 9;
+      for (const L of labels) {
+        if (Math.abs(L.y - L.py) > 2 || L.px < m.l + ppw - 1) s.appendChild(svg('line', { x1: L.px + 6, y1: L.py, x2: lx - 3, y2: L.y, stroke: 'var(--axis)', 'stroke-width': 1 }));
+        s.appendChild(svg('text', { x: lx, y: L.y + 4, class: L.cls }, [L.text]));
+      }
+      const cross = svg('g', { visibility: 'hidden' });
+      const cl = svg('line', { y1: m.t, y2: m.t + ph, class: 'crossline' });
+      const dot = svg('circle', { r: 4, fill: mt.color, stroke: 'var(--surface)', 'stroke-width': 2 });
+      const pdot = pvals ? svg('circle', { r: 3.5, fill: 'var(--s-prev)', stroke: 'var(--surface)', 'stroke-width': 2 }) : null;
+      cross.append(cl, ...(pdot ? [pdot] : []), dot);
+      s.appendChild(cross);
+      const overlay = svg('rect', { x: m.l, y: m.t, width: ppw, height: ph, class: 'hit explore', tabindex: 0, role: 'application', 'aria-label': mt.label + ' 월별 값 탐색. 좌우 화살표로 이동' });
+      s.appendChild(overlay);
+      const lastIdx = li;
+      overlay.addEventListener('pointermove', e => {
+        const r = s.getBoundingClientRect(), sx = (e.clientX - r.left) * (W1 / r.width);
+        const i = Math.max(0, Math.min(11, Math.round((sx - m.l) / (ppw / 11))));
+        if (i !== active || tip.hidden) showAt(i, k, e.clientX, e.clientY); else positionTip(e.clientX, e.clientY);
+      });
+      overlay.addEventListener('pointerleave', hideAll);
+      overlay.addEventListener('focus', () => { const i = lastIdx >= 0 ? lastIdx : 0; const p = svgPoint(s, W1, H, x(i), m.t + 8); showAt(i, k, p[0], p[1]); });
+      overlay.addEventListener('blur', hideAll);
+      overlay.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        e.preventDefault();
+        let i = active < 0 ? Math.max(lastIdx, 0) : active + (e.key === 'ArrowRight' ? 1 : -1);
+        i = Math.max(0, Math.min(11, i));
+        const p = svgPoint(s, W1, H, x(i), m.t + 8); showAt(i, k, p[0], p[1]);
+      });
+      panels.push({ mt, vals, pvals, target, cross, cl, dot, pdot, x, y });
+      const rt = li >= 0 ? ratio(vals[li], target) : null;
+      return el('div', { class: 'panel' }, [
+        el('div', { class: 'panel-head' }, [keySwatch(mt.color), el('span', { text: mt.label + ' 누적' }), el('span', { class: 'rate' }, [el('small', { text: '목표 대비' }), fmtPct(rt)])]),
+        s,
+      ]);
+    }));
+    tableWrap.replaceChildren(table(['월', ...METRICS.flatMap(() => ['누적 실적', '달성률'])],
+      Array.from({ length: 12 }, (_, i) => [(i + 1) + '월', ...METRICS.flatMap(mt => { const v = cur[i] ? cur[i][mt.key] : null; return [fmt(v), v == null ? '–' : fmtPct(ratio(v, tg[mt.tkey]))]; })]),
+      { groups: [{ label: '월', span: 1 }, ...METRICS.map(mt => ({ label: mt.label + ' (목표 ' + fmt(tg[mt.tkey]) + ')', span: 2, color: mt.color }))] }));
     applyView('cum');
   }
 
-  // ---------- 차트 3: 월별 집행·분배 ----------
+  // ---------- 표: 지표별 요약 ----------
+  function renderSummary() {
+    const { tableWrap, sub } = cardParts('summary');
+    const y = state.year, cls = state.cls, L = lastMonth(y);
+    const st = status(y, cls), tg = targetsOf(y, cls), pv = prevSame(y, cls);
+    sub.textContent = y + '년 ' + periodOf(y) + ' 누적 · ' + (cls === ALL ? '전체 자산군' : cls) + ' · 단위 ' + UNIT + (y === asOfY && L < 12 ? ' · 연간 진도 ' + Math.round(L / 12 * 100) + '%' : '');
+    const rows = METRICS.map(mt => {
+      const actual = st[mt.key], target = tg[mt.tkey], r = ratio(actual, target);
+      const lead = el('span', { class: 'lead' }, [keySwatch(mt.color), mt.label]);
+      const prevCell = pv ? fmt(pv[mt.key]) : '–';
+      return [lead, fmt(target), fmt(actual), rateCell(r, mt.color), target ? fmt(target - actual) : '–', prevCell, deltaEl(actual, pv && pv[mt.key])];
+    });
+    tableWrap.replaceChildren(table(['지표', '목표', '현황', '달성률', '잔여', '전년 동기', '전년비'], rows));
+  }
+
+  // ---------- 차트 3: 월별 집행·분배·순증 ----------
   function renderFlow() {
     const { chart: host, tableWrap, legend } = cardParts('flow');
     const yv = state.year, cls = state.cls, mon = monthly(yv, cls);
-    legendInto(legend, [{ label: '분배 (유입)', color: 'var(--s-dist)' }, { label: '집행 (유출)', color: 'var(--s-call)' }]);
-    const W = Math.max(320, host.clientWidth || 700), H = 280, narrow = W < 520;
-    const m = { t: 18, r: 12, b: 30, l: 52 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
-    const maxD = Math.max(0, ...mon.map(v => v ? v.dist : 0)), maxC = Math.max(0, ...mon.map(v => v ? v.call : 0));
-    const tPos = niceTicks(Math.max(maxD, 1), 3), tNeg = niceTicks(Math.max(maxC, 1), 3);
-    const top = tPos[tPos.length - 1], bot = tNeg[tNeg.length - 1];
-    const y = v => m.t + ((top - v) / (top + bot)) * ph, y0 = y(0);
+    const C = { call: METRICS[1], dist: METRICS[2], net: METRICS[3] };
+    legendInto(legend, [{ label: '집행 (잔액 증가)', color: C.call.color }, { label: '분배 (잔액 감소)', color: C.dist.color }, { label: '순증', color: C.net.color, shape: 'dot' }]);
+    const W = Math.max(320, host.clientWidth || 600), H = 280, narrow = W < 520;
+    const m = { t: 16, r: 12, b: 30, l: 48 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+    const sc = scaleFor(mon.flatMap(v => v ? [v.call, -v.dist, v.net] : []), 3);
+    const y = v => m.t + ((sc.hi - v) / (sc.hi - sc.lo)) * ph, y0 = y(0);
     const band = pw / 12, bw = Math.min(24, Math.max(6, band * 0.5));
-    const s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': yv + '년 월별 집행과 분배' });
-    const gridAt = (v, label) => {
-      s.appendChild(svg('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), class: v === 0 ? 'baseline' : 'gridline' }));
-      s.appendChild(svg('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end', class: 'tick' }, [label]));
-    };
-    for (const t of tPos) gridAt(t, fmt(t));
-    for (const t of tNeg) if (t > 0) gridAt(-t, '−' + fmt(t));
+    const s = svg('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'group', 'aria-label': yv + '년 월별 집행·분배·순증' });
+    for (const t of sc.ticks) {
+      s.appendChild(svg('line', { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), class: t === 0 ? 'baseline' : 'gridline' }));
+      s.appendChild(svg('text', { x: m.l - 8, y: y(t) + 4, 'text-anchor': 'end', class: 'tick' }, [fmt(t)]));
+    }
     if (!mon.some(Boolean)) s.appendChild(svg('text', { x: m.l + pw / 2, y: m.t + ph / 2, class: 'empty' }, ['해당 기간 데이터가 없습니다']));
+    const dotsLayer = svg('g');
     mon.forEach((v, i) => {
       const cx = m.l + band * (i + 0.5), x = cx - bw / 2;
       if (!narrow || i % 2 === 0) s.appendChild(svg('text', { x: cx, y: H - m.b + 18, class: 'xlab' }, [(i + 1) + '월']));
       if (!v) return;
       const g = svg('g', { class: 'bar-g' });
-      const net = v.dist - v.call;
-      const hit = svg('rect', { x: m.l + band * i, y: m.t, width: band, height: ph, class: 'hit', tabindex: 0, 'aria-label': yv + '년 ' + (i + 1) + '월 분배 ' + fmtU(v.dist) + ', 집행 ' + fmtU(v.call) + ', 순현금흐름 ' + fmtSigned(net) + U });
-      g.appendChild(hit);
-      if (v.dist > 0) g.appendChild(svg('path', { d: barPath(x, y(v.dist), bw, y0 - 1 - y(v.dist), 4, 'up'), fill: 'var(--s-dist)', class: 'mark' }));
-      if (v.call > 0) g.appendChild(svg('path', { d: barPath(x, y0 + 1, bw, y(-v.call) - y0 - 1, 4, 'down'), fill: 'var(--s-call)', class: 'mark' }));
-      const rows = [
-        { color: 'var(--s-dist)', shape: 'rect', label: '분배', value: '+' + fmt(v.dist) + U },
-        { color: 'var(--s-call)', shape: 'rect', label: '집행', value: '−' + fmt(v.call) + U },
-        { label: '순현금흐름', value: fmtSigned(net) + U, strong: true },
-      ];
       const title = yv + '년 ' + (i + 1) + '월';
+      const hit = svg('rect', { x: m.l + band * i, y: m.t, width: band, height: ph, class: 'hit', tabindex: 0, 'aria-label': title + ' 집행 ' + fmtU(v.call) + ', 분배 ' + fmtU(v.dist) + ', 순증 ' + fmtU(v.net) });
+      g.appendChild(hit);
+      if (v.call > 0) g.appendChild(svg('path', { d: barPath(x, y(v.call), bw, y0 - 1 - y(v.call), 4, 'up'), fill: C.call.color, class: 'mark' }));
+      if (v.dist > 0) g.appendChild(svg('path', { d: barPath(x, y0 + 1, bw, y(-v.dist) - y0 - 1, 4, 'down'), fill: C.dist.color, class: 'mark' }));
+      dotsLayer.appendChild(svg('circle', { cx, cy: y(v.net), r: 4, fill: C.net.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+      const rows = [
+        { color: C.call.color, shape: 'rect', label: '집행', value: '+' + fmt(v.call) + U },
+        { color: C.dist.color, shape: 'rect', label: '분배', value: '−' + fmt(v.dist) + U },
+        { color: C.net.color, shape: 'dot', label: '순증', value: fmtSigned(v.net) + U, strong: true },
+      ];
       hit.addEventListener('pointerenter', e => showTip(title, rows, e.clientX, e.clientY));
       hit.addEventListener('pointermove', e => positionTip(e.clientX, e.clientY));
       hit.addEventListener('pointerleave', hideTip);
-      hit.addEventListener('focus', () => { const p = svgPoint(s, W, H, cx, y(v.dist)); showTip(title, rows, p[0], p[1]); });
+      hit.addEventListener('focus', () => { const p = svgPoint(s, W, H, cx, y(v.call)); showTip(title, rows, p[0], p[1]); });
       hit.addEventListener('blur', hideTip);
       s.appendChild(g);
     });
+    s.appendChild(dotsLayer);
     host.replaceChildren(s);
-    const tRows = mon.map((v, i) => [(i + 1) + '월', v ? fmt(v.dist) : '–', v ? fmt(v.call) : '–', v ? fmtSigned(v.dist - v.call) : '–']);
-    const tot = mon.reduce((a, v) => v ? { d: a.d + v.dist, c: a.c + v.call } : a, { d: 0, c: 0 });
-    tRows.push(['합계', fmt(tot.d), fmt(tot.c), fmtSigned(tot.d - tot.c)]);
-    tableWrap.replaceChildren(table(['월', '분배 (' + U + ')', '집행 (' + U + ')', '순현금흐름 (' + U + ')'], tRows, { totalLast: true }));
+    const tRows = mon.map((v, i) => [(i + 1) + '월', v ? fmt(v.call) : '–', v ? fmt(v.dist) : '–', v ? fmt(v.net) : '–']);
+    const tot = mon.reduce((a, v) => v ? { c: a.c + v.call, d: a.d + v.dist } : a, { c: 0, d: 0 });
+    tRows.push(['합계', fmt(tot.c), fmt(tot.d), fmt(tot.c - tot.d)]);
+    tableWrap.replaceChildren(table(['월', '집행 (' + U + ')', '분배 (' + U + ')', '순증 (' + U + ')'], tRows, { totalLast: true }));
     applyView('flow');
   }
 
-  // ---------- 표: 자산군별 현황 ----------
+  // ---------- 표: 자산군별 목표·현황·달성률 ----------
   function renderByClass() {
-    const { tableWrap } = cardParts('byClass');
-    const yv = state.year, L = lastMonth(yv);
-    const rows = CLASSES.map(c => {
-      const cum = cumulative(monthly(yv, c));
-      const now = (L > 0 && cum[L - 1]) || { commit: 0, call: 0, dist: 0, n: 0 };
-      const target = targetFor(yv, c);
-      return { name: c, target, ...now, ratio: target > 0 ? now.commit / target : null };
-    });
-    const tot = rows.reduce((a, r) => ({ name: '합계', target: a.target + r.target, commit: a.commit + r.commit, call: a.call + r.call, dist: a.dist + r.dist, n: a.n + r.n }), { target: 0, commit: 0, call: 0, dist: 0, n: 0 });
-    tot.ratio = tot.target > 0 ? tot.commit / tot.target : null;
-    const all = [...rows, tot];
-    const meterCell = r => {
-      const wrap = el('span', null);
-      const mtr = el('span', { class: 'meter', 'aria-hidden': 'true' }, [el('i')]);
-      mtr.firstChild.style.width = (r.ratio == null ? 0 : Math.min(100, r.ratio * 100)) + '%';
-      wrap.append(mtr, fmtPct(r.ratio));
-      return wrap;
-    };
-    tableWrap.replaceChildren(table(['자산군', '목표', '신규 약정', '달성률', '집행', '분배', '순현금흐름'],
-      all.map(r => [r.name, fmt(r.target), fmt(r.commit), meterCell(r), fmt(r.call), fmt(r.dist), fmtSigned(r.dist - r.call)]),
+    const { tableWrap, sub } = cardParts('byClass');
+    const yv = state.year;
+    const rows = CLASSES.map(c => ({ name: c, st: status(yv, c), tg: targetsOf(yv, c) }));
+    rows.push({ name: '합계', st: status(yv, ALL), tg: targetsOf(yv, ALL) });
+    sub.textContent = yv + '년 ' + periodOf(yv) + ' 누적 · 단위 ' + UNIT + ' · 행을 누르면 해당 자산군으로 조회합니다';
+    tableWrap.replaceChildren(table(['자산군', ...metricCols()],
+      rows.map(r => [r.name, ...METRICS.flatMap(mt => tripleCells(r.st[mt.key], r.tg[mt.tkey], mt.color))]),
       {
+        groups: metricGroups('자산군'),
         totalLast: true,
-        rowClass: (r, i) => (i < rows.length ? (rows[i].name === state.cls ? 'sel' : '') : (state.cls === ALL ? 'sel' : '')),
+        rowClass: (r, i) => { const v = i < CLASSES.length ? CLASSES[i] : ALL; return v === state.cls ? 'sel' : ''; },
         onRow: (tr, r, i) => {
-          const value = i < rows.length ? rows[i].name : ALL;
+          const value = i < CLASSES.length ? CLASSES[i] : ALL;
           tr.setAttribute('tabindex', '0'); tr.setAttribute('role', 'button');
           tr.setAttribute('aria-label', (value === ALL ? '전체 자산군' : value) + '으로 조회');
           const pick = () => { if (state.cls !== value) { state.cls = value; saveState(); renderAll(); } };
@@ -3880,7 +3972,6 @@ window.ALT_DATA = {
           tr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
         },
       }));
-    $('.sub', cardParts('byClass').card).textContent = yv + '년 ' + periodOf(yv) + ' 누적 · 단위 ' + UNIT + ' · 행을 누르면 해당 자산군으로 조회합니다';
   }
 
   // ---------- 렌더 파이프라인 ----------
@@ -3888,11 +3979,10 @@ window.ALT_DATA = {
   function renderAll() {
     renderHeader(); renderFilters(); renderKpis();
     for (const id in charts) charts[id]();
-    renderByClass();
+    renderSummary(); renderByClass();
   }
   renderAll();
 
-  // 폭이 바뀌면 해당 차트만 다시 그린다
   if ('ResizeObserver' in window) {
     let pending = null;
     const ro = new ResizeObserver(entries => {

@@ -2,7 +2,8 @@
 """CSV 입력을 대시보드용 데이터로 변환한다.
 
 입력
-  data/targets.csv       year, asset_class, target
+  data/targets.csv       year, asset_class, commitment, drawdown, distribution, net
+                         (열 이름은 약정/집행/분배/순증 도 인식. net 이 비어 있으면 drawdown − distribution)
   data/transactions.csv  date(YYYY-MM-DD), fund, asset_class, type(약정|집행|분배), amount
 
 출력
@@ -25,6 +26,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 DIST = ROOT / "dist"
+
+TARGET_COLS = {
+    "commitment": ("commitment", "commit", "target", "약정", "약정목표", "약정 목표"),
+    "drawdown": ("drawdown", "call", "집행", "집행목표", "집행 목표"),
+    "distribution": ("distribution", "dist", "분배", "분배목표", "분배 목표"),
+    "net": ("net", "net_increase", "순증", "순증목표", "순증 목표"),
+}
 
 TYPE_KEY = {
     "약정": "commitment", "commitment": "commitment", "commit": "commitment",
@@ -53,10 +61,22 @@ def build(as_of: dt.date | None, unit: str, note: str | None) -> dict:
         if c and c not in classes:
             classes.append(c)
 
-    targets = [
-        {"year": int(r["year"]), "assetClass": r["asset_class"], "target": to_number(r["target"])}
-        for r in targets_raw if r.get("year")
-    ]
+    def pick(row: dict[str, str], names: tuple[str, ...]) -> float | None:
+        for n in names:
+            for k, v in row.items():
+                if k.lower() == n and v != "":
+                    return to_number(v)
+        return None
+
+    targets = []
+    for r in targets_raw:
+        if not r.get("year"):
+            continue
+        vals = {key: pick(r, names) for key, names in TARGET_COLS.items()}
+        if vals["net"] is None and vals["drawdown"] is not None and vals["distribution"] is not None:
+            vals["net"] = vals["drawdown"] - vals["distribution"]
+        targets.append({"year": int(r["year"]), "assetClass": r["asset_class"],
+                        **{k: (v if v is not None else 0.0) for k, v in vals.items()}})
 
     flows: dict[tuple[str, str], dict] = defaultdict(
         lambda: {"commitment": 0.0, "drawdown": 0.0, "distribution": 0.0, "commitCount": 0})
