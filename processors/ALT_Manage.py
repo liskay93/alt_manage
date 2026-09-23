@@ -7,7 +7,9 @@
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_KRW, AMT_LOCAL
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
-#              같은 펀드·기준일에 통화 유형별 행이 여러 개 → 원화는 CURR_ID='KRW' 행, 펀드 통화는 CURR_TYP=PCAP_LOCAL_TYP 행
+#              같은 펀드·기준일에 통화 유형별 행이 여러 개 → 원화는 CURR_ID='KRW' 행,
+#              펀드 통화는 CURR_TYP=PCAP_LOCAL_TYP 행이되 그 행의 CURR_ID 가 펀드 통화(FEIAI0488NTA.CURR_CD)와 같을 때만 쓴다
+#              다르면(예: EUR 펀드가 USD 로 보고) raw_fx 가 있으면 원화 증분 ÷ 기준일 환율로 환산, 없으면 로컬은 비운다(NaN)
 #              (CD/CP 의 뜻은 확인 중. 아래 PCAP_LOCAL_TYP / PCAP_KRW_PREF 로 조정)
 #              금액은 PCAP_DATE 기준 누적(확인 완료) → 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
@@ -15,6 +17,7 @@
 #              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
+#   raw_fx     sql/ALT_FX.sql      환율 (선택)  WRK_DT, CURR_ID, RATE(원/1단위). PCAP 에 펀드 통화 행이 없는 펀드의 로컬 환산용
 #   asof       기준일 (None 이면 약정·PCAP 의 마지막 날짜). 기준일 이후 자료는 제외
 #
 # 출력 (사전)  실패하면 {}
@@ -93,7 +96,8 @@ def _pcap_wide(df):
     krw = krw[keys + ["FUNDED_AMT", "DISTRB_AMT"]].rename(columns={"FUNDED_AMT": "FUNDED_KRW", "DISTRB_AMT": "DISTRB_KRW"})
     # 펀드 통화: CURR_TYP=PCAP_LOCAL_TYP 행 (KRW 펀드는 원화 행과 같은 값)
     loc = df[df["CURR_TYP"] == PCAP_LOCAL_TYP].drop_duplicates(keys, keep="last")
-    loc = loc[keys + ["FUNDED_AMT", "DISTRB_AMT"]].rename(columns={"FUNDED_AMT": "FUNDED_LOCAL", "DISTRB_AMT": "DISTRB_LOCAL"})
+    loc = loc[keys + ["CURR_ID", "FUNDED_AMT", "DISTRB_AMT"]].rename(
+        columns={"CURR_ID": "LOCAL_CCY", "FUNDED_AMT": "FUNDED_LOCAL", "DISTRB_AMT": "DISTRB_LOCAL"})
     wide = krw.merge(loc, how="outer", on=keys)
     return wide
 
@@ -107,6 +111,8 @@ def _prep_pcap(raw, cumulative):
     df = df.dropna(subset=["WRK_DT"])
     if "CURR_ID" in df:                       # 통화 유형별 long 형식 (실제 SQL 결과)
         df = _pcap_wide(df)
+    if "LOCAL_CCY" not in df:                 # 예전 wide 형식: 로컬 행 통화를 모르면 펀드 통화와 같다고 본다
+        df["LOCAL_CCY"] = None
     cols = ["FUNDED_KRW", "FUNDED_LOCAL", "DISTRB_KRW", "DISTRB_LOCAL"]
     for c in cols:
         df[c] = _num(df, c)
@@ -117,9 +123,35 @@ def _prep_pcap(raw, cumulative):
         for c in cols:
             d = df.groupby("FUND_KEY")[c].diff()
             df[c] = d.where(d.notna(), df[c])
-    funded = df[["WRK_DT", "FUND_KEY"]].assign(TX_TYPE="집행", AMT_KRW=df["FUNDED_KRW"], AMT_LOCAL=df["FUNDED_LOCAL"])
-    distrb = df[["WRK_DT", "FUND_KEY"]].assign(TX_TYPE="분배", AMT_KRW=df["DISTRB_KRW"], AMT_LOCAL=df["DISTRB_LOCAL"])
+    funded = df[["WRK_DT", "FUND_KEY", "LOCAL_CCY"]].assign(TX_TYPE="집행", AMT_KRW=df["FUNDED_KRW"], AMT_LOCAL=df["FUNDED_LOCAL"])
+    distrb = df[["WRK_DT", "FUND_KEY", "LOCAL_CCY"]].assign(TX_TYPE="분배", AMT_KRW=df["DISTRB_KRW"], AMT_LOCAL=df["DISTRB_LOCAL"])
     return pd.concat([funded, distrb], ignore_index=True)
+
+
+def _prep_fx(raw):
+    """환율 원재료 (선택) → WRK_DT, CURR_ID, RATE"""
+    if raw is None or raw.empty:
+        return None
+    df = raw.copy()
+    df.columns = df.columns.str.upper()
+    df["WRK_DT"] = _to_date(df["WRK_DT"])
+    df["CURR_ID"] = df["CURR_ID"].astype(str).str.strip().str.upper()
+    df["RATE"] = pd.to_numeric(df["RATE"], errors="coerce")
+    return df.dropna(subset=["WRK_DT", "RATE"]).sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]]
+
+
+def _fill_local_by_fx(cf, fx):
+    """로컬 금액이 비어 있는 행을 원화 ÷ 기준일 환율(직전 값)로 채운다. 억원 → 백만: × 100 / 환율"""
+    need = cf["AMT_LOCAL"].isna() & (cf["CCY"] != "KRW")
+    if fx is None or not need.any():
+        return cf
+    part = cf[need].copy()
+    part["_IDX"] = part.index                      # merge_asof 가 인덱스를 새로 매기므로 원래 위치를 기억
+    part = part.sort_values("WRK_DT")
+    merged = pd.merge_asof(part, fx.rename(columns={"CURR_ID": "CCY"}), on="WRK_DT", by="CCY", direction="backward")
+    vals = (merged["AMT_KRW"] * 100 / merged["RATE"].replace(0, pd.NA)).astype(float)
+    cf.loc[merged["_IDX"].values, "AMT_LOCAL"] = vals.values
+    return cf
 
 
 def _prep_target(raw):
@@ -173,7 +205,7 @@ def _with_total(df, keys, cols):
     return pd.concat([df, total], ignore_index=True)
 
 
-def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True):
+def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True, raw_fx=None):
     if any(x is None or x.empty for x in [raw_commit, raw_pcap, raw_target]):
         return {}
     commit = _prep_commit(raw_commit)
@@ -182,6 +214,7 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     if commit.empty or pcap.empty or tg.empty:
         return {}
     fund_master = _prep_fund(raw_fund)
+    fx = _prep_fx(raw_fx)
 
     # ---- 기준일: 약정은 asof, 집행·분배는 asof 이하 마지막 PCAP 기준일
     asof = pd.Timestamp(asof) if asof is not None else max(commit["WRK_DT"].max(), pcap["WRK_DT"].max())
@@ -205,6 +238,14 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     # ---- long 현금흐름 하나로 합치고 펀드 속성을 붙인다
     cf = pd.concat([commit[["WRK_DT", "FUND_KEY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]], pcap], ignore_index=True)
     cf = cf.join(attrs[["FUND_NM", "ASSET_CLS", "CCY"]], on="FUND_KEY")
+    # PCAP 로컬 행의 통화가 펀드 통화와 다르면(예: EUR 펀드가 USD 로 보고) 그 값은 버리고 환율로 환산하거나 비운다
+    if "LOCAL_CCY" in cf:
+        mismatch = cf["LOCAL_CCY"].notna() & (cf["LOCAL_CCY"] != cf["CCY"])
+        cf.loc[mismatch, "AMT_LOCAL"] = pd.NA
+        cf = cf.drop(columns=["LOCAL_CCY"])
+    cf["AMT_LOCAL"] = pd.to_numeric(cf["AMT_LOCAL"], errors="coerce")
+    cf = _fill_local_by_fx(cf, fx)
+    cf["LOCAL_MISSING"] = cf["AMT_LOCAL"].isna()
     cf["YEAR"] = cf["WRK_DT"].dt.year
     cf["MONTH"] = cf["WRK_DT"].dt.month
 
@@ -267,7 +308,12 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
         funds[t + "_L"] = fy[("AMT_LOCAL", t)] if ("AMT_LOCAL", t) in fy.columns else 0.0
     funds["순증"] = funds["집행"] - funds["분배"]
     funds["순증_L"] = funds["집행_L"] - funds["분배_L"]
-    funds = funds.reset_index().sort_values(["FUND_KEY", "YEAR"])
+    # 로컬 금액을 구할 수 없는 펀드·연도(환율 없음)는 로컬 열을 비운다
+    miss = cf[cf["LOCAL_MISSING"]].groupby(["FUND_KEY", "YEAR"]).size()
+    funds = funds.reset_index()
+    missing_rows = funds.set_index(["FUND_KEY", "YEAR"]).index.isin(miss.index)
+    funds.loc[missing_rows, [m + "_L" for m in METRICS if m != "약정"]] = pd.NA
+    funds = funds.sort_values(["FUND_KEY", "YEAR"])
     funds["FUND"] = funds["FUND_KEY"].map(attrs["FUND_NM"])
     funds["CLS"] = funds["FUND_KEY"].map(attrs["ASSET_CLS"])
     funds["CCY"] = funds["FUND_KEY"].map(attrs["CCY"])
