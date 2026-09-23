@@ -27,7 +27,7 @@ function p(text, opts) { return new Paragraph({ spacing: { after: 100 }, childre
 function bullet(text) { return new Paragraph({ numbering: { reference: "bullets", level: 0 }, spacing: { after: 60 }, children: [new TextRun({ text, font: BODY_FONT, size: 20 })] }); }
 
 const DESC = {
-  "sql/ALT_Fund.sql": "펀드 마스터. FEIAI0488NTA(펀드코드·펀드명·빈티지·통화) + MAAMC0101DTM(ATVT_PGM_FUND_CD → 자산군). Oracle (+) 외부조인",
+  "sql/ALT_Fund.sql": "펀드 마스터. FEIAI0488NTA(펀드코드·펀드명·빈티지·통화) + MAAMC0101DTM_CW01(ATVT_PGM_FUND_CD → 자산군). Oracle (+) 외부조인",
   "sql/ALT_Commit.sql": "약정 내역. FEIAI0488NTA. AGRT_AMT 는 CURR_CD 통화·단위 1 → KRW 는 억원, 외화는 백만. 외화 원화는 processor 가 약정일 환율로 환산",
   "sql/ALT_PCAP.sql": "집행·분배·NAV 분기 스냅샷. FEIAI0432NTA 최신 제공일 한 벌, GCM 보고 기준, 통화 유형(CD/CP)별 long. 누적값은 processor 가 분기 증분으로 변환",
   "sql/ALT_FX.sql": "환율. FMCBI0006NTA 일별, 1 USD 당 통화 단위. KRW 행 ÷ 통화 행 = 원/1단위 는 processor 가 계산",

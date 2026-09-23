@@ -27,9 +27,11 @@ except cx_Oracle.DatabaseError as e:
 
 # 0-1) 원천 테이블·컬럼 이름 확인 (둘 다 떠야 정상)
 print(pd.read_sql("SELECT NPS_FUND_CD, DEAL_NM, CURR_CD, VNTG_YR FROM FEIAI0488NTA WHERE ROWNUM <= 3", conn))
-print(pd.read_sql("SELECT FUND_CD, ATVT_PGM_FUND_CD FROM MAAMC0101DTM WHERE ROWNUM <= 3", conn))
+print(pd.read_sql("SELECT FUND_CD, ATVT_PGM_FUND_CD FROM MAAMC0101DTM_CW01 WHERE ROWNUM <= 3", conn))
+# 조인 확인: 약정 테이블 펀드 중 MAAMC0101DTM_CW01 에서 찾아지는 펀드 수 (TOTAL 과 비슷해야 정상)
+print(pd.read_sql("SELECT COUNT(*) AS total, SUM(CASE WHEN EXISTS (SELECT 1 FROM MAAMC0101DTM_CW01 q WHERE q.FUND_CD = a.NPS_FUND_CD) THEN 1 ELSE 0 END) AS matched FROM FEIAI0488NTA a", conn))
 
-# 1) 펀드 마스터: 펀드 수, 자산군 분포(미분류가 많으면 MAAMC0101DTM 조인 문제), 이름 없는 펀드 수
+# 1) 펀드 마스터: 펀드 수, 자산군 분포(미분류가 많으면 MAAMC0101DTM_CW01 조인 문제), 이름 없는 펀드 수
 raw_fund = loader.load_data(conn, "ALT_Fund.sql")
 print(len(raw_fund), "펀드")
 print(raw_fund["ASSET_CLS"].value_counts(dropna=False))
@@ -54,7 +56,8 @@ raw_fx = loader.load_data(conn, "ALT_FX.sql")
 print(len(raw_fx), "행", raw_fx["WRK_DT"].min(), "~", raw_fx["WRK_DT"].max())
 print(raw_fx.sort_values("WRK_DT").groupby("CURR_ID").tail(1))'''
 
-CHECKS = """- MAAMC0101DTM 의 펀드코드 컬럼을 'funcd_cd' 로 받아 FUND_CD 로 적었습니다. 0-1) 둘째 줄에서 ORA-00904 가 나면 이름이 다른 것이니 알려 주세요
+CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아 FUND_CD 로 적었습니다. 0-1) 둘째 줄에서 ORA-00904 가 나거나 조인 확인의 MATCHED 가 0 에 가까우면 조인 키가 다른 것이니 알려 주세요
+- 프로그램 코드 컬럼은 ATVT_PGM_FUND_CD, 테이블은 MAAMC0101DTM_CW01 입니다
 - 조인은 LEFT JOIN 대신 Oracle (+) 외부조인, 주석은 -- 대신 맨 위 /* */ 한 곳으로 바꿨습니다 (missing keyword 대응)
 - 펀드명은 FEIAI0488NTA.DEAL_NM 에서 바로 가져옵니다 (FEIAI0432NTA 조인 제거)
 - FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
