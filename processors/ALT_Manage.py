@@ -7,6 +7,7 @@
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_KRW, AMT_LOCAL
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
+#              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
 #              같은 펀드·기준일에 통화 유형별 행이 여러 개 → 원화는 CURR_ID='KRW' 행,
 #              펀드 통화는 CURR_TYP=PCAP_LOCAL_TYP 행이되 그 행의 CURR_ID 가 펀드 통화(FEIAI0488NTA.CURR_CD)와 같을 때만 쓴다
 #              다르면(예: EUR 펀드가 USD 로 보고) raw_fx 가 있으면 원화 증분 ÷ 기준일 환율로 환산, 없으면 로컬은 비운다(NaN)
@@ -88,6 +89,11 @@ def _pcap_wide(df):
     df["CURR_TYP"] = df["CURR_TYP"].fillna("").astype(str).str.strip().str.upper() if "CURR_TYP" in df else ""
     for c in ["FUNDED_AMT", "DISTRB_AMT"]:
         df[c] = _num(df, c)
+    # 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 STATE_DT(명세서/갱신 일자) 가 늦은 행만 남긴다
+    if "STATE_DT" in df:
+        df["STATE_DT"] = _to_date(df["STATE_DT"])
+        df = df.sort_values(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID", "STATE_DT"])
+        df = df.drop_duplicates(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID"], keep="last")
     keys = ["FUND_KEY", "WRK_DT"]
     # 원화: CURR_ID='KRW' 행. 여러 개면 PCAP_KRW_PREF 순서로 하나
     krw = df[df["CURR_ID"] == "KRW"].copy()
