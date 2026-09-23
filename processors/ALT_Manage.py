@@ -19,7 +19,7 @@
 #              열: 연도, 자산군(사모/부동산/인프라), 약정, 집행, 회수, 순증   (회수 = 분배. 순증이 비면 집행 − 회수, 회수가 비면 집행 − 순증)
 #              DB 에서 올 때의 열 이름(TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW)도 받는다
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
-#              PGM_CD(AVTV_PGM_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
+#              PGM_CD(ATVT_PGM_FUND_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
 #   raw_fx     sql/ALT_FX.sql      환율 (FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
 #              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
@@ -59,7 +59,7 @@ LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
 # 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
 CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
-# 액티브 프로그램 코드(AVTV_PGM_CD) → 세부 분류명 (형님 엑셀 기준, docs/AVTV_PGM_CD.csv). 앞 3자리가 자산군
+# 액티브 프로그램 코드(ATVT_PGM_FUND_CD) → 세부 분류명 (형님 엑셀 기준, docs/ATVT_PGM_FUND_CD.csv). 앞 3자리가 자산군
 PGM_CLASS = {"XPV": "사모벤처", "XRE": "부동산", "XIF": "인프라"}
 PGM_NAMES = {
     "XPV01": "Buyout",

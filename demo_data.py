@@ -54,7 +54,7 @@ def load_demo():
     raw_target = pd.read_excel(Path(__file__).resolve().parent / "data" / "ALT_Target.xlsx", sheet_name="목표")
 
     first = c.sort_values("date").drop_duplicates("code")
-    # 액티브 프로그램 코드(AVTV_PGM_CD) 흉내: 자산군별 코드 중 하나를 펀드 번호로 돌려 가며 배정
+    # 액티브 프로그램 코드(ATVT_PGM_FUND_CD) 흉내: 자산군별 코드 중 하나를 펀드 번호로 돌려 가며 배정
     pgm_pool = {"사모벤처": ["XPV01", "XPV03", "XPV04", "XPV05", "XPV09", "XPV10", "XPV11"],
                 "부동산": ["XRE01", "XRE02", "XRE03", "XRE04"], "인프라": ["XIF02", "XIF03", "XIF05", "XIF06"]}
     pgm = [pgm_pool[cls][int(code[1:]) % len(pgm_pool[cls])] for code, cls in zip(first["code"], first["asset_class"])]

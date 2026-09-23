@@ -4,7 +4,7 @@
 
 | # | 테이블 | 필수 | 용도 | 상태 |
 |---|---|---|---|---|
-| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | ✅ 완료 — FEIAI0488NTA (펀드코드·빈티지·통화) + MAAMC0101DTM (FUND_CD, AVTV_PGM_CD → 자산군·세부 분류), 펀드명은 FEIAI0488NTA.DEAL_NM. sql/ALT_Fund.sql 완성 (FUND_CD 표기 확인 필요) |
+| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | ✅ 완료 — FEIAI0488NTA (펀드코드·빈티지·통화) + MAAMC0101DTM (FUND_CD, ATVT_PGM_FUND_CD → 자산군·세부 분류), 펀드명은 FEIAI0488NTA.DEAL_NM. sql/ALT_Fund.sql 완성 (FUND_CD 표기 확인 필요) |
 | 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | ✅ 완료 — FEIAI0488NTA (AGRT_DT YYYYMMDD, AGRT_AMT 는 CURR_CD 통화·단위 1, 펀드당 1행). 외화 약정은 약정일 환율로 원화 환산. sql/ALT_Commit.sql 완성 |
 | 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | ✅ 완료 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적, GCM 기준, CD=투자통화·CP=보고통화, 단위 1, PCAP_DATE YYYYMMDD, STATE_DATE 중복 없음). sql/ALT_PCAP.sql 완성 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | ✅ 완료 — FEIAI0432NTA (DISTRB_AMT). 3번과 같음 |
@@ -95,8 +95,8 @@ DB 가 아니라 엑셀 양식 `data/ALT_Target.xlsx` 의 '목표' 시트로 받
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
 | FEIAI0488NTA | NPS_FUND_CD 펀드코드, DEAL_NM 펀드명, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자(YYYYMMDD), AGRT_AMT 약정금액(CURR_CD 통화, 단위 1), 펀드당 1행 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | 없음 (외화 약정의 원화 환산 기준 = 약정일 환율, 다른 기준이면 알려 주세요) |
-| MAAMC0101DTM | FUND_CD 펀드코드('funcd_cd' 로 전달받음), AVTV_PGM_CD 액티브 프로그램 코드 | 1 펀드 마스터: 자산군·세부 분류 | 컬럼명이 FUND_CD 가 맞는지, 펀드당 1행인지 |
-| (엑셀) AVTV_PGM_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 자산군(코드 앞 3자리 XPV/XRE/XIF), 펀드 표의 세부 분류 꼬리표 | 없음 |
+| MAAMC0101DTM | FUND_CD 펀드코드('funcd_cd' 로 전달받음), ATVT_PGM_FUND_CD 액티브 프로그램 코드 | 1 펀드 마스터: 자산군·세부 분류 | 컬럼명이 FUND_CD 가 맞는지, 펀드당 1행인지 |
+| (엑셀) ATVT_PGM_FUND_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 자산군(코드 앞 3자리 XPV/XRE/XIF), 펀드 표의 세부 분류 꼬리표 | 없음 |
 | FMCBI0006NTA | WRK_DT 기준일(YYYYMMDD, 일별), CURR_CD 통화, MSCI_EXRT 환율(1 USD 당 해당 통화 단위) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 없음 (USD 행이 없어도 KRW 행으로 만든다) |
 | FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(중복 없음). 금액 단위 1, PCAP_DATE YYYYMMDD | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 이력 시작 시점(최신 제공일 한 벌에 PCAP_DATE 가 언제부터 있는지) |
 

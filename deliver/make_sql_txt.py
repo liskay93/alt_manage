@@ -27,7 +27,7 @@ except cx_Oracle.DatabaseError as e:
 
 # 0-1) 원천 테이블·컬럼 이름 확인 (둘 다 떠야 정상)
 print(pd.read_sql("SELECT NPS_FUND_CD, DEAL_NM, CURR_CD, VNTG_YR FROM FEIAI0488NTA WHERE ROWNUM <= 3", conn))
-print(pd.read_sql("SELECT FUND_CD, AVTV_PGM_CD FROM MAAMC0101DTM WHERE ROWNUM <= 3", conn))
+print(pd.read_sql("SELECT FUND_CD, ATVT_PGM_FUND_CD FROM MAAMC0101DTM WHERE ROWNUM <= 3", conn))
 
 # 1) 펀드 마스터: 펀드 수, 자산군 분포(미분류가 많으면 MAAMC0101DTM 조인 문제), 이름 없는 펀드 수
 raw_fund = loader.load_data(conn, "ALT_Fund.sql")
