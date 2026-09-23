@@ -1,0 +1,83 @@
+# ===== 2026년 점검: 자산군 × 약정·집행·회수·순증 (억원) =====
+# 앞의 확인 셀에서 만든 raw_fund, raw_commit, raw_pcap, raw_fx 를 그대로 쓴다 (processor 불필요)
+import pandas as pd
+
+Y = 2026
+ORDER = ["사모벤처", "부동산", "인프라", "미분류"]
+fm = raw_fund.drop_duplicates("FUND_CD").set_index("FUND_CD")
+cls_of, nm_of = fm["ASSET_CLS"], fm["FUND_NM"]
+
+# 1) 약정: 약정일이 2026년인 펀드. 외화는 약정일(없으면 직전 영업일) 환율로 원화 환산
+fx = raw_fx.copy()
+fx["WRK_DT"] = pd.to_datetime(fx["WRK_DT"])
+fx = fx.sort_values("WRK_DT")
+
+
+def krw_per_unit(ccy, dt):
+    """원/1단위 = (원/USD) ÷ (통화/USD). dt 이전 마지막 값. 없으면 NaN"""
+    k = fx[(fx["CURR_ID"] == "KRW") & (fx["WRK_DT"] <= dt)]["USD_RATE"]
+    u = fx[(fx["CURR_ID"] == ccy) & (fx["WRK_DT"] <= dt)]["USD_RATE"]
+    if k.empty:
+        return float("nan")
+    if u.empty:
+        return k.iloc[-1] if ccy == "USD" else float("nan")
+    return k.iloc[-1] / u.iloc[-1]
+
+
+c = raw_commit.copy()
+c["WRK_DT"] = pd.to_datetime(c["WRK_DT"])
+c = c[c["WRK_DT"].dt.year == Y].copy()
+c["약정_원화"] = [krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt) / 100          # 백만 × 원/단위 ÷ 100 = 억원
+                 for krw, loc, ccy, dt in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["WRK_DT"])]
+c["CLS"] = c["FUND_CD"].map(cls_of).fillna("미분류")
+
+# 2) 집행·회수: PCAP 원화(KRW) 행, CD 와 CP 가 다 있으면 CP.
+#    2026년 마지막 기준일 누적 − 2025년까지 마지막 기준일 누적 (2026년 신규 펀드는 이전 누적 0)
+p = raw_pcap.copy()
+p["WRK_DT"] = pd.to_datetime(p["WRK_DT"])
+p = p[p["CURR_ID"] == "KRW"].sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"])
+p = p.drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
+cur = p[p["WRK_DT"].dt.year == Y].groupby("FUND_CD").last()
+prv = p[p["WRK_DT"].dt.year < Y].groupby("FUND_CD").last()
+f = cur[["FUNDED_AMT", "DISTRB_AMT"]] - prv[["FUNDED_AMT", "DISTRB_AMT"]].reindex(cur.index).fillna(0)
+f["CLS"] = pd.Series(f.index, index=f.index).map(cls_of).fillna("미분류")
+
+# 3) 현황 표
+now = pd.DataFrame({
+    "약정": c.groupby("CLS")["약정_원화"].sum(),
+    "집행": f.groupby("CLS")["FUNDED_AMT"].sum(),
+    "회수": f.groupby("CLS")["DISTRB_AMT"].sum(),
+}).reindex(ORDER).fillna(0)
+now["순증"] = now["집행"] - now["회수"]
+if (now.loc["미분류"] == 0).all():
+    now = now.drop(index="미분류")
+now.loc["합계"] = now.sum()
+
+# 4) 목표 대비 (data/ALT_Target.xlsx '목표' 시트, 사모 → 사모벤처)
+tg = pd.read_excel("data/ALT_Target.xlsx", sheet_name="목표")
+tg = tg[tg["연도"] == Y].copy()
+tg["자산군"] = tg["자산군"].replace({"사모": "사모벤처"})
+tg = tg.set_index("자산군")[["약정", "집행", "회수", "순증"]]
+tg["순증"] = tg["순증"].fillna(tg["집행"] - tg["회수"])          # 엑셀에서 한 번도 안 열어 수식 값이 없을 때
+tg.loc["합계"] = tg.sum()
+tg = tg.reindex(now.index)
+
+view = pd.concat({"목표": tg, "현황": now, "달성률%": now / tg.where(tg != 0) * 100}, axis=1)
+view = view.swaplevel(axis=1)[["약정", "집행", "회수", "순증"]]
+
+print("약정    : 2026-01-01 ~", c["WRK_DT"].max().date(), "|", len(c), "건 | 환율 없어 빠진 외화 약정", int(c["약정_원화"].isna().sum()), "건")
+print("집행·회수: PCAP 기준일", cur["WRK_DT"].max().date(), "까지 |", len(f), "펀드")
+print(view.round(0).to_string())
+
+# 5) 펀드별 상세를 엑셀로 (합계가 이상하면 여기서 펀드를 찾아본다)
+c_out = (c.assign(펀드명=c["FUND_CD"].map(nm_of))
+          [["FUND_CD", "펀드명", "CLS", "CCY", "WRK_DT", "AMT_LOCAL", "약정_원화"]]
+          .sort_values(["CLS", "약정_원화"], ascending=[True, False]))
+f_out = (f.assign(펀드명=pd.Series(f.index, index=f.index).map(nm_of), 순증=f["FUNDED_AMT"] - f["DISTRB_AMT"])
+          .rename(columns={"FUNDED_AMT": "집행", "DISTRB_AMT": "회수"})
+          .sort_values(["CLS", "집행"], ascending=[True, False]))
+with pd.ExcelWriter("ALT_2026_점검.xlsx") as w:
+    view.round(1).to_excel(w, sheet_name="요약")
+    c_out.to_excel(w, sheet_name="약정_펀드별", index=False)
+    f_out.to_excel(w, sheet_name="집행회수_펀드별")
+print("펀드별 상세: ALT_2026_점검.xlsx")
