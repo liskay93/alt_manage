@@ -4,7 +4,7 @@
 
 | # | 테이블 | 필수 | 용도 | 상태 |
 |---|---|---|---|---|
-| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | 🟡 거의 완료 — FEIAI0488NTA (펀드코드·빈티지·통화) + AVTV_PGM_CD 자산군·세부 분류 ✔ + FEIAI0432NTA.DEAL_NM 펀드명 ✔. AVTV_PGM_CD 가 FEIAI0488NTA 에 있는지만 확인 |
+| 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | 🟡 거의 완료 — FEIAI0488NTA (펀드코드·빈티지·통화) + MAAMC0101DTM.AVTV_PGM_CD 자산군·세부 분류 ✔ + FEIAI0432NTA.DEAL_NM 펀드명 ✔. MAAMC0101DTM 의 펀드코드 컬럼명만 확인 |
 | 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | 🟡 부분 — FEIAI0488NTA (AGRT_DT, AGRT_AMT). 금액 통화·단위, 날짜 형식 확인 중 |
 | 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적 ✔, GCM 기준 ✔, CD=투자통화·CP=보고통화 ✔). 단위·PCAP_DATE 형식·STATE_DATE 중복·이력 시작 확인 중 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | 🟡 부분 — FEIAI0432NTA (DISTRB_AMT). 3번과 같은 확인 사항 |
@@ -94,7 +94,8 @@
 
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
-| FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수, AVTV_PGM_CD 가 이 테이블에 있는지 |
+| FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
+| MAAMC0101DTM | AVTV_PGM_CD 액티브 프로그램 코드, 펀드코드 컬럼(이름 확인 중) | 1 펀드 마스터: 자산군·세부 분류 | 펀드코드 컬럼명, 펀드당 1행인지 |
 | (엑셀) AVTV_PGM_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 자산군(코드 앞 3자리 XPV/XRE/XIF), 펀드 표의 세부 분류 꼬리표 | 없음 |
 | FMCBI0006NTA | WRK_DT 기준일(YYYYMMDD, 일별), CURR_CD 통화, MSCI_EXRT 환율(1 USD 당 해당 통화 단위) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 없음 (USD 행이 없어도 KRW 행으로 만든다) |
 | FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(확인 중) | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 금액 단위, PCAP_DATE 형식, STATE_DATE 중복 여부, 이력 시작 시점 |
@@ -103,7 +104,7 @@
 
 | 체크리스트 | SQL 파일 | 돌려주는 열 (대문자) | 상태 |
 |---|---|---|---|
-| 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR | 🟡 FEIAI0488NTA + AVTV_PGM_CD + FEIAI0432NTA.DEAL_NM 반영. AVTV_PGM_CD 위치 확인만 남음 |
+| 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR | 🟡 FEIAI0488NTA + MAAMC0101DTM(AVTV_PGM_CD) + FEIAI0432NTA(DEAL_NM). MAAMC0101DTM 조인 키 대기 |
 | 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_KRW, AMT_LOCAL | 🟡 FEIAI0488NTA 반영, 금액 단위 대기 |
 | 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, GCM, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | 🟡 FEIAI0432NTA 반영, 단위·CD/CP 대기 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
