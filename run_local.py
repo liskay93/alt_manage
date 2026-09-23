@@ -23,12 +23,18 @@ try:
         raw_alt_pcap = loader.load_data(conn, "ALT_PCAP.sql")         # FEIAI0432NTA 집행·분배(분기)
         raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
         raw_alt_fund = loader.load_data(conn, "ALT_Fund.sql")
+        try:
+            raw_alt_fx = loader.load_data(conn, "ALT_FX.sql")           # FMCBI0006NTA 환율 (보조, 없어도 됨)
+        except Exception:
+            logging.warning("ALT_FX.sql 로드 실패 → 환율 없이 진행")
+            raw_alt_fx = None
     else:
         import demo_data
         raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund = demo_data.load_demo()
+        raw_alt_fx = demo_data.load_demo_fx()
         logging.info("ORACLE_DSN 없음 → 데모 원재료 사용")
     global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(
-        raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund, asof=os.environ.get("ALT_ASOF"))
+        raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund, asof=os.environ.get("ALT_ASOF"), raw_fx=raw_alt_fx)
     logging.info("ALT_Manage 로드: 약정 %d행, PCAP %d행, 목표 %d행", len(raw_alt_commit), len(raw_alt_pcap), len(raw_alt_target))
 except Exception:
     logging.exception("ALT_Manage 로드 실패")

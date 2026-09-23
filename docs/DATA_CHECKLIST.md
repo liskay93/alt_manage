@@ -9,7 +9,7 @@
 | 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적 ✔, GCM 기준 ✔, CD=투자통화·CP=보고통화 ✔). 단위·PCAP_DATE 형식·STATE_DATE 중복·이력 시작 확인 중 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | 🟡 부분 — FEIAI0432NTA (DISTRB_AMT). 3번과 같은 확인 사항 |
 | 5 | 연도별 목표 | 필수 | 네 지표의 목표·달성률·잔여, 목표 점선 | ⬜ 미완료 |
-| 6 | 환율 | 선택 | PCAP 에 CD(투자 통화) 행이 빠진 펀드가 있을 때만 로컬 환산에 사용. 정상이면 불필요 | ⬜ 보류 |
+| 6 | 환율 | 선택 | PCAP 에 CD(투자 통화) 행이 빠진 펀드가 있을 때만 로컬 환산에 사용 | 🟡 부분 — FMCBI0006NTA (WRK_DT, MSCI_EXRT = 1 USD 당 통화). 통화 코드 컬럼명·날짜 형식 확인 중 |
 
 공통 규칙
 - 금액 기준은 **원화**. 지표·달성률·비중은 모두 원화로 계산하고, 로컬 통화는 펀드 카드에 병기만 합니다.
@@ -95,6 +95,7 @@
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
 | FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
+| FMCBI0006NTA | WRK_DT 기준일, MSCI_EXRT 환율(1 USD 당 해당 통화 단위), 통화 코드 컬럼(이름 확인 중) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 통화 코드 컬럼명, WRK_DT 형식, USD 행 존재, 일별/월말 |
 | FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), STATE_DATE(확인 중) | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 금액 단위, PCAP_DATE 형식, STATE_DATE 중복 여부, 이력 시작 시점 |
 
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
@@ -105,7 +106,7 @@
 | 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_KRW, AMT_LOCAL | 🟡 FEIAI0488NTA 반영, 금액 단위 대기 |
 | 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, GCM, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | 🟡 FEIAI0432NTA 반영, 단위·CD/CP 대기 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
-| 6 환율 | (없음) | 원화 금액이 거래에 있으면 불필요 | ⬜ |
+| 6 환율 | sql/ALT_FX.sql (long: 날짜·통화·USD 기준 환율) | WRK_DT, CURR_ID, USD_RATE | 🟡 FMCBI0006NTA 반영, 통화 컬럼명 대기 |
 
 SQL 의 `<<...>>` 는 확인 전 자리표시자이며 추측한 이름이 아닙니다. 아래 확인 쿼리로 찾은 실제 이름으로 교체합니다.
 

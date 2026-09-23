@@ -11,6 +11,7 @@ import pandas as pd
 
 DATA_DIR = Path(__file__).resolve().parent / "draft" / "data"
 PCAP_LAST = "2026-06-30"     # 데모에서 마지막으로 제공된 PCAP 기준일
+FX_USD = {"KRW": 1350.0, "USD": 1.0, "EUR": 0.92, "JPY": 150.0}   # 1 USD 당 통화 단위 (FMCBI0006NTA 모양)
 
 
 def load_demo():
@@ -65,3 +66,10 @@ def load_demo():
         "VINTAGE_YR": first["date"].dt.year.values,
     })
     return raw_commit, raw_pcap, raw_target, raw_fund
+
+
+def load_demo_fx():
+    """FMCBI0006NTA 모양의 환율 데모 (월말, 1 USD 당 통화 단위). sql/ALT_FX.sql 결과 모양: WRK_DT, CURR_ID, USD_RATE"""
+    dates = pd.date_range("2018-01-31", "2026-12-31", freq="ME") if hasattr(pd.offsets, "MonthEnd") else pd.date_range("2018-01-31", "2026-12-31", freq="M")
+    rows = [{"WRK_DT": d.strftime("%Y%m%d"), "CURR_ID": c, "USD_RATE": r} for d in dates for c, r in FX_USD.items()]
+    return pd.DataFrame(rows)

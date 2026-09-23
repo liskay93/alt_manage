@@ -18,7 +18,9 @@
 #              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
-#   raw_fx     sql/ALT_FX.sql      환율 (선택)  WRK_DT, CURR_ID, RATE(원/1단위). PCAP 에 펀드 통화 행이 없는 펀드의 로컬 환산용
+#   raw_fx     sql/ALT_FX.sql      환율 (선택, FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
+#              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
+#              PCAP 에 CD(투자 통화) 행이 없는 펀드의 로컬 환산에만 쓰는 보조 경로
 #   asof       기준일 (None 이면 약정·PCAP 의 마지막 날짜). 기준일 이후 자료는 제외
 #
 # 출력 (사전)  실패하면 {}
@@ -135,15 +137,25 @@ def _prep_pcap(raw, cumulative):
 
 
 def _prep_fx(raw):
-    """환율 원재료 (선택) → WRK_DT, CURR_ID, RATE"""
+    """환율 원재료 (선택) → WRK_DT, CURR_ID, RATE(원/1단위).
+    USD_RATE(1 USD 당 통화 단위, FMCBI0006NTA 형식)면 같은 날짜의 KRW 행 ÷ 통화 행으로 원/1단위를 만든다. USD 는 KRW 행 그대로"""
     if raw is None or raw.empty:
         return None
     df = raw.copy()
     df.columns = df.columns.str.upper()
     df["WRK_DT"] = _to_date(df["WRK_DT"])
     df["CURR_ID"] = df["CURR_ID"].astype(str).str.strip().str.upper()
+    df = df.dropna(subset=["WRK_DT"])
+    if "RATE" not in df and "USD_RATE" in df:
+        df["USD_RATE"] = pd.to_numeric(df["USD_RATE"], errors="coerce")
+        df = df.dropna(subset=["USD_RATE"]).drop_duplicates(["WRK_DT", "CURR_ID"], keep="last")
+        krw = df[df["CURR_ID"] == "KRW"].set_index("WRK_DT")["USD_RATE"]        # 1 USD 당 원
+        df = df[df["CURR_ID"] != "KRW"].copy()
+        df["RATE"] = df["WRK_DT"].map(krw) / df["USD_RATE"].replace(0, pd.NA)   # 원/1단위 = (원/USD) ÷ (통화/USD)
+        usd = pd.DataFrame({"WRK_DT": krw.index, "CURR_ID": "USD", "RATE": krw.values})
+        df = pd.concat([df[["WRK_DT", "CURR_ID", "RATE"]], usd], ignore_index=True).drop_duplicates(["WRK_DT", "CURR_ID"], keep="first")
     df["RATE"] = pd.to_numeric(df["RATE"], errors="coerce")
-    return df.dropna(subset=["WRK_DT", "RATE"]).sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]]
+    return df.dropna(subset=["RATE"]).sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]].reset_index(drop=True)
 
 
 def _fill_local_by_fx(cf, fx):
