@@ -5,11 +5,11 @@
 | # | 테이블 | 필수 | 용도 | 상태 |
 |---|---|---|---|---|
 | 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | ✅ 완료 — FEIAI0488NTA (펀드코드·빈티지·통화) + MAAMC0101DTM (FUND_CD, AVTV_PGM_CD → 자산군·세부 분류) + FEIAI0432NTA (DEAL_NM 펀드명). sql/ALT_Fund.sql 완성 (FUND_CD 표기 확인 필요) |
-| 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | 🟡 부분 — FEIAI0488NTA (AGRT_DT, AGRT_AMT). 금액 통화·단위, 날짜 형식 확인 중 |
+| 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | ✅ 완료 — FEIAI0488NTA (AGRT_DT YYYYMMDD, AGRT_AMT 는 CURR_CD 통화·단위 1, 펀드당 1행). 외화 약정은 약정일 환율로 원화 환산. sql/ALT_Commit.sql 완성 |
 | 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | ✅ 완료 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적, GCM 기준, CD=투자통화·CP=보고통화, 단위 1, PCAP_DATE YYYYMMDD, STATE_DATE 중복 없음). sql/ALT_PCAP.sql 완성 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | ✅ 완료 — FEIAI0432NTA (DISTRB_AMT). 3번과 같음 |
 | 5 | 연도별 목표 | 필수 | 네 지표의 목표·달성률·잔여, 목표 점선 | ⬜ 미완료 |
-| 6 | 환율 | 선택 | PCAP 에 CD(투자 통화) 행이 빠진 펀드가 있을 때만 로컬 환산에 사용 | ✅ 완료 — FMCBI0006NTA (WRK_DT YYYYMMDD 일별, CURR_CD, MSCI_EXRT = 1 USD 당 통화). sql/ALT_FX.sql 완성 |
+| 6 | 환율 | 필수 | 외화 약정의 원화 환산(약정일 환율). PCAP 로컬 환산에는 보조 | ✅ 완료 — FMCBI0006NTA (WRK_DT YYYYMMDD 일별, CURR_CD, MSCI_EXRT = 1 USD 당 통화). sql/ALT_FX.sql 완성 |
 
 공통 규칙
 - 금액 기준은 **원화**. 지표·달성률·비중은 모두 원화로 계산하고, 로컬 통화는 펀드 카드에 병기만 합니다.
@@ -94,7 +94,7 @@
 
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
-| FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
+| FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자(YYYYMMDD), AGRT_AMT 약정금액(CURR_CD 통화, 단위 1), 펀드당 1행 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | 없음 (외화 약정의 원화 환산 기준 = 약정일 환율, 다른 기준이면 알려 주세요) |
 | MAAMC0101DTM | FUND_CD 펀드코드('funcd_cd' 로 전달받음), AVTV_PGM_CD 액티브 프로그램 코드 | 1 펀드 마스터: 자산군·세부 분류 | 컬럼명이 FUND_CD 가 맞는지, 펀드당 1행인지 |
 | (엑셀) AVTV_PGM_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 자산군(코드 앞 3자리 XPV/XRE/XIF), 펀드 표의 세부 분류 꼬리표 | 없음 |
 | FMCBI0006NTA | WRK_DT 기준일(YYYYMMDD, 일별), CURR_CD 통화, MSCI_EXRT 환율(1 USD 당 해당 통화 단위) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 없음 (USD 행이 없어도 KRW 행으로 만든다) |
@@ -105,7 +105,7 @@
 | 체크리스트 | SQL 파일 | 돌려주는 열 (대문자) | 상태 |
 |---|---|---|---|
 | 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR | ✅ 완성 (FEIAI0488NTA + MAAMC0101DTM + FEIAI0432NTA) |
-| 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_KRW, AMT_LOCAL | 🟡 FEIAI0488NTA 반영, 금액 단위 대기 |
+| 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW(KRW 펀드만) | ✅ 완성 |
 | 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, GCM, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | ✅ 완성 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
 | 6 환율 | sql/ALT_FX.sql (long: 날짜·통화·USD 기준 환율) | WRK_DT, CURR_ID, USD_RATE | ✅ FMCBI0006NTA 완성 |

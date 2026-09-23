@@ -3,8 +3,9 @@
 # 무엇: 대체투자 약정·집행·분배·순증 현황 탭(ALT_Manage)의 가공 모듈
 #
 # 입력 (모두 loader.load_data 결과, Oracle 이라 열 이름은 대문자)
-#   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA)
-#              WRK_DT(약정일), FUND_CD, CCY, AMT_KRW, AMT_LOCAL
+#   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA, 펀드당 1행)
+#              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화: KRW 억원·외화 백만), AMT_KRW(KRW 펀드만, 외화는 NULL)
+#              외화 약정의 원화 = AMT_LOCAL × 약정일 환율(raw_fx) ÷ 100. 환율이 없으면 0 으로 두고 warnings 에 적는다
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
 #              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
@@ -19,13 +20,14 @@
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
 #              PGM_CD(AVTV_PGM_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
-#   raw_fx     sql/ALT_FX.sql      환율 (선택, FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
+#   raw_fx     sql/ALT_FX.sql      환율 (FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
 #              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
-#              PCAP 에 CD(투자 통화) 행이 없는 펀드의 로컬 환산에만 쓰는 보조 경로
+#              쓰임 1) 외화 약정의 원화 환산 (약정일 환율, 필수)  2) PCAP 에 CD 행이 없는 펀드의 로컬 환산 (보조)
 #   asof       기준일 (None 이면 약정·PCAP 의 마지막 날짜). 기준일 이후 자료는 제외
 #
 # 출력 (사전)  실패하면 {}
 #   asof        약정 기준일 pd.Timestamp        asof_flow  집행·분배 기준일 (기준일 이하 마지막 PCAP 기준일)
+#   warnings    문자열 목록 (예: 환율이 없어 원화 환산을 못 한 약정 건수). 없으면 빈 목록
 #   flow_freq   집행·분배 자료 주기 "Q"(PCAP 분기) 또는 "M"
 #   unit        원화 단위 표기 "억원"           local_unit 외화 단위 표기 "백만"
 #   classes     자산군 목록 (표시 순서, '전체' 제외)
@@ -104,9 +106,14 @@ def _prep_commit(raw):
     df["WRK_DT"] = _to_date(df["WRK_DT"])
     df["FUND_KEY"] = df["FUND_CD"].astype(str).str.strip()
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper().replace("", "KRW") if "CCY" in df else "KRW"
-    df["AMT_KRW"] = _num(df, "AMT_KRW")
+    krw = pd.to_numeric(df["AMT_KRW"], errors="coerce") if "AMT_KRW" in df else pd.Series(pd.NA, index=df.index, dtype="float")
     local = pd.to_numeric(df["AMT_LOCAL"], errors="coerce") if "AMT_LOCAL" in df else pd.Series(pd.NA, index=df.index, dtype="float")
-    df["AMT_LOCAL"] = local.where(local.notna(), df["AMT_KRW"].where(df["CCY"] == "KRW", 0.0)).astype(float)
+    # KRW 펀드는 원화·로컬이 같은 값. 외화 펀드의 원화는 비워 두고 뒤에서 약정일 환율로 채운다
+    is_krw = df["CCY"] == "KRW"
+    krw = krw.where(krw.notna(), local.where(is_krw))
+    local = local.where(local.notna(), krw.where(is_krw))
+    df["AMT_KRW"] = krw.astype(float)
+    df["AMT_LOCAL"] = local.astype(float)
     df["TX_TYPE"] = "약정"
     df = df.dropna(subset=["WRK_DT"])
     return df[["WRK_DT", "FUND_KEY", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
@@ -189,6 +196,24 @@ def _prep_fx(raw):
         df = pd.concat([df[["WRK_DT", "CURR_ID", "RATE"]], usd], ignore_index=True).drop_duplicates(["WRK_DT", "CURR_ID"], keep="first")
     df["RATE"] = pd.to_numeric(df["RATE"], errors="coerce")
     return df.dropna(subset=["RATE"]).sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]].reset_index(drop=True)
+
+
+def _fill_krw_by_fx(cf, fx):
+    """원화가 비어 있는 외화 행(약정)을 로컬 × 거래일 환율(직전 값) ÷ 100 으로 채운다. 백만 → 억원.
+    환율이 없어 못 채운 행 수를 함께 돌려준다"""
+    need = cf["AMT_KRW"].isna() & cf["AMT_LOCAL"].notna()
+    if not need.any():
+        return cf, 0
+    if fx is not None:
+        part = cf[need].copy()
+        part["_IDX"] = part.index
+        part = part.sort_values("WRK_DT")
+        merged = pd.merge_asof(part, fx.rename(columns={"CURR_ID": "CCY"}), on="WRK_DT", by="CCY", direction="backward")
+        vals = (merged["AMT_LOCAL"] * merged["RATE"] / 100).astype(float)
+        cf.loc[merged["_IDX"].values, "AMT_KRW"] = vals.values
+    missing = int((cf["AMT_KRW"].isna() & need).sum())
+    cf["AMT_KRW"] = cf["AMT_KRW"].fillna(0.0)
+    return cf, missing
 
 
 def _fill_local_by_fx(cf, fx):
@@ -274,7 +299,11 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
 
     # ---- 기준일: 약정은 asof, 집행·분배는 asof 이하 마지막 PCAP 기준일
     asof = pd.Timestamp(asof) if asof is not None else max(commit["WRK_DT"].max(), pcap["WRK_DT"].max())
-    commit = commit[commit["WRK_DT"] <= asof]
+    commit = commit[commit["WRK_DT"] <= asof].copy()
+    warnings = []
+    commit, missing = _fill_krw_by_fx(commit, fx)       # 외화 약정 → 약정일 환율로 원화
+    if missing:
+        warnings.append("환율이 없어 원화로 환산하지 못한 외화 약정 %d건 (0 으로 집계)" % missing)
     pcap = pcap[pcap["WRK_DT"] <= asof]
     asof_flow = pcap["WRK_DT"].max() if len(pcap) else asof
 
@@ -386,6 +415,7 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     return {
         "asof": asof,
         "asof_flow": asof_flow,
+        "warnings": warnings,
         "flow_freq": "Q",
         "unit": UNIT,
         "local_unit": LOCAL_UNIT,

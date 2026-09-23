@@ -28,8 +28,9 @@ def load_demo():
         "WRK_DT": c["date"].dt.strftime("%Y%m%d"),
         "FUND_CD": c["code"],
         "CCY": c["currency"],
-        "AMT_KRW": c["amount"].astype(float),
         "AMT_LOCAL": c["local_amount"].astype(float),
+        # SQL 처럼 KRW 펀드만 원화를 채우고 외화는 비운다 (processor 가 약정일 환율로 환산)
+        "AMT_KRW": c["amount"].astype(float).where(c["currency"] == "KRW"),
     })
 
     # 분기말 누적 (설립 이후). 실제 SQL 결과처럼 통화 유형별 long 행: CP=원화(KRW) 행, CD=펀드 통화 행. GCM 보고 기준만
@@ -74,7 +75,15 @@ def load_demo():
 
 
 def load_demo_fx():
-    """FMCBI0006NTA 모양의 환율 데모 (월말, 1 USD 당 통화 단위). sql/ALT_FX.sql 결과 모양: WRK_DT, CURR_ID, USD_RATE"""
-    dates = pd.date_range("2018-01-31", "2026-12-31", freq="ME") if hasattr(pd.offsets, "MonthEnd") else pd.date_range("2018-01-31", "2026-12-31", freq="M")
-    rows = [{"WRK_DT": d.strftime("%Y%m%d"), "CURR_ID": c, "USD_RATE": r} for d in dates for c, r in FX_USD.items()]
+    """FMCBI0006NTA 모양의 환율 데모 (월초 일자, 1 USD 당 통화 단위). sql/ALT_FX.sql 결과 모양: WRK_DT, CURR_ID, USD_RATE
+    샘플 거래를 만들 때 쓴 환율(draft/scripts/make_sample_data.py 의 fx)과 같은 값을 써서 환산 결과가 원본과 맞도록 한다"""
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "draft" / "scripts"))
+    import make_sample_data as gen
+    rows = []
+    for d in pd.date_range("2018-01-01", "2026-12-01", freq="MS"):
+        krw_per_usd = gen.fx(d.date(), "USD")
+        rows.append({"WRK_DT": d.strftime("%Y%m%d"), "CURR_ID": "KRW", "USD_RATE": krw_per_usd})
+        rows.append({"WRK_DT": d.strftime("%Y%m%d"), "CURR_ID": "USD", "USD_RATE": 1.0})
+        rows.append({"WRK_DT": d.strftime("%Y%m%d"), "CURR_ID": "EUR", "USD_RATE": krw_per_usd / gen.fx(d.date(), "EUR")})
     return pd.DataFrame(rows)

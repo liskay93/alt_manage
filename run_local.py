@@ -23,11 +23,7 @@ try:
         raw_alt_pcap = loader.load_data(conn, "ALT_PCAP.sql")         # FEIAI0432NTA 집행·분배(분기)
         raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
         raw_alt_fund = loader.load_data(conn, "ALT_Fund.sql")
-        try:
-            raw_alt_fx = loader.load_data(conn, "ALT_FX.sql")           # FMCBI0006NTA 환율 (보조, 없어도 됨)
-        except Exception:
-            logging.warning("ALT_FX.sql 로드 실패 → 환율 없이 진행")
-            raw_alt_fx = None
+        raw_alt_fx = loader.load_data(conn, "ALT_FX.sql")               # FMCBI0006NTA 환율 (외화 약정 원화 환산에 필수)
     else:
         import demo_data
         raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund = demo_data.load_demo()

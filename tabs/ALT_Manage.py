@@ -465,6 +465,8 @@ def render(data):
                   % (asof.strftime("%Y-%m-%d"), data.get("asof_flow", asof).strftime("%Y-%m-%d"), data["unit"]),
                   style={"fontSize": "12.5px", "color": MUTED, "marginLeft": "12px"}),
     ], style={"margin": "4px 0 10px"})
+    for w in data.get("warnings", []) or []:      # 가공 단계 경고 (예: 환율 없음)
+        header.children.append(html.Div("⚠ " + w, style={"fontSize": "12px", "color": RED, "marginTop": "4px"}))
     tabs = dcc.Tabs(value="tab-ALT_Manage-" + ALL, children=[
         dcc.Tab(label=c, value="tab-ALT_Manage-" + c, style=TAB_STYLE, selected_style=SELECTED_TAB_STYLE,
                 children=html.Div(make_page(data, c), style={"padding": "4px 0"}))

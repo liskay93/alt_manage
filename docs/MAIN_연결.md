@@ -12,7 +12,7 @@ raw_alt_commit = loader.load_data(conn, "ALT_Commit.sql")   # FEIAI0488NTA 약�
 raw_alt_pcap   = loader.load_data(conn, "ALT_PCAP.sql")     # FEIAI0432NTA 집행·분배 (최신 제공일, 분기별 누적)
 raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
 raw_alt_fund   = loader.load_data(conn, "ALT_Fund.sql")     # 펀드 마스터가 없으면 None
-raw_alt_fx     = loader.load_data(conn, "ALT_FX.sql")       # FMCBI0006NTA 환율 (보조, 없으면 None)
+raw_alt_fx     = loader.load_data(conn, "ALT_FX.sql")       # FMCBI0006NTA 환율 (외화 약정의 원화 환산에 필수)
 global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund, raw_fx=raw_alt_fx)
 logging.info(f"ALT_Manage 로드: 약정 {len(raw_alt_commit)}행, PCAP {len(raw_alt_pcap)}행, 목표 {len(raw_alt_target)}행")
 
