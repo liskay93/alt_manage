@@ -122,15 +122,21 @@ def _prep_pcap(raw, cumulative):
     if "LOCAL_CCY" not in df:                 # 예전 wide 형식: 로컬 행 통화를 모르면 펀드 통화와 같다고 본다
         df["LOCAL_CCY"] = None
     cols = ["FUNDED_KRW", "FUNDED_LOCAL", "DISTRB_KRW", "DISTRB_LOCAL"]
-    for c in cols:
-        df[c] = _num(df, c)
+    for c in cols:                             # 없는 값은 0 이 아니라 NaN 으로 둔다 (로컬 행이 없는 펀드 구분용)
+        df[c] = pd.to_numeric(df[c], errors="coerce") if c in df else pd.NA
+        df[c] = df[c].astype(float)
     df = df.sort_values(["FUND_KEY", "WRK_DT"])
     df = df.drop_duplicates(["FUND_KEY", "WRK_DT"], keep="last")
     if cumulative:
-        # 첫 기준일의 증분은 그 시점 누적값 (이력이 잘려 있으면 첫 분기에 몰린다 — 확인 사항)
+        # 증분 = 이번 누적 − 직전 유효 누적. 첫 유효 기준일의 증분은 그 시점 누적값
+        # (이력이 잘려 있으면 첫 분기에 몰린다 — 확인 사항). 값이 없는 기준일은 NaN 으로 남는다
         for c in cols:
-            d = df.groupby("FUND_KEY")[c].diff()
-            df[c] = d.where(d.notna(), df[c])
+            prev_valid = df.groupby("FUND_KEY")[c].transform(lambda x: x.ffill().shift(1))
+            inc = df[c] - prev_valid
+            first = prev_valid.isna() & df[c].notna()
+            df[c] = inc.where(~first, df[c])
+    df["FUNDED_KRW"] = df["FUNDED_KRW"].fillna(0.0)      # 원화는 반드시 있어야 하므로 없으면 0
+    df["DISTRB_KRW"] = df["DISTRB_KRW"].fillna(0.0)
     funded = df[["WRK_DT", "FUND_KEY", "LOCAL_CCY"]].assign(TX_TYPE="집행", AMT_KRW=df["FUNDED_KRW"], AMT_LOCAL=df["FUNDED_LOCAL"])
     distrb = df[["WRK_DT", "FUND_KEY", "LOCAL_CCY"]].assign(TX_TYPE="분배", AMT_KRW=df["DISTRB_KRW"], AMT_LOCAL=df["DISTRB_LOCAL"])
     return pd.concat([funded, distrb], ignore_index=True)
