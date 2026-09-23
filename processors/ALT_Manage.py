@@ -8,10 +8,10 @@
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
 #              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
-#              같은 펀드·기준일에 통화 유형별 행이 여러 개 → 원화는 CURR_ID='KRW' 행,
-#              펀드 통화는 CURR_TYP=PCAP_LOCAL_TYP 행이되 그 행의 CURR_ID 가 펀드 통화(FEIAI0488NTA.CURR_CD)와 같을 때만 쓴다
-#              다르면(예: EUR 펀드가 USD 로 보고) raw_fx 가 있으면 원화 증분 ÷ 기준일 환율로 환산, 없으면 로컬은 비운다(NaN)
-#              (CD/CP 의 뜻은 확인 중. 아래 PCAP_LOCAL_TYP / PCAP_KRW_PREF 로 조정)
+#              CURR_TYP 뜻 (확인 완료): CD = 투자 통화(EUR/USD/JPY/KRW…), CP = 보고 통화(USD 기준 또는 KRW 기준)
+#              같은 펀드·기준일에 행이 여러 개 → 원화는 CP 이면서 CURR_ID='KRW' 인 행, 펀드 통화는 CD 행. CP-USD 행은 쓰지 않는다
+#              CD 행 통화가 펀드 통화(FEIAI0488NTA.CURR_CD)와 다르면 그 값은 버리고, raw_fx 가 있으면 원화 증분 ÷ 기준일 환율로
+#              환산, 없으면 로컬은 비운다(NaN). 정상 자료에서는 일어나지 않는 보조 경로
 #              금액은 PCAP_DATE 기준 누적(확인 완료) → 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
 #   raw_target sql/ALT_Target.sql  연도·자산군별 목표
@@ -51,8 +51,8 @@ ALL = "전체"
 UNIT = "억원"
 LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
-PCAP_LOCAL_TYP = "CD"      # 펀드 통화 금액으로 쓸 CURR_TYP (가정: CD = 펀드 표시통화. 확인 사항)
-PCAP_KRW_PREF = ["CP", "CD"]   # 원화 행이 여러 개일 때 우선순위 (가정: CP = 원화 환산. 확인 사항)
+PCAP_LOCAL_TYP = "CD"          # 펀드 통화 금액: CD(투자 통화) 행
+PCAP_KRW_PREF = ["CP", "CD"]   # 원화 행이 여러 개일 때 우선순위: CP(보고 통화, KRW) 먼저. KRW 펀드는 CD 행도 KRW
 
 
 def _to_date(s):

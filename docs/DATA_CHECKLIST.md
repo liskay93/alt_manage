@@ -6,10 +6,10 @@
 |---|---|---|---|---|
 | 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | 🟡 부분 — FEIAI0488NTA (펀드코드·빈티지·통화). 펀드명·자산군 테이블 확인 중 |
 | 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | 🟡 부분 — FEIAI0488NTA (AGRT_DT, AGRT_AMT). 금액 통화·단위, 날짜 형식 확인 중 |
-| 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적 ✔, GCM 기준 ✔, CURR_ID/CURR_TYP ✔). 단위·CD/CP 뜻·이력 시작 확인 중 |
+| 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적 ✔, GCM 기준 ✔, CD=투자통화·CP=보고통화 ✔). 단위·PCAP_DATE 형식·STATE_DATE 중복·이력 시작 확인 중 |
 | 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | 🟡 부분 — FEIAI0432NTA (DISTRB_AMT). 3번과 같은 확인 사항 |
 | 5 | 연도별 목표 | 필수 | 네 지표의 목표·달성률·잔여, 목표 점선 | ⬜ 미완료 |
-| 6 | 환율 | 선택 | 거래별 원화 환산액이 없을 때만 필요 | ⬜ 미완료 |
+| 6 | 환율 | 선택 | PCAP 에 CD(투자 통화) 행이 빠진 펀드가 있을 때만 로컬 환산에 사용. 정상이면 불필요 | ⬜ 보류 |
 
 공통 규칙
 - 금액 기준은 **원화**. 지표·달성률·비중은 모두 원화로 계산하고, 로컬 통화는 펀드 카드에 병기만 합니다.
@@ -95,7 +95,7 @@
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
 | FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
-| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID(USD/KRW), CURR_TYP(CD/CP), RPRT_NM(Fund/GCM) | 3 집행, 4 분배 (분기 증분), NAV 는 추후 활용. GCM 보고 기준만 | 금액 단위, CD/CP 뜻(가정: CD=펀드 통화, CP=원화 환산), PCAP_DATE 형식, 이력 시작 시점 |
+| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), STATE_DATE(확인 중) | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 금액 단위, PCAP_DATE 형식, STATE_DATE 중복 여부, 이력 시작 시점 |
 
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
 
