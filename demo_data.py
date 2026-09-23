@@ -3,7 +3,7 @@
 #   raw_pcap   ← FEIAI0432NTA 모양 (sql/ALT_PCAP.sql 결과): 분기말 기준 설립 이후 누적, 최신 제공일 한 벌,
 #               통화 유형별 long 행(CURR_ID, CURR_TYP), GCM 보고 기준, 날짜는 'YYYY-MM-DD'
 #               PCAP 은 한 분기 늦게 들어오므로 기준일(9/22) 시점에는 6/30 까지만 있다고 가정
-#   raw_target ← sql/ALT_Target.sql 결과
+#   raw_target ← data/ALT_Target.xlsx '목표' 시트 (실제 경로와 동일)
 #   raw_fund   ← sql/ALT_Fund.sql 결과 (펀드명·자산군은 아직 원천 미확인이지만 데모에서는 채운다)
 from pathlib import Path
 
@@ -50,14 +50,9 @@ def load_demo():
     raw_pcap = pd.concat([cp, cd], ignore_index=True)[
         ["PROV_DT", "WRK_DT", "FUND_CD", "CURR_ID", "CURR_TYP", "RPRT_NM", "COMMIT_AMT", "FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]]
 
-    raw_target = pd.DataFrame({
-        "TARGET_YR": tg["year"].astype(int),
-        "ASSET_CLS": tg["asset_class"],
-        "COMMIT_KRW": tg["commitment"].astype(float),
-        "DRAW_KRW": tg["drawdown"].astype(float),
-        "DIST_KRW": tg["distribution"].astype(float),
-        "NET_KRW": pd.to_numeric(tg["net"], errors="coerce"),
-    })
+    # 목표는 실제 경로와 같게 엑셀 양식(data/ALT_Target.xlsx '목표' 시트)에서 읽는다
+    raw_target = pd.read_excel(Path(__file__).resolve().parent / "data" / "ALT_Target.xlsx", sheet_name="목표")
+
     first = c.sort_values("date").drop_duplicates("code")
     # 액티브 프로그램 코드(AVTV_PGM_CD) 흉내: 자산군별 코드 중 하나를 펀드 번호로 돌려 가며 배정
     pgm_pool = {"사모벤처": ["XPV01", "XPV03", "XPV04", "XPV05", "XPV09", "XPV10", "XPV11"],

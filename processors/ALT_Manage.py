@@ -15,8 +15,9 @@
 #              환산, 없으면 로컬은 비운다(NaN). 정상 자료에서는 일어나지 않는 보조 경로
 #              금액은 PCAP_DATE 기준 누적(확인 완료) → 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
-#   raw_target sql/ALT_Target.sql  연도·자산군별 목표
-#              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
+#   raw_target data/ALT_Target.xlsx 의 '목표' 시트 (pd.read_excel) — 연도·자산군별 목표, 억원
+#              열: 연도, 자산군(사모/부동산/인프라), 약정, 집행, 회수, 순증   (회수 = 분배. 순증이 비면 집행 − 회수, 회수가 비면 집행 − 순증)
+#              DB 에서 올 때의 열 이름(TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW)도 받는다
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
 #              PGM_CD(AVTV_PGM_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
@@ -56,6 +57,8 @@ ALL = "전체"
 UNIT = "억원"
 LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
+# 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
+CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
 # 액티브 프로그램 코드(AVTV_PGM_CD) → 세부 분류명 (형님 엑셀 기준, docs/AVTV_PGM_CD.csv). 앞 3자리가 자산군
 PGM_CLASS = {"XPV": "사모벤처", "XRE": "부동산", "XIF": "인프라"}
 PGM_NAMES = {
@@ -231,17 +234,22 @@ def _fill_local_by_fx(cf, fx):
 
 
 def _prep_target(raw):
-    """목표 원재료 표준화. 순증 목표가 비어 있으면 집행 − 분배"""
+    """목표 원재료 표준화 (엑셀 '목표' 시트 또는 DB). 회수 = 분배. 순증이 비면 집행 − 분배, 분배가 비면 집행 − 순증"""
     df = raw.copy()
-    df.columns = df.columns.str.upper()
-    df = df.rename(columns={"TARGET_YR": "YEAR", "ASSET_CLS": "CLS", "COMMIT_KRW": "약정",
-                            "DRAW_KRW": "집행", "DIST_KRW": "분배", "NET_KRW": "순증"})
-    for m in FLOW_TYPES:
-        df[m] = _num(df, m)
+    df.columns = [str(c).strip().upper() for c in df.columns]
+    df = df.rename(columns={"TARGET_YR": "YEAR", "연도": "YEAR", "ASSET_CLS": "CLS", "자산군": "CLS",
+                            "COMMIT_KRW": "약정", "DRAW_KRW": "집행", "DIST_KRW": "분배", "회수": "분배", "NET_KRW": "순증"})
+    df = df.dropna(subset=["YEAR", "CLS"])
+    df["약정"] = _num(df, "약정")
+    df["집행"] = _num(df, "집행")
+    dist = pd.to_numeric(df["분배"], errors="coerce") if "분배" in df else pd.Series(pd.NA, index=df.index, dtype="float")
     net = pd.to_numeric(df["순증"], errors="coerce") if "순증" in df else pd.Series(pd.NA, index=df.index, dtype="float")
-    df["순증"] = net.where(net.notna(), df["집행"] - df["분배"]).astype(float)
+    dist = dist.where(dist.notna(), df["집행"] - net)          # 분배가 비면 집행 − 순증
+    net = net.where(net.notna(), df["집행"] - dist)            # 순증이 비면 집행 − 분배
+    df["분배"] = dist.fillna(0.0).astype(float)
+    df["순증"] = net.fillna(0.0).astype(float)
     df["YEAR"] = pd.to_numeric(df["YEAR"], errors="coerce").astype(int)
-    df["CLS"] = df["CLS"].astype(str).str.strip()
+    df["CLS"] = df["CLS"].astype(str).str.strip().map(lambda c: CLASS_ALIAS.get(c, c))
     return df.groupby(["YEAR", "CLS"], as_index=False)[METRICS].sum()
 
 
@@ -258,7 +266,7 @@ def _prep_fund(raw):
     df["ASSET_CLS"] = df["ASSET_CLS"].astype(str).str.strip() if "ASSET_CLS" in df else pd.NA
     by_code = df["PGM_CD"].str[:3].map(PGM_CLASS)                      # 자산군이 비어 있으면 코드 앞 3자리로
     df["ASSET_CLS"] = df["ASSET_CLS"].where(df["ASSET_CLS"].notna() & (df["ASSET_CLS"] != "") & (df["ASSET_CLS"] != "nan"), by_code)
-    df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS)
+    df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS).map(lambda c: CLASS_ALIAS.get(c, c))
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper() if "CCY" in df else "KRW"
     df["VINTAGE_YR"] = pd.to_numeric(df["VINTAGE_YR"], errors="coerce") if "VINTAGE_YR" in df else pd.NA
     return df.drop_duplicates("FUND_KEY").set_index("FUND_KEY")[["FUND_NM", "ASSET_CLS", "PGM_NM", "CCY", "VINTAGE_YR"]]

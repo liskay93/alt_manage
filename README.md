@@ -11,9 +11,9 @@ alt_manage/
 ├── sql/                      원재료 쿼리 — 확인된 테이블은 실명, 나머지는 <<...>> 자리표시자
 │   ├── ALT_Commit.sql        약정 내역 (FEIAI0488NTA)
 │   ├── ALT_PCAP.sql          집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌)
-│   ├── ALT_Target.sql        연도·자산군별 목표 (확인 전)
 │   └── ALT_Fund.sql          펀드 마스터 (FEIAI0488NTA 기반, 펀드명·자산군 확인 전)
-├── processors/ALT_Manage.py  process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True) → 사전
+├── data/ALT_Target.xlsx      연도·자산군별 목표 입력 양식 (노란 칸만 수정, 순증은 수식)
+├── processors/ALT_Manage.py  process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True, raw_fx=None) → 사전
 ├── tabs/ALT_Manage.py        render(data) — 자산군 내부 탭 4개, 콜백 없음
 ├── global_data.py            DF_ALT_Manage = None
 ├── loader.py                 create_connection(), load_data(conn, "파일.sql")  (사내 loader 와 같은 인터페이스)

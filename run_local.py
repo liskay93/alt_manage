@@ -3,6 +3,9 @@
 # 실행: python run_local.py  →  http://127.0.0.1:8050
 import logging
 import os
+from pathlib import Path
+
+import pandas as pd
 
 from dash import Dash, html, dcc, Input, Output
 
@@ -14,6 +17,7 @@ from tabs import ALT_Manage as ALT_Manage_tab
 from ui.theme import TAB_STYLE, SELECTED_TAB_STYLE
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+TARGET_XLSX = Path(__file__).resolve().parent / "data" / "ALT_Target.xlsx"   # 연도별 목표 입력 양식
 
 # [2] 로드
 try:
@@ -21,7 +25,7 @@ try:
         conn = loader.create_connection()
         raw_alt_commit = loader.load_data(conn, "ALT_Commit.sql")     # FEIAI0488NTA 약정
         raw_alt_pcap = loader.load_data(conn, "ALT_PCAP.sql")         # FEIAI0432NTA 집행·분배(분기)
-        raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
+        raw_alt_target = pd.read_excel(TARGET_XLSX, sheet_name="목표")   # 목표는 엑셀 양식 (내부 정보)
         raw_alt_fund = loader.load_data(conn, "ALT_Fund.sql")
         raw_alt_fx = loader.load_data(conn, "ALT_FX.sql")               # FMCBI0006NTA 환율 (외화 약정 원화 환산에 필수)
     else:

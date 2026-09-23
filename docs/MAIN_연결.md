@@ -10,7 +10,7 @@ from tabs import ALT_Manage as ALT_Manage_tab
 # [2] 로드 (try 블록 안)
 raw_alt_commit = loader.load_data(conn, "ALT_Commit.sql")   # FEIAI0488NTA 약정
 raw_alt_pcap   = loader.load_data(conn, "ALT_PCAP.sql")     # FEIAI0432NTA 집행·분배 (최신 제공일, 분기별 누적)
-raw_alt_target = loader.load_data(conn, "ALT_Target.sql")
+raw_alt_target = pd.read_excel("data/ALT_Target.xlsx", sheet_name="목표")   # 연도별 목표 (엑셀 양식, 노란 칸만 수정)
 raw_alt_fund   = loader.load_data(conn, "ALT_Fund.sql")     # 펀드 마스터가 없으면 None
 raw_alt_fx     = loader.load_data(conn, "ALT_FX.sql")       # FMCBI0006NTA 환율 (외화 약정의 원화 환산에 필수)
 global_data.DF_ALT_Manage = ALT_Manage_proc.process_ALT_Manage(raw_alt_commit, raw_alt_pcap, raw_alt_target, raw_alt_fund, raw_fx=raw_alt_fx)
@@ -29,5 +29,6 @@ dcc.Tab(label='대체투자 약정', value='tab-ALT_Manage',
 DF_ALT_Manage = None
 ```
 
+목표 엑셀은 openpyxl 이 있어야 읽힙니다 (사내 환경에 있는지 확인 사항).
 기준일을 지정하려면 `process_ALT_Manage(..., asof="2026-09-30")`. 생략하면 약정·PCAP 의 마지막 날짜.
 PCAP 금액이 누적이 아니라 기간 증분이면 `pcap_cumulative=False`.
