@@ -16,7 +16,8 @@
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
 #   raw_target sql/ALT_Target.sql  연도·자산군별 목표
 #              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
-#   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
+#   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
+#              PGM_CD(AVTV_PGM_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
 #   raw_fx     sql/ALT_FX.sql      환율 (선택, FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
 #              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
@@ -36,7 +37,7 @@
 #   kpi         DataFrame [YEAR, CLS, METRIC, MONTHS, TARGET, ACTUAL, RATIO, REMAIN, PREV]
 #                 MONTHS 는 지표별 집계 마지막 월 (약정은 기준일, 집행·분배·순증은 PCAP 기준일 기준)
 #                 PREV 는 전년 같은 월 범위 실적, 전년 자료 없으면 NaN
-#   funds       DataFrame [FUND_KEY, FUND, CLS, CCY, VINTAGE, YEAR, 약정, 집행, 분배, 순증,
+#   funds       DataFrame [FUND_KEY, FUND, CLS, PGM, CCY, VINTAGE, YEAR, 약정, 집행, 분배, 순증,   PGM = 세부 분류명
 #                          약정_L, 집행_L, 분배_L, 순증_L, 누적약정, 누적집행, 집행률]
 #                 펀드·연도별 실적(원화, _L 은 펀드 통화). 누적은 그 연도까지, 집행률 = 누적집행/누적약정
 #
@@ -53,6 +54,32 @@ ALL = "전체"
 UNIT = "억원"
 LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
+# 액티브 프로그램 코드(AVTV_PGM_CD) → 세부 분류명 (형님 엑셀 기준, docs/AVTV_PGM_CD.csv). 앞 3자리가 자산군
+PGM_CLASS = {"XPV": "사모벤처", "XRE": "부동산", "XIF": "인프라"}
+PGM_NAMES = {
+    "XPV01": "Buyout",
+    "XPV03": "Growth",
+    "XPV04": "Venture Capital",
+    "XPV05": "Fund of Fund(Priamry)",
+    "XPV06": "Fund of Fund(Secondary)",
+    "XPV13": "Long-term Core",
+    "XPV14": "GP-Stake/Continuation Vehicle",
+    "XPV09": "Senior Credit",
+    "XPV10": "Junior Credit",
+    "XPV11": "국내 사모투자",
+    "XPV12": "Hedge Fund",
+    "XRE01": "Core RE Equity",
+    "XRE02": "Non-Core RE Equity",
+    "XRE03": "국내 부동산",
+    "XRE04": "Core RE Debt",
+    "XRE05": "Non-Core RE Debt",
+    "XRE06": "Listed RE",
+    "XIF05": "Core 국내 인프라",
+    "XIF06": "Non-Core 국내 인프라",
+    "XIF02": "Core 해외 인프라",
+    "XIF03": "Non-Core 해외 인프라",
+    "XIF04": "Super-Core Infrastructure",
+}
 PCAP_LOCAL_TYP = "CD"          # 펀드 통화 금액: CD(투자 통화) 행
 PCAP_KRW_PREF = ["CP", "CD"]   # 원화 행이 여러 개일 때 우선순위: CP(보고 통화, KRW) 먼저. KRW 펀드는 CD 행도 KRW
 
@@ -201,10 +228,15 @@ def _prep_fund(raw):
     df.columns = df.columns.str.upper()
     df["FUND_KEY"] = df["FUND_CD"].astype(str).str.strip()
     df["FUND_NM"] = df["FUND_NM"].astype(str).str.strip() if "FUND_NM" in df else df["FUND_KEY"]
-    df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS).astype(str).str.strip() if "ASSET_CLS" in df else NO_CLASS
+    df["PGM_CD"] = df["PGM_CD"].fillna("").astype(str).str.strip().str.upper() if "PGM_CD" in df else ""
+    df["PGM_NM"] = df["PGM_CD"].map(PGM_NAMES).fillna(df["PGM_CD"].where(df["PGM_CD"] != "", pd.NA))
+    df["ASSET_CLS"] = df["ASSET_CLS"].astype(str).str.strip() if "ASSET_CLS" in df else pd.NA
+    by_code = df["PGM_CD"].str[:3].map(PGM_CLASS)                      # 자산군이 비어 있으면 코드 앞 3자리로
+    df["ASSET_CLS"] = df["ASSET_CLS"].where(df["ASSET_CLS"].notna() & (df["ASSET_CLS"] != "") & (df["ASSET_CLS"] != "nan"), by_code)
+    df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS)
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper() if "CCY" in df else "KRW"
     df["VINTAGE_YR"] = pd.to_numeric(df["VINTAGE_YR"], errors="coerce") if "VINTAGE_YR" in df else pd.NA
-    return df.drop_duplicates("FUND_KEY").set_index("FUND_KEY")[["FUND_NM", "ASSET_CLS", "CCY", "VINTAGE_YR"]]
+    return df.drop_duplicates("FUND_KEY").set_index("FUND_KEY")[["FUND_NM", "ASSET_CLS", "PGM_NM", "CCY", "VINTAGE_YR"]]
 
 
 def _class_order(names):
@@ -251,11 +283,12 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     attrs = pd.DataFrame(index=first_commit.index.union(pcap["FUND_KEY"].unique()))
     attrs["FUND_NM"] = attrs.index.to_series()
     attrs["ASSET_CLS"] = NO_CLASS
+    attrs["PGM_NM"] = pd.NA
     attrs["CCY"] = first_commit["CCY"].reindex(attrs.index).fillna("KRW")
     attrs["VINTAGE_YR"] = first_commit["WRK_DT"].dt.year.reindex(attrs.index)
     if fund_master is not None:
         fm = fund_master.reindex(attrs.index)
-        for c in ["FUND_NM", "ASSET_CLS", "CCY", "VINTAGE_YR"]:
+        for c in ["FUND_NM", "ASSET_CLS", "PGM_NM", "CCY", "VINTAGE_YR"]:
             attrs[c] = fm[c].where(fm[c].notna(), attrs[c])
     attrs["VINTAGE_YR"] = pd.to_numeric(attrs["VINTAGE_YR"], errors="coerce")
 
@@ -340,13 +373,14 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     funds = funds.sort_values(["FUND_KEY", "YEAR"])
     funds["FUND"] = funds["FUND_KEY"].map(attrs["FUND_NM"])
     funds["CLS"] = funds["FUND_KEY"].map(attrs["ASSET_CLS"])
+    funds["PGM"] = funds["FUND_KEY"].map(attrs["PGM_NM"])
     funds["CCY"] = funds["FUND_KEY"].map(attrs["CCY"])
     funds["VINTAGE"] = funds["FUND_KEY"].map(attrs["VINTAGE_YR"])
     funds["VINTAGE"] = funds["VINTAGE"].where(funds["VINTAGE"].notna(), funds["YEAR"]).astype(int)
     funds["누적약정"] = funds.groupby("FUND_KEY")["약정"].cumsum()
     funds["누적집행"] = funds.groupby("FUND_KEY")["집행"].cumsum()
     funds["집행률"] = funds["누적집행"] / funds["누적약정"].replace(0, pd.NA)
-    funds = funds[["FUND_KEY", "FUND", "CLS", "CCY", "VINTAGE", "YEAR"] + METRICS + [m + "_L" for m in METRICS]
+    funds = funds[["FUND_KEY", "FUND", "CLS", "PGM", "CCY", "VINTAGE", "YEAR"] + METRICS + [m + "_L" for m in METRICS]
                   + ["누적약정", "누적집행", "집행률"]].reset_index(drop=True)
 
     return {

@@ -316,8 +316,9 @@ def make_fund_table(funds, metric, total, unit, local_unit, show_cls):
     rows = []
     for _, r in top.iterrows():
         name = [html.Span(r["FUND"])]
-        if show_cls:
-            name.append(html.Span(" " + r["CLS"], style={"color": MUTED, "fontSize": "11px"}))
+        tag = r["CLS"] if show_cls else (r["PGM"] if "PGM" in r and not pd.isna(r["PGM"]) else "")   # 전체 탭은 자산군, 자산군 탭은 세부 분류
+        if tag:
+            name.append(html.Span(" " + str(tag), style={"color": MUTED, "fontSize": "11px"}))
         rows.append(html.Tr([
             text_td(name, extra={"maxWidth": "170px", "overflow": "hidden", "textOverflow": "ellipsis"}),
             bar_cell(float(r[k])),

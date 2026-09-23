@@ -1,0 +1,23 @@
+﻿코드,자산군,구분,세부분류
+XPV01,사모벤처,사모,Buyout
+XPV03,사모벤처,사모,Growth
+XPV04,사모벤처,사모,Venture Capital
+XPV05,사모벤처,사모,Fund of Fund(Priamry)
+XPV06,사모벤처,사모,Fund of Fund(Secondary)
+XPV13,사모벤처,사모,Long-term Core
+XPV14,사모벤처,사모,GP-Stake/Continuation Vehicle
+XPV09,사모벤처,사모,Senior Credit
+XPV10,사모벤처,사모,Junior Credit
+XPV11,사모벤처,사모,국내 사모투자
+XPV12,사모벤처,사모,Hedge Fund
+XRE01,부동산,부동산,Core RE Equity
+XRE02,부동산,부동산,Non-Core RE Equity
+XRE03,부동산,부동산,국내 부동산
+XRE04,부동산,부동산,Core RE Debt
+XRE05,부동산,부동산,Non-Core RE Debt
+XRE06,부동산,부동산,Listed RE
+XIF05,인프라,인프라,Core 국내 인프라
+XIF06,인프라,인프라,Non-Core 국내 인프라
+XIF02,인프라,인프라,Core 해외 인프라
+XIF03,인프라,인프라,Non-Core 해외 인프라
+XIF04,인프라,인프라,Super-Core Infrastructure
