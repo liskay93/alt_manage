@@ -1,88 +1,77 @@
 =====FILE: sql/ALT_Fund.sql=====
--- 펀드 마스터. ALT_Manage 탭이 사용
--- 돌려주는 열(대문자): FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
--- 원천
---   FEIAI0488NTA — NPS_FUND_CD(펀드코드), VNTG_YR(빈티지), CURR_CD(통화)
---   FEIAI0432NTA — NPS_CD(펀드코드), DEAL_NM(펀드명). 펀드당 행이 많으므로 최신 제공일에서 코드당 하나만
---   MAAMC0101DTM — FUND_CD(펀드코드), AVTV_PGM_CD(액티브 프로그램 코드). 펀드코드로 조인
--- 자산군: AVTV_PGM_CD 앞 3자리 — XPV 사모(→사모벤처), XRE 부동산, XIF 인프라 (형님 엑셀, docs/AVTV_PGM_CD.csv)
---         세부 분류명(Buyout, Core RE Equity …)은 processor 의 PGM_NAMES 사전이 붙인다
--- 확인 사항: 펀드코드 컬럼을 'funcd_cd' 로 알려 주셔서 FUND_CD 로 적었다. 실제 이름이 다르면 아래 두 곳만 바꾼다
---           펀드당 행이 여러 개여도 MAX 로 하나만 쓴다 (코드가 바뀐 이력이 있으면 최신 행 기준으로 바꿔야 함)
-SELECT a.NPS_FUND_CD                                                      AS fund_cd
-     , NVL(n.DEAL_NM, a.NPS_FUND_CD)                                      AS fund_nm      -- 이름이 없으면 코드
+/* 펀드 마스터. ALT_Manage 탭이 사용
+   돌려주는 열(대문자): FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
+   원천
+     FEIAI0488NTA  NPS_FUND_CD(펀드코드), DEAL_NM(펀드명), VNTG_YR(빈티지), CURR_CD(통화). 펀드당 1행
+     MAAMC0101DTM  FUND_CD(펀드코드), AVTV_PGM_CD(액티브 프로그램 코드)
+   자산군: AVTV_PGM_CD 앞 3자리 XPV 사모벤처, XRE 부동산, XIF 인프라
+   펀드명이 없으면 펀드코드, 프로그램 코드가 없으면 자산군은 미분류
+   조인은 Oracle (+) 외부조인 */
+SELECT a.NPS_FUND_CD                                        AS fund_cd
+     , NVL(a.DEAL_NM, a.NPS_FUND_CD)                        AS fund_nm
      , DECODE(SUBSTR(m.AVTV_PGM_CD, 1, 3), 'XPV', '사모벤처'
                                         , 'XRE', '부동산'
                                         , 'XIF', '인프라'
-                                        , '미분류')                          AS asset_cls
-     , m.AVTV_PGM_CD                                                      AS pgm_cd
-     , NVL(a.CURR_CD, 'KRW')                                              AS ccy
-     , MIN(a.VNTG_YR)                                                     AS vintage_yr
+                                        , '미분류')          AS asset_cls
+     , m.AVTV_PGM_CD                                        AS pgm_cd
+     , NVL(UPPER(a.CURR_CD), 'KRW')                         AS ccy
+     , a.VNTG_YR                                            AS vintage_yr
   FROM FEIAI0488NTA a
-  LEFT JOIN (SELECT p.NPS_CD, MAX(p.DEAL_NM) AS DEAL_NM
-               FROM FEIAI0432NTA p
-              WHERE p.WRK_DT = (SELECT MAX(b.WRK_DT) FROM FEIAI0432NTA b)
-              GROUP BY p.NPS_CD) n
-    ON n.NPS_CD = a.NPS_FUND_CD
-  LEFT JOIN (SELECT q.FUND_CD, MAX(q.AVTV_PGM_CD) AS AVTV_PGM_CD
-               FROM MAAMC0101DTM q
-              GROUP BY q.FUND_CD) m
-    ON m.FUND_CD = a.NPS_FUND_CD
- GROUP BY a.NPS_FUND_CD, n.DEAL_NM, m.AVTV_PGM_CD, NVL(a.CURR_CD, 'KRW')
+     , (SELECT q.FUND_CD, MAX(q.AVTV_PGM_CD) AS avtv_pgm_cd
+          FROM MAAMC0101DTM q
+         GROUP BY q.FUND_CD) m
+ WHERE m.FUND_CD(+) = a.NPS_FUND_CD
 
 =====FILE: sql/ALT_Commit.sql=====
--- 약정 내역. ALT_Manage 탭이 사용
--- 원천: FEIAI0488NTA — NPS_FUND_CD(펀드코드), VNTG_YR(빈티지), CURR_CD(통화), AGRT_DT(약정일자 YYYYMMDD), AGRT_AMT(약정금액)
---   AGRT_AMT 는 CURR_CD 통화 기준, 단위 1 (원, 달러, 유로 그대로). 펀드당 1행
--- 돌려주는 열(대문자): WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW
---   AMT_LOCAL: 펀드 통화 금액 — KRW 는 억원(÷ 1억), 외화는 백만(÷ 100만)
---   AMT_KRW  : 원화 억원 — KRW 펀드만 채우고 외화 펀드는 NULL. processor 가 약정일 환율(ALT_FX.sql)로 환산한다
-SELECT TO_DATE(a.AGRT_DT, 'YYYYMMDD')                                     AS wrk_dt
-     , a.NPS_FUND_CD                                                      AS fund_cd
-     , NVL(UPPER(a.CURR_CD), 'KRW')                                       AS ccy
-     , a.AGRT_AMT / DECODE(NVL(UPPER(a.CURR_CD), 'KRW'), 'KRW', 100000000, 1000000)  AS amt_local
+/* 약정 내역. ALT_Manage 탭이 사용
+   원천: FEIAI0488NTA  NPS_FUND_CD(펀드코드), CURR_CD(통화), AGRT_DT(약정일자 YYYYMMDD), AGRT_AMT(약정금액). 펀드당 1행
+   AGRT_AMT 는 CURR_CD 통화 기준, 단위 1
+   돌려주는 열(대문자): WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW
+     AMT_LOCAL  펀드 통화 금액. KRW 는 억원(나누기 1억), 외화는 백만(나누기 100만)
+     AMT_KRW    원화 억원. KRW 펀드만 채우고 외화는 NULL. processor 가 약정일 환율로 환산 */
+SELECT TO_DATE(a.AGRT_DT, 'YYYYMMDD')                                              AS wrk_dt
+     , a.NPS_FUND_CD                                                               AS fund_cd
+     , NVL(UPPER(a.CURR_CD), 'KRW')                                                AS ccy
+     , a.AGRT_AMT / DECODE(NVL(UPPER(a.CURR_CD), 'KRW'), 'KRW', 100000000, 1000000) AS amt_local
      , CASE WHEN NVL(UPPER(a.CURR_CD), 'KRW') = 'KRW'
-            THEN a.AGRT_AMT / 100000000 END                                AS amt_krw
+            THEN a.AGRT_AMT / 100000000 END                                        AS amt_krw
   FROM FEIAI0488NTA a
  WHERE a.AGRT_AMT IS NOT NULL
 
 =====FILE: sql/ALT_PCAP.sql=====
--- 집행·분배·NAV 분기 스냅샷(PCAP). ALT_Manage 탭이 사용
--- 원천: FEIAI0432NTA
---   WRK_DT(데이터 제공일, 주 단위, 'YYYY-MM-DD'), PCAP_DATE(기준일, 분기말, 'YYYYMMDD'), NPS_CD(펀드코드), DEAL_NM(펀드명)
---   COMMITMENT_AMT(약정), FUNDED_AMT(집행, 음수 부호), DISTRB_AMT(분배), PCAP_AMT(NAV) — 모두 PCAP_DATE 기준 누적
---   금액 단위는 1 (원, 달러, 유로 그대로). CD/CP 는 통화만 다르다
---   CURR_TYP: CD = 투자 통화(EUR/USD/JPY/KRW…), CP = 보고 통화(CURR_ID 가 USD 또는 KRW)
---   RPRT_NM('AS Reported by Fund' / 'AS Reported by GCM'), STATE_DATE(중복 없음, 사용 안 함)
--- 규칙
---   최신 제공일(WRK_DT 최대) 한 벌, GCM 보고 기준만 쓴다
---   통화 유형(CD/CP)은 SQL 에서 고르지 않고 long 으로 모두 돌려주며 processor 가 원화(CP-KRW)·펀드통화(CD)를 고른다
---   단위 변환: KRW 는 억원(÷ 1억), 그 외 통화는 백만(÷ 100만)
--- 돌려주는 열(대문자): PROV_DT, WRK_DT(=PCAP_DATE), FUND_CD, CURR_ID, CURR_TYP,
---                     COMMIT_AMT, FUNDED_AMT(양수로 뒤집음), DISTRB_AMT, NAV_AMT
-SELECT TO_DATE(a.WRK_DT, 'YYYY-MM-DD')                                    AS prov_dt      -- 데이터 제공일
-     , TO_DATE(a.PCAP_DATE, 'YYYYMMDD')                                   AS wrk_dt       -- 기준일(분기말)
-     , a.NPS_CD                                                           AS fund_cd
-     , UPPER(a.CURR_ID)                                                   AS curr_id
-     , UPPER(a.CURR_TYP)                                                  AS curr_typ
-     , a.COMMITMENT_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)        AS commit_amt
-     , -1 * a.FUNDED_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)       AS funded_amt   -- 원천은 음수 부호
-     , a.DISTRB_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)            AS distrb_amt
-     , a.PCAP_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)              AS nav_amt
+/* 집행·분배·NAV 분기 스냅샷(PCAP). ALT_Manage 탭이 사용
+   원천: FEIAI0432NTA
+     WRK_DT(데이터 제공일, 주 단위, YYYY-MM-DD 문자), PCAP_DATE(기준일, 분기말, YYYYMMDD), NPS_CD(펀드코드)
+     COMMITMENT_AMT, FUNDED_AMT(음수 부호), DISTRB_AMT, PCAP_AMT(NAV). 모두 PCAP_DATE 기준 누적, 단위 1
+     CURR_TYP  CD 투자 통화, CP 보고 통화(CURR_ID 가 USD 또는 KRW)
+     RPRT_NM   AS Reported by Fund / AS Reported by GCM 중 GCM 만 사용
+   최신 제공일(WRK_DT 최대) 한 벌만. CD/CP 는 long 으로 모두 돌려주고 processor 가 고른다
+   단위: KRW 는 억원(나누기 1억), 그 외 통화는 백만(나누기 100만). FUNDED 는 양수로 뒤집는다
+   돌려주는 열(대문자): PROV_DT, WRK_DT(=PCAP_DATE), FUND_CD, CURR_ID, CURR_TYP,
+                       COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT */
+SELECT TO_DATE(a.WRK_DT, 'YYYY-MM-DD')                                             AS prov_dt
+     , TO_DATE(a.PCAP_DATE, 'YYYYMMDD')                                            AS wrk_dt
+     , a.NPS_CD                                                                    AS fund_cd
+     , UPPER(a.CURR_ID)                                                            AS curr_id
+     , UPPER(a.CURR_TYP)                                                           AS curr_typ
+     , a.COMMITMENT_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)      AS commit_amt
+     , -1 * a.FUNDED_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)     AS funded_amt
+     , a.DISTRB_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)          AS distrb_amt
+     , a.PCAP_AMT / DECODE(UPPER(a.CURR_ID), 'KRW', 100000000, 1000000)            AS nav_amt
   FROM FEIAI0432NTA a
  WHERE a.WRK_DT = (SELECT MAX(b.WRK_DT) FROM FEIAI0432NTA b)
-   AND UPPER(a.RPRT_NM) LIKE '%GCM%'                                                       -- 'AS Reported by GCM' 만
+   AND UPPER(a.RPRT_NM) LIKE '%GCM%'
 
 =====FILE: sql/ALT_FX.sql=====
--- 환율 (체크리스트 #6). ALT_Manage 탭이 사용
--- 원천: FMCBI0006NTA — WRK_DT(기준일, YYYYMMDD 문자, 일별), CURR_CD(통화), MSCI_EXRT(환율: 1 USD 당 해당 통화 단위. 예 KRW 1350, EUR 0.92)
--- 용도: PCAP(FEIAI0432NTA)에 CD(투자 통화) 행이 빠진 펀드의 집행·분배 로컬 금액을 원화 ÷ 환율로 환산 (보조 경로)
--- 돌려주는 열(대문자): WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
---   1단위당 원화(KRW/통화) = USD_RATE(KRW) ÷ USD_RATE(통화) 는 processor 가 계산한다. 그래서 KRW 행을 꼭 포함한다
---   통화는 KRW 와 약정 테이블(FEIAI0488NTA)에 있는 펀드 통화만 가져온다 (일별이라 범위를 줄임)
-SELECT TO_DATE(a.WRK_DT, 'YYYYMMDD')                                      AS wrk_dt
-     , UPPER(a.CURR_CD)                                                   AS curr_id
-     , a.MSCI_EXRT                                                        AS usd_rate
+/* 환율. ALT_Manage 탭이 사용
+   원천: FMCBI0006NTA  WRK_DT(기준일, YYYYMMDD, 일별), CURR_CD(통화), MSCI_EXRT(1 USD 당 해당 통화 단위)
+   용도: 외화 약정의 원화 환산(약정일 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
+   돌려주는 열(대문자): WRK_DT, CURR_ID, USD_RATE
+   원/1단위 = USD_RATE(KRW) 나누기 USD_RATE(통화) 는 processor 가 계산. 그래서 KRW 행을 꼭 포함
+   통화는 KRW 와 약정 테이블에 있는 펀드 통화만 */
+SELECT TO_DATE(a.WRK_DT, 'YYYYMMDD')                                               AS wrk_dt
+     , UPPER(a.CURR_CD)                                                            AS curr_id
+     , a.MSCI_EXRT                                                                 AS usd_rate
   FROM FMCBI0006NTA a
  WHERE a.WRK_DT >= '20180101'
    AND (UPPER(a.CURR_CD) = 'KRW'
@@ -91,37 +80,60 @@ SELECT TO_DATE(a.WRK_DT, 'YYYYMMDD')                                      AS wrk
 =====FILE: 노트북 확인 코드 (dash_board.ipynb 또는 새 셀)=====
 # 네 파일을 sql/ 에 넣은 뒤 순서대로 실행. 각 셀 결과(출력 그대로)를 보내 주시면 됩니다
 import loader
+import pandas as pd
 conn = loader.create_connection()
 
-# 1) 펀드 마스터 — 펀드 수, 자산군 분포(미분류가 있으면 AVTV_PGM_CD 누락), 이름 없는 펀드 수
+# 0) 오류가 나면: 오류 코드와 위치를 찍는다 (파일 이름만 바꿔서 실행)
+import cx_Oracle
+sql = open("sql/ALT_Fund.sql", encoding="utf-8").read()
+cur = conn.cursor()
+try:
+    cur.execute(sql)
+    print("실행 OK", len(cur.fetchmany(5)), "행 미리보기")
+except cx_Oracle.DatabaseError as e:
+    err, = e.args
+    print(err.message)
+    off = err.offset
+    print("offset", off)
+    print("[문자 기준]", repr(sql[max(0, off - 60):off + 30]))
+    b = sql.encode("utf-8")
+    print("[바이트 기준]", repr(b[max(0, off - 60):off + 30].decode("utf-8", "replace")))
+
+# 0-1) 원천 테이블·컬럼 이름 확인 (둘 다 떠야 정상)
+print(pd.read_sql("SELECT NPS_FUND_CD, DEAL_NM, CURR_CD, VNTG_YR FROM FEIAI0488NTA WHERE ROWNUM <= 3", conn))
+print(pd.read_sql("SELECT FUND_CD, AVTV_PGM_CD FROM MAAMC0101DTM WHERE ROWNUM <= 3", conn))
+
+# 1) 펀드 마스터: 펀드 수, 자산군 분포(미분류가 많으면 MAAMC0101DTM 조인 문제), 이름 없는 펀드 수
 raw_fund = loader.load_data(conn, "ALT_Fund.sql")
 print(len(raw_fund), "펀드")
 print(raw_fund["ASSET_CLS"].value_counts(dropna=False))
 print("이름=코드인 펀드:", (raw_fund["FUND_NM"] == raw_fund["FUND_CD"]).sum())
 print(raw_fund.head())
 
-# 2) 약정 — 건수, 통화별 건수와 로컬 합계, 날짜 범위. AMT_KRW 는 KRW 펀드만 값이 있어야 정상
+# 2) 약정: 건수, 통화별 건수와 로컬 합계, 날짜 범위. AMT_KRW 는 KRW 펀드만 값이 있어야 정상
 raw_commit = loader.load_data(conn, "ALT_Commit.sql")
 print(len(raw_commit), "건", raw_commit["WRK_DT"].min(), "~", raw_commit["WRK_DT"].max())
 print(raw_commit.groupby("CCY")[["AMT_LOCAL", "AMT_KRW"]].agg(["count", "sum"]).round(1))
 print(raw_commit.head())
 
-# 3) PCAP — 최신 제공일, 기준일 범위, 통화유형×통화 분포. FUNDED_AMT 는 양수여야 정상
+# 3) PCAP: 최신 제공일, 기준일 범위, 통화유형x통화 분포. FUNDED_AMT 는 양수여야 정상
 raw_pcap = loader.load_data(conn, "ALT_PCAP.sql")
 print(len(raw_pcap), "행 | 제공일", raw_pcap["PROV_DT"].max(), "| 기준일", raw_pcap["WRK_DT"].min(), "~", raw_pcap["WRK_DT"].max())
 print(raw_pcap.groupby(["CURR_TYP", "CURR_ID"]).size())
 print(raw_pcap[["FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]].describe().round(1))
 print(raw_pcap.sort_values(["FUND_CD", "WRK_DT"]).head(8))
 
-# 4) 환율 — 통화별 행 수와 최근 값. KRW 가 꼭 있어야 하고, 값은 '1 USD 당 통화 단위'
+# 4) 환율: 통화별 행 수와 최근 값. KRW 가 꼭 있어야 하고, 값은 1 USD 당 통화 단위
 raw_fx = loader.load_data(conn, "ALT_FX.sql")
 print(len(raw_fx), "행", raw_fx["WRK_DT"].min(), "~", raw_fx["WRK_DT"].max())
 print(raw_fx.sort_values("WRK_DT").groupby("CURR_ID").tail(1))
 
 =====확인 사항=====
-- MAAMC0101DTM 의 펀드코드 컬럼을 'funcd_cd' 로 받아 FUND_CD 로 적었습니다. 다르면 ALT_Fund.sql 의 q.FUND_CD 두 곳을 바꿉니다
-- FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. 'AS Reported by GCM' 이외의 GCM 값이 있으면 알려 주세요
-- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 환산합니다 (약정일 환율 기준이 맞는지)
-- ALT_PCAP.sql 의 단위 변환: CURR_ID 가 KRW 면 ÷1억(억원), 그 외는 ÷100만(백만). 금액 단위가 1(원·달러 그대로)이라는 답변 기준입니다
-- ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만 가져옵니다. 2018-01-01 이후 일별
-- 오류가 나면 traceback 전체와 어느 파일인지 보내 주세요. 원인 줄을 지목해 드립니다
+- MAAMC0101DTM 의 펀드코드 컬럼을 'funcd_cd' 로 받아 FUND_CD 로 적었습니다. 0-1) 둘째 줄에서 ORA-00904 가 나면 이름이 다른 것이니 알려 주세요
+- 조인은 LEFT JOIN 대신 Oracle (+) 외부조인, 주석은 -- 대신 맨 위 /* */ 한 곳으로 바꿨습니다 (missing keyword 대응)
+- 펀드명은 FEIAI0488NTA.DEAL_NM 에서 바로 가져옵니다 (FEIAI0432NTA 조인 제거)
+- FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
+- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 환산합니다
+- 단위 변환: 통화가 KRW 면 1억으로 나눠 억원, 그 외는 100만으로 나눠 백만 (원천 단위 1 기준)
+- ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만, 2018-01-01 이후 일별로 가져옵니다
+- 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다
