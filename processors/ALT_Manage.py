@@ -5,9 +5,12 @@
 # 입력 (모두 loader.load_data 결과, Oracle 이라 열 이름은 대문자)
 #   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA)
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_KRW, AMT_LOCAL
-#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌)
-#              WRK_DT(기준일=PCAP_DATE), FUND_CD, FUNDED_KRW, FUNDED_LOCAL, DISTRB_KRW, DISTRB_LOCAL, NAV_KRW(선택)
-#              기본은 설립 이후 누적값으로 보고 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
+#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
+#              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
+#              같은 펀드·기준일에 통화 유형별 행이 여러 개 → 원화는 CURR_ID='KRW' 행, 펀드 통화는 CURR_TYP=PCAP_LOCAL_TYP 행
+#              (CD/CP 의 뜻은 확인 중. 아래 PCAP_LOCAL_TYP / PCAP_KRW_PREF 로 조정)
+#              금액은 PCAP_DATE 기준 누적(확인 완료) → 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
+#              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
 #   raw_target sql/ALT_Target.sql  연도·자산군별 목표
 #              TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW(NULL 허용)
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR
@@ -44,13 +47,16 @@ ALL = "전체"
 UNIT = "억원"
 LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
+PCAP_LOCAL_TYP = "CD"      # 펀드 통화 금액으로 쓸 CURR_TYP (가정: CD = 펀드 표시통화. 확인 사항)
+PCAP_KRW_PREF = ["CP", "CD"]   # 원화 행이 여러 개일 때 우선순위 (가정: CP = 원화 환산. 확인 사항)
 
 
 def _to_date(s):
-    """YYYYMMDD 문자열/숫자 또는 이미 날짜인 열을 날짜로 통일"""
+    """YYYYMMDD / YYYY-MM-DD 문자열, 숫자, 또는 이미 날짜인 열을 날짜로 통일"""
     if pd.api.types.is_datetime64_any_dtype(s):
         return pd.to_datetime(s)
-    return pd.to_datetime(s.astype(str).str.strip().str[:8], format="%Y%m%d", errors="coerce")
+    digits = s.astype(str).str.replace(r"\D", "", regex=True).str[:8]
+    return pd.to_datetime(digits, format="%Y%m%d", errors="coerce")
 
 
 def _num(df, col):
@@ -73,16 +79,38 @@ def _prep_commit(raw):
     return df[["WRK_DT", "FUND_KEY", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
 
 
+def _pcap_wide(df):
+    """통화 유형별 long 행(CURR_ID, CURR_TYP) → 펀드·기준일당 한 행 (FUNDED_KRW, FUNDED_LOCAL, DISTRB_KRW, DISTRB_LOCAL)"""
+    df["CURR_ID"] = df["CURR_ID"].fillna("").astype(str).str.strip().str.upper()
+    df["CURR_TYP"] = df["CURR_TYP"].fillna("").astype(str).str.strip().str.upper() if "CURR_TYP" in df else ""
+    for c in ["FUNDED_AMT", "DISTRB_AMT"]:
+        df[c] = _num(df, c)
+    keys = ["FUND_KEY", "WRK_DT"]
+    # 원화: CURR_ID='KRW' 행. 여러 개면 PCAP_KRW_PREF 순서로 하나
+    krw = df[df["CURR_ID"] == "KRW"].copy()
+    krw["_PRI"] = krw["CURR_TYP"].map({t: i for i, t in enumerate(PCAP_KRW_PREF)}).fillna(len(PCAP_KRW_PREF))
+    krw = krw.sort_values(keys + ["_PRI"]).drop_duplicates(keys, keep="first")
+    krw = krw[keys + ["FUNDED_AMT", "DISTRB_AMT"]].rename(columns={"FUNDED_AMT": "FUNDED_KRW", "DISTRB_AMT": "DISTRB_KRW"})
+    # 펀드 통화: CURR_TYP=PCAP_LOCAL_TYP 행 (KRW 펀드는 원화 행과 같은 값)
+    loc = df[df["CURR_TYP"] == PCAP_LOCAL_TYP].drop_duplicates(keys, keep="last")
+    loc = loc[keys + ["FUNDED_AMT", "DISTRB_AMT"]].rename(columns={"FUNDED_AMT": "FUNDED_LOCAL", "DISTRB_AMT": "DISTRB_LOCAL"})
+    wide = krw.merge(loc, how="outer", on=keys)
+    return wide
+
+
 def _prep_pcap(raw, cumulative):
     """PCAP 원재료 → long 현금흐름 (TX_TYPE=집행/분배). 누적값이면 펀드별 기준일 순 차분으로 증분을 만든다"""
     df = raw.copy()
     df.columns = df.columns.str.upper()
     df["WRK_DT"] = _to_date(df["WRK_DT"])
     df["FUND_KEY"] = df["FUND_CD"].astype(str).str.strip()
+    df = df.dropna(subset=["WRK_DT"])
+    if "CURR_ID" in df:                       # 통화 유형별 long 형식 (실제 SQL 결과)
+        df = _pcap_wide(df)
     cols = ["FUNDED_KRW", "FUNDED_LOCAL", "DISTRB_KRW", "DISTRB_LOCAL"]
     for c in cols:
         df[c] = _num(df, c)
-    df = df.dropna(subset=["WRK_DT"]).sort_values(["FUND_KEY", "WRK_DT"])
+    df = df.sort_values(["FUND_KEY", "WRK_DT"])
     df = df.drop_duplicates(["FUND_KEY", "WRK_DT"], keep="last")
     if cumulative:
         # 첫 기준일의 증분은 그 시점 누적값 (이력이 잘려 있으면 첫 분기에 몰린다 — 확인 사항)

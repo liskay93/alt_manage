@@ -6,8 +6,8 @@
 |---|---|---|---|---|
 | 1 | 펀드 마스터 | 필수 | 펀드 식별, 자산군·통화 분류, 펀드 기여도 카드 | 🟡 부분 — FEIAI0488NTA (펀드코드·빈티지·통화). 펀드명·자산군 테이블 확인 중 |
 | 2 | 약정 내역 | 필수 | 약정 현황·달성률, 연도별·연중 누적 약정, 펀드별 약정 | 🟡 부분 — FEIAI0488NTA (AGRT_DT, AGRT_AMT). 금액 통화·단위, 날짜 형식 확인 중 |
-| 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, 분기 PCAP). 통화·단위, 누적 여부 확인 중 |
-| 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | 🟡 부분 — FEIAI0432NTA (DISTRB_AMT, 분기 PCAP). 통화·단위, 누적 여부 확인 중 |
+| 3 | 집행(캐피털콜) 내역 | 필수 | 집행 현황, 순증, 분기별 집행, 누적 집행률 | 🟡 부분 — FEIAI0432NTA (FUNDED_AMT, PCAP_DATE 기준 누적 ✔, GCM 기준 ✔, CURR_ID/CURR_TYP ✔). 단위·CD/CP 뜻·이력 시작 확인 중 |
+| 4 | 분배(회수) 내역 | 필수 | 분배 현황, 순증, 분기별 분배 | 🟡 부분 — FEIAI0432NTA (DISTRB_AMT). 3번과 같은 확인 사항 |
 | 5 | 연도별 목표 | 필수 | 네 지표의 목표·달성률·잔여, 목표 점선 | ⬜ 미완료 |
 | 6 | 환율 | 선택 | 거래별 원화 환산액이 없을 때만 필요 | ⬜ 미완료 |
 
@@ -95,7 +95,7 @@
 | 테이블 | 컬럼 | 쓰이는 곳 | 남은 확인 |
 |---|---|---|---|
 | FEIAI0488NTA | NPS_FUND_CD 펀드코드, VNTG_YR 빈티지, CURR_CD 통화, AGRT_DT 약정일자, AGRT_AMT 약정금액 | 1 펀드 마스터(코드·빈티지·통화), 2 약정 내역 | AGRT_AMT 통화·단위, AGRT_DT 형식, 펀드당 행 수 |
-| FEIAI0432NTA | WRK_DT 데이터 제공일(주간), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT 약정, FUNDED_AMT 집행(음수), DISTRB_AMT 분배, PCAP_AMT NAV | 3 집행, 4 분배 (분기 증분), NAV 는 추후 활용 | 금액 통화·단위, 누적/기간 여부, 최신 제공일 이력 범위, 지연(분기 시차) |
+| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID(USD/KRW), CURR_TYP(CD/CP), RPRT_NM(Fund/GCM) | 3 집행, 4 분배 (분기 증분), NAV 는 추후 활용. GCM 보고 기준만 | 금액 단위, CD/CP 뜻(가정: CD=펀드 통화, CP=원화 환산), PCAP_DATE 형식, 이력 시작 시점 |
 
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
 
@@ -103,7 +103,7 @@
 |---|---|---|---|
 | 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, CCY, VINTAGE_YR | 🟡 FEIAI0488NTA 반영, 펀드명·자산군 대기 |
 | 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_KRW, AMT_LOCAL | 🟡 FEIAI0488NTA 반영, 금액 단위 대기 |
-| 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, 분기 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, COMMIT_KRW, FUNDED_KRW, FUNDED_LOCAL, DISTRB_KRW, DISTRB_LOCAL, NAV_KRW | 🟡 FEIAI0432NTA 반영, 통화·단위·누적 여부 대기 |
+| 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, GCM, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | 🟡 FEIAI0432NTA 반영, 단위·CD/CP 대기 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
 | 6 환율 | (없음) | 원화 금액이 거래에 있으면 불필요 | ⬜ |
 
