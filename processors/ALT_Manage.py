@@ -214,7 +214,8 @@ def _prep_fx(raw):
         usd = pd.DataFrame({"WRK_DT": krw.index, "CURR_ID": "USD", "RATE": krw.values})
         df = pd.concat([df[["WRK_DT", "CURR_ID", "RATE"]], usd], ignore_index=True).drop_duplicates(["WRK_DT", "CURR_ID"], keep="first")
     df["RATE"] = pd.to_numeric(df["RATE"], errors="coerce")
-    return df.dropna(subset=["RATE"]).sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]].reset_index(drop=True)
+    df = df.dropna(subset=["RATE"]).drop_duplicates(["WRK_DT", "CURR_ID"], keep="last")
+    return df.sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]].reset_index(drop=True)
 
 
 def _fill_krw_by_fx(cf, fx):

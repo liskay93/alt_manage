@@ -21,7 +21,7 @@ cls_of, nm_of = fm["ASSET_CLS"], fm["FUND_NM"]
 # 1) 약정: 약정일이 2026년인 펀드. 외화는 약정일(없으면 직전 영업일) 환율로 원화 환산
 fx = raw_fx.copy()
 fx["WRK_DT"] = to_dt(fx["WRK_DT"])
-fx = fx.dropna(subset=["WRK_DT"]).sort_values("WRK_DT")
+fx = fx.dropna(subset=["WRK_DT"]).drop_duplicates(["WRK_DT", "CURR_ID"], keep="last").sort_values("WRK_DT")
 
 
 def krw_per_unit(ccy, dt):
@@ -79,13 +79,13 @@ view = pd.concat({"목표": tg, "현황": now, "달성률%": now / tg.where(tg !
 view = view.swaplevel(axis=1)[["약정", "집행", "회수", "순증"]]
 
 print("날짜 형식이 잘못돼 뺀 행:", bad)
-print("약정    : 2026-01-01 ~", c["WRK_DT"].max().date(), "|", len(c), "건 | 환율 없어 빠진 외화 약정", int(c["약정_원화"].isna().sum()), "건")
-print("집행·회수: PCAP 기준일", cur["WRK_DT"].max().date(), "까지 |", len(f), "펀드")
+print("약정    : 20260101 ~", c["WRK_DT"].max().strftime("%Y%m%d"), "|", len(c), "건 | 환율 없어 빠진 외화 약정", int(c["약정_원화"].isna().sum()), "건")
+print("집행·회수: PCAP 기준일", cur["WRK_DT"].max().strftime("%Y%m%d"), "까지 |", len(f), "펀드")
 with pd.option_context("display.float_format", "{:,.0f}".format, "display.width", 250):
     print(view.to_string())                                   # 원 단위, 천 단위 쉼표 (달성률% 은 정수)
 
 # 5) 펀드별 상세를 엑셀로 (합계가 이상하면 여기서 펀드를 찾아본다)
-c_out = (c.assign(펀드명=c["FUND_CD"].map(nm_of))
+c_out = (c.assign(펀드명=c["FUND_CD"].map(nm_of), WRK_DT=c["WRK_DT"].dt.strftime("%Y%m%d"))
           [["FUND_CD", "펀드명", "CLS", "CCY", "WRK_DT", "AMT_LOCAL", "약정_원화"]]
           .sort_values(["CLS", "약정_원화"], ascending=[True, False]))
 f_out = (f.assign(펀드명=pd.Series(f.index, index=f.index).map(nm_of), 순증=f["FUNDED_AMT"] - f["DISTRB_AMT"])

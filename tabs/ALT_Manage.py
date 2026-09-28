@@ -380,7 +380,7 @@ def make_page(data, cls):
     in_progress = year == asof.year and months < 12
     period = "%d년 %s 누적" % (year, period_text(months))
     if flow_months != months:
-        period += " (집행·분배·순증은 %s, PCAP %s 기준)" % (period_text(flow_months), asof_flow.strftime("%m/%d"))
+        period += " (집행·분배·순증은 %s, PCAP %s 기준)" % (period_text(flow_months), asof_flow.strftime("%Y%m%d"))
     pace_text = " · 연간 진도 %d%% (%d/12개월)" % (round(months / 12 * 100), months) if in_progress else ""
 
     # 1단 지표 카드 — 지표마다 자기 기준월로 진도 눈금을 그린다
@@ -497,7 +497,7 @@ def render(data):
     header = html.Div([
         html.Span("대체투자 약정 현황", style={"fontSize": "18px", "fontWeight": "700", "color": INK}),
         html.Span("약정 기준일 %s · 집행·분배 기준일 %s(PCAP) · 단위 %s · 순증 = 집행 − 분배"
-                  % (asof.strftime("%Y-%m-%d"), data.get("asof_flow", asof).strftime("%Y-%m-%d"), data["unit"]),
+                  % (asof.strftime("%Y%m%d"), data.get("asof_flow", asof).strftime("%Y%m%d"), data["unit"]),
                   style={"fontSize": "12.5px", "color": MUTED, "marginLeft": "12px"}),
     ], style={"margin": "4px 0 10px"})
     for w in data.get("warnings", []) or []:      # 가공 단계 경고 (예: 환율 없음)

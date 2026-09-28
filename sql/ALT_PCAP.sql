@@ -6,10 +6,10 @@
      RPRT_NM   AS Reported by Fund / AS Reported by GCM 중 GCM 만 사용
    최신 제공일(WRK_DT 최대) 한 벌만. CD/CP 는 long 으로 모두 돌려주고 processor 가 고른다
    금액은 원본 그대로 (단위 1, FUNDED_AMT 음수 부호 그대로). 억원·백만 변환과 부호 처리는 processor 가 한다
-   날짜도 원본 문자열 그대로. 형식이 잘못된 값이 섞여 있어 TO_DATE 는 쓰지 않고 processor 가 변환한다
+   날짜는 TO_DATE 없이 모두 YYYYMMDD 문자열로 통일 (제공일 WRK_DT 는 YYYY-MM-DD 라 '-' 를 뺀다). 날짜 변환은 파이썬에서
    돌려주는 열(대문자): PROV_DT, WRK_DT(=PCAP_DATE), FUND_CD, CURR_ID, CURR_TYP,
                        COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT */
-SELECT a.WRK_DT                                              AS prov_dt
+SELECT REPLACE(a.WRK_DT, '-', '')                            AS prov_dt
      , a.PCAP_DATE                                            AS wrk_dt
      , a.NPS_CD                                               AS fund_cd
      , UPPER(a.CURR_ID)                                       AS curr_id

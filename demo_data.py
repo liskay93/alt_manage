@@ -1,7 +1,7 @@
 # 로컬 확인용 데모 원재료. draft/data 의 샘플 CSV 를 확인된 원천 테이블 모양(대문자 열, 날짜는 YYYYMMDD 문자열)으로 만든다.
 #   raw_commit ← FEIAI0488NTA 모양 (sql/ALT_Commit.sql 결과)
 #   raw_pcap   ← FEIAI0432NTA 모양 (sql/ALT_PCAP.sql 결과): 분기말 기준 설립 이후 누적, 최신 제공일 한 벌,
-#               통화 유형별 long 행(CURR_ID, CURR_TYP), GCM 보고 기준, 날짜는 'YYYY-MM-DD'
+#               통화 유형별 long 행(CURR_ID, CURR_TYP), GCM 보고 기준, 날짜는 모두 YYYYMMDD 문자열
 #               PCAP 은 한 분기 늦게 들어오므로 기준일(9/22) 시점에는 6/30 까지만 있다고 가정
 #   raw_target ← data/ALT_Target.xlsx '목표' 시트 (실제 경로와 동일)
 #   raw_fund   ← sql/ALT_Fund.sql 결과 (펀드명·자산군은 아직 원천 미확인이지만 데모에서는 채운다)
@@ -45,7 +45,7 @@ def load_demo():
     distrb_krw = q[("amount", "분배")] if ("amount", "분배") in q else 0.0
     funded_loc = q[("local_amount", "집행")] if ("local_amount", "집행") in q else 0.0
     distrb_loc = q[("local_amount", "분배")] if ("local_amount", "분배") in q else 0.0
-    base = {"PROV_DT": "2026-09-18", "WRK_DT": q["Q_END"].dt.strftime("%Y-%m-%d"), "FUND_CD": q["code"],
+    base = {"PROV_DT": "20260918", "WRK_DT": q["Q_END"].dt.strftime("%Y%m%d"), "FUND_CD": q["code"],
             "RPRT_NM": "AS Reported by GCM", "COMMIT_AMT": 0.0, "NAV_AMT": 0.0}
     # SQL 과 같은 원본 단위: KRW 행은 원, 외화 행은 1단위, 집행은 음수 부호
     loc_unit = q["currency"].map(lambda x: 1e8 if x == "KRW" else 1e6)
