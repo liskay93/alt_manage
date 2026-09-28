@@ -282,8 +282,9 @@ def _prep_fund(raw):
     df["PGM_CD"] = df["PGM_CD"].fillna("").astype(str).str.strip().str.upper() if "PGM_CD" in df else ""
     df["PGM_NM"] = df["PGM_CD"].map(PGM_NAMES).fillna(df["PGM_CD"].where(df["PGM_CD"] != "", pd.NA))
     df["ASSET_CLS"] = df["ASSET_CLS"].astype(str).str.strip() if "ASSET_CLS" in df else pd.NA
-    by_code = df["PGM_CD"].str[:3].map(PGM_CLASS)                      # 자산군이 비어 있으면 코드 앞 3자리로
-    df["ASSET_CLS"] = df["ASSET_CLS"].where(df["ASSET_CLS"].notna() & (df["ASSET_CLS"] != "") & (df["ASSET_CLS"] != "nan"), by_code)
+    by_code = df["PGM_CD"].str[:3].map(PGM_CLASS)                      # 자산군이 비었거나 미분류면 코드 앞 3자리로
+    known = df["ASSET_CLS"].notna() & ~df["ASSET_CLS"].isin(["", "nan", "None", NO_CLASS])
+    df["ASSET_CLS"] = df["ASSET_CLS"].where(known | by_code.isna(), by_code)
     df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS).map(lambda c: CLASS_ALIAS.get(c, c))
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper() if "CCY" in df else "KRW"
     df["VINTAGE_YR"] = pd.to_numeric(df["VINTAGE_YR"], errors="coerce") if "VINTAGE_YR" in df else pd.NA

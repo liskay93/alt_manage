@@ -37,6 +37,8 @@ except cx_Oracle.DatabaseError as e:
 # 0-1) 원천 테이블·컬럼 이름 확인 (둘 다 떠야 정상)
 print(pd.read_sql("SELECT NPS_FUND_CD, DEAL_NM, CURR_CD, VNTG_YR FROM FEIAI0488NTA WHERE ROWNUM <= 3", conn))
 print(pd.read_sql("SELECT FUND_CD, ATVT_PGM_FUND_CD FROM MAAMC0101DTM_CW01 WHERE ROWNUM <= 3", conn))
+# 프로그램 코드 앞 3자리 분포: XPV(사모벤처)·XRE(부동산)·XIF(인프라) 외의 값이 있으면 알려 주세요
+print(pd.read_sql("SELECT UPPER(SUBSTR(TRIM(ATVT_PGM_FUND_CD), 1, 3)) AS prefix, COUNT(*) AS cnt FROM MAAMC0101DTM_CW01 GROUP BY UPPER(SUBSTR(TRIM(ATVT_PGM_FUND_CD), 1, 3)) ORDER BY 2 DESC", conn))
 # 조인 확인: 약정 테이블 펀드 중 MAAMC0101DTM_CW01 에서 찾아지는 펀드 수 (TOTAL 과 비슷해야 정상)
 print(pd.read_sql("SELECT COUNT(*) AS total, SUM(CASE WHEN EXISTS (SELECT 1 FROM MAAMC0101DTM_CW01 q WHERE q.FUND_CD = a.NPS_FUND_CD) THEN 1 ELSE 0 END) AS matched FROM FEIAI0488NTA a", conn))
 
