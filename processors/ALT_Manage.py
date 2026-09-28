@@ -7,7 +7,7 @@
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화), AMT_KRW(KRW 펀드만, 외화는 NULL)
 #              외화 약정의 원화 = AMT_LOCAL × 적용환율(raw_fx). 적용환율 = 약정 연도 12/31 과 asof 중 이른 날 환율
 #              (예: asof 20260731 → 2025년 약정 20251231, 2026년 약정 20260731). 환율이 없으면 0 으로 두고 warnings 에 적는다
-#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
+#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 보고 구분별 최신 제공일, 펀드·기준일·통화마다 GCM 우선·없으면 Fund 보고)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
 #              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
 #              CURR_TYP 뜻 (확인 완료): CD = 투자 통화(EUR/USD/JPY/KRW…), CP = 보고 통화(USD 기준 또는 KRW 기준)
