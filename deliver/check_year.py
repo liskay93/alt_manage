@@ -9,20 +9,33 @@ def to_dt(s):
     return pd.to_datetime(t, format="%Y%m%d", errors="coerce")
 
 
-cls_of = raw_fund.drop_duplicates("FUND_CD").set_index("FUND_CD")["ASSET_CLS"]
+def txt(s):
+    """코드·통화 문자열 정리: 앞뒤 공백 제거, 대문자"""
+    return s.astype(str).str.strip().str.upper()
+
+
+fd = raw_fund.copy()
+fd["FUND_CD"] = txt(fd["FUND_CD"])
+cls_of = fd.drop_duplicates("FUND_CD").set_index("FUND_CD")["ASSET_CLS"]
 
 fx = raw_fx.copy()
 fx["WRK_DT"] = to_dt(fx["WRK_DT"])
+fx["CURR_ID"] = txt(fx["CURR_ID"])
 fx = fx.dropna(subset=["WRK_DT"]).drop_duplicates(["WRK_DT", "CURR_ID"], keep="last").sort_values("WRK_DT")
 
 cm = raw_commit.copy()
 cm["WRK_DT"] = to_dt(cm["WRK_DT"])
+cm["FUND_CD"] = txt(cm["FUND_CD"])
+cm["CCY"] = txt(cm["CCY"])
 cm["CLS"] = cm["FUND_CD"].map(cls_of).fillna("미분류")
 
 pc = raw_pcap.copy()
 pc["WRK_DT"] = to_dt(pc["WRK_DT"])
+pc["FUND_CD"] = txt(pc["FUND_CD"])
+pc["CURR_ID"] = txt(pc["CURR_ID"])
+pc["CURR_TYP"] = txt(pc["CURR_TYP"])
 pc = pc[(pc["CURR_ID"] == "KRW") & pc["WRK_DT"].notna()]
-pc = pc.sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
+pc = pc.sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")     # CP 우선
 
 
 krw_s = fx[fx["CURR_ID"] == "KRW"].set_index("WRK_DT")["USD_RATE"]
