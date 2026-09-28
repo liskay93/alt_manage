@@ -75,8 +75,8 @@ def check(Y, asof):
     print(Y, "| 약정", s.strftime("%Y%m%d"), "~", asof, len(c), "건, 환율 없음", int(c["KRW"].isna().sum()), "건",
           "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드")
     for y, (v, d) in sorted(fxr.items()):
-        print("  환율", y, "%.4f" % v, "원/단위", d.strftime("%Y%m%d") if d is not None else "없음")
-    with pd.option_context("display.float_format", "{:,.0f}".format):
+        print("  환율 1 %s = %.4f 원 (%s)" % (y, v, d.strftime("%Y%m%d") if d is not None else "환율 없음"))
+    with pd.option_context("display.float_format", "{:.0f}".format):     # 원본 그대로 (원, 쉼표 없음)
         print(out)
     print()
     return out
