@@ -99,7 +99,7 @@ def _to_date(s):
     """YYYYMMDD / YYYY-MM-DD 문자열, 숫자, 또는 이미 날짜인 열을 날짜로 통일"""
     if pd.api.types.is_datetime64_any_dtype(s):
         return pd.to_datetime(s)
-    digits = s.astype(str).str.replace(r"\D", "", regex=True).str[:8]
+    digits = s.astype(str).str.replace("[^0-9]", "", regex=True).str[:8]     # 숫자만 남김 (역슬래시 안 씀)
     return pd.to_datetime(digits, format="%Y%m%d", errors="coerce")
 
 

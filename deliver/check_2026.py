@@ -8,11 +8,10 @@ ORDER = ["사모벤처", "부동산", "인프라", "미분류"]
 TARGET_MULT = 100000000        # 목표 엑셀이 억원 입력 → 원. 원으로 입력했다면 1
 
 
+# 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 빈 값·잘못된 값은 NaT
 def to_dt(s):
-    """원본 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 형식이 잘못된 값은 NaT"""
-    if pd.api.types.is_datetime64_any_dtype(s):
-        return s
-    return pd.to_datetime(s.astype(str).str.replace(r"\D", "", regex=True).str[:8], format="%Y%m%d", errors="coerce")
+    t = s.astype(str).str.replace("-", "").str[:8]
+    return pd.to_datetime(t, format="%Y%m%d", errors="coerce")
 
 
 bad = {n: int(to_dt(r["WRK_DT"]).isna().sum()) for n, r in [("약정", raw_commit), ("PCAP", raw_pcap), ("환율", raw_fx)]}

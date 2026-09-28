@@ -23,11 +23,10 @@ conn = loader.create_connection()
 pd.set_option("display.float_format", lambda x: "{:,.0f}".format(x) if abs(x) >= 1e6 else "{:,.4f}".format(x))
 
 
+# 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 빈 값·잘못된 값은 NaT
 def to_dt(s):
-    """원본 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 빈 값·잘못된 값은 NaT (빈 값이 섞이면 min/max 가 안 돼서)"""
-    if pd.api.types.is_datetime64_any_dtype(s):
-        return s
-    return pd.to_datetime(s.astype(str).str.replace(r"\\D", "", regex=True).str[:8], format="%Y%m%d", errors="coerce")
+    t = s.astype(str).str.replace("-", "").str[:8]
+    return pd.to_datetime(t, format="%Y%m%d", errors="coerce")
 
 
 # 0) 오류가 나면: 오류 코드와 위치를 찍는다 (파일 이름만 바꿔서 실행)
