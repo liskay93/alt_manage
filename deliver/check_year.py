@@ -18,6 +18,8 @@ CODE_CLS = {"P": "사모벤처", "D": "사모벤처", "Z": "사모벤처", "H": 
 
 
 def cls_of(codes):
+    if not isinstance(codes, pd.Series):                 # 코드 하나(글자)가 들어와도 동작 (.map(cls_of) 로 불러도 됨)
+        return CODE_CLS.get(str(codes)[:1], "미분류")
     return codes.str[:1].map(CODE_CLS).fillna("미분류")
 
 
