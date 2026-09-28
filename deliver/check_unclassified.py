@@ -1,7 +1,7 @@
 # 미분류 점검: 펀드코드 맨 앞 글자가 P·D·Z·H·R·I·S 가 아닌 펀드 (검증 셀 실행 뒤, 같은 노트북에서)
 Y, s, e = 2026, pd.Timestamp("20260101"), pd.Timestamp("20260731")
 
-nm = raw_fund.assign(FUND_CD=txt(raw_fund["FUND_CD"])).drop_duplicates("FUND_CD").set_index("FUND_CD")["FUND_NM"]
+nm = raw_fund.drop_duplicates("FUND_CD").set_index("FUND_CD")["FUND_NM"]
 a = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)]
 b = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]
 codes = pd.Series(sorted(set(a["FUND_CD"]) | set(b["FUND_CD"])))

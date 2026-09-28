@@ -9,11 +9,6 @@ def to_dt(s):
     return pd.to_datetime(t, format="%Y%m%d", errors="coerce")
 
 
-def txt(s):
-    """코드·통화 문자열 정리: 앞뒤 공백 제거, 대문자"""
-    return s.astype(str).str.strip().str.upper()
-
-
 # 자산군 = 펀드코드 맨 앞 글자 (헤지펀드 H 는 사모벤처)
 CODE_CLS = {"P": "사모벤처", "D": "사모벤처", "Z": "사모벤처", "H": "사모벤처",
             "R": "부동산", "I": "인프라", "S": "인프라"}
@@ -25,20 +20,14 @@ def cls_of(codes):
 
 fx = raw_fx.copy()
 fx["WRK_DT"] = to_dt(fx["WRK_DT"])
-fx["CURR_ID"] = txt(fx["CURR_ID"])
 fx = fx.dropna(subset=["WRK_DT"]).drop_duplicates(["WRK_DT", "CURR_ID"], keep="last").sort_values("WRK_DT")
 
 cm = raw_commit.copy()
 cm["WRK_DT"] = to_dt(cm["WRK_DT"])
-cm["FUND_CD"] = txt(cm["FUND_CD"])
-cm["CCY"] = txt(cm["CCY"])
 cm["CLS"] = cls_of(cm["FUND_CD"])
 
 pc = raw_pcap.copy()
 pc["WRK_DT"] = to_dt(pc["WRK_DT"])
-pc["FUND_CD"] = txt(pc["FUND_CD"])
-pc["CURR_ID"] = txt(pc["CURR_ID"])
-pc["CURR_TYP"] = txt(pc["CURR_TYP"])
 pc = pc[(pc["CURR_ID"] == "KRW") & pc["WRK_DT"].notna()]
 pc = pc.sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")     # CP 우선
 
