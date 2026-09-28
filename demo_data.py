@@ -31,7 +31,7 @@ def load_demo():
         "FUND_CD": c["code"],
         "CCY": c["currency"],
         "AMT_LOCAL": c["local_amount"].astype(float) * unit,
-        # SQL 처럼 KRW 펀드만 원화를 채우고 외화는 비운다 (processor 가 약정일 환율로 환산)
+        # SQL 처럼 KRW 펀드만 원화를 채우고 외화는 비운다 (processor 가 연말·기준일 환율로 환산)
         "AMT_KRW": (c["amount"].astype(float) * 1e8).where(c["currency"] == "KRW"),
     })
 

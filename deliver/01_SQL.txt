@@ -29,7 +29,7 @@ SELECT a.NPS_FUND_CD                                             AS fund_cd
    날짜도 원본 문자열 그대로. 형식이 잘못된 값이 섞여 있어 TO_DATE 는 쓰지 않고 processor 가 변환한다
    돌려주는 열(대문자): WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW
      AMT_LOCAL  펀드 통화 금액 (원본)
-     AMT_KRW    원화 금액. KRW 펀드만 채우고 외화는 NULL. processor 가 약정일 환율로 환산 */
+     AMT_KRW    원화 금액. KRW 펀드만 채우고 외화는 NULL. processor 가 적용환율(약정 연도 12/31 과 기준일 중 이른 날)로 환산 */
 SELECT a.AGRT_DT                                             AS wrk_dt
      , a.NPS_FUND_CD                                          AS fund_cd
      , NVL(UPPER(a.CURR_CD), 'KRW')                           AS ccy
@@ -67,7 +67,7 @@ SELECT a.WRK_DT                                              AS prov_dt
 =====FILE: sql/ALT_FX.sql=====
 /* 환율. ALT_Manage 탭이 사용
    원천: FMCBI0006NTA  WRK_DT(기준일, YYYYMMDD, 일별), CURR_CD(통화), MSCI_EXRT(1 USD 당 해당 통화 단위)
-   용도: 외화 약정의 원화 환산(약정일 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
+   용도: 외화 약정의 원화 환산(약정 연도 12/31 과 기준일 중 이른 날 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
    돌려주는 열(대문자): WRK_DT, CURR_ID, USD_RATE
    원/1단위 = USD_RATE(KRW) 나누기 USD_RATE(통화) 는 processor 가 계산. 그래서 KRW 행을 꼭 포함
    통화는 KRW 와 약정 테이블에 있는 펀드 통화만
@@ -175,7 +175,7 @@ print(raw_fx.dropna(subset=["WRK_DT"]).sort_values("WRK_DT").groupby("CURR_ID").
 - 조인은 LEFT JOIN 대신 Oracle (+) 외부조인, 주석은 -- 대신 맨 위 /* */ 한 곳으로 바꿨습니다 (missing keyword 대응)
 - 펀드명은 FEIAI0488NTA.DEAL_NM 에서 바로 가져옵니다 (FEIAI0432NTA 조인 제거)
 - FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
-- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 원화 환산합니다
+- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정 연도 12/31 과 기준일 중 이른 날 환율로 원화 환산합니다 (예: 기준일 20260731 → 2025년 약정 20251231, 2026년 약정 20260731 환율)
 - 금액은 1 단위 기준입니다. SQL 은 원본(원, 달러 …)을 나누지 않고 돌려주고, processor 도 그대로 계산합니다. 화면에서만 억원·백만으로 보여 줍니다 (tabs 의 DISPLAY_DIV). 집행 음수 부호는 processor 가 뒤집습니다
 - 날짜도 원본 문자열로 돌려줍니다 (TO_DATE 안 씀). 형식이 잘못된 값이 섞여 있어 ORA-01840 이 났기 때문입니다. 변환은 processor 가 하고, 잘못된 행은 빼면서 건수를 화면 경고로 알립니다
 - SQL 파일에는 ORDER BY 를 넣지 않아도 됩니다. 정렬은 processor 가 하고, 눈으로 볼 때는 df.sort_values("WRK_DT", ascending=False) 로 봅니다

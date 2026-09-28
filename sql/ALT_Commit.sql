@@ -4,7 +4,7 @@
    날짜도 원본 문자열 그대로. 형식이 잘못된 값이 섞여 있어 TO_DATE 는 쓰지 않고 processor 가 변환한다
    돌려주는 열(대문자): WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW
      AMT_LOCAL  펀드 통화 금액 (원본)
-     AMT_KRW    원화 금액. KRW 펀드만 채우고 외화는 NULL. processor 가 약정일 환율로 환산 */
+     AMT_KRW    원화 금액. KRW 펀드만 채우고 외화는 NULL. processor 가 적용환율(약정 연도 12/31 과 기준일 중 이른 날)로 환산 */
 SELECT a.AGRT_DT                                             AS wrk_dt
      , a.NPS_FUND_CD                                          AS fund_cd
      , NVL(UPPER(a.CURR_CD), 'KRW')                           AS ccy

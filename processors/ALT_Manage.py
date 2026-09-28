@@ -5,7 +5,8 @@
 # 입력 (모두 loader.load_data 결과, Oracle 이라 열 이름은 대문자)
 #   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA, 펀드당 1행). 금액은 원본(단위 1)
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화), AMT_KRW(KRW 펀드만, 외화는 NULL)
-#              외화 약정의 원화 = AMT_LOCAL × 약정일 환율(raw_fx). 환율이 없으면 0 으로 두고 warnings 에 적는다
+#              외화 약정의 원화 = AMT_LOCAL × 적용환율(raw_fx). 적용환율 = 약정 연도 12/31 과 asof 중 이른 날 환율
+#              (예: asof 20260731 → 2025년 약정 20251231, 2026년 약정 20260731). 환율이 없으면 0 으로 두고 warnings 에 적는다
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
 #              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
@@ -24,7 +25,7 @@
 #              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
 #   raw_fx     sql/ALT_FX.sql      환율 (FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
 #              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
-#              쓰임 1) 외화 약정의 원화 환산 (약정일 환율, 필수)  2) PCAP 에 CD 행이 없는 펀드의 로컬 환산 (보조)
+#              쓰임 1) 외화 약정의 원화 환산 (연말·기준일 환율, 필수)  2) PCAP 에 CD 행이 없는 펀드의 로컬 환산 (보조)
 #   asof       기준일 (None 이면 약정·PCAP 의 마지막 날짜). 기준일 이후 자료는 제외
 #
 # 출력 (사전)  실패하면 {}
@@ -125,7 +126,7 @@ def _prep_commit(raw):
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper().replace("", "KRW") if "CCY" in df else "KRW"
     krw = pd.to_numeric(df["AMT_KRW"], errors="coerce") if "AMT_KRW" in df else pd.Series(pd.NA, index=df.index, dtype="float")
     local = pd.to_numeric(df["AMT_LOCAL"], errors="coerce") if "AMT_LOCAL" in df else pd.Series(pd.NA, index=df.index, dtype="float")
-    # KRW 펀드는 원화·로컬이 같은 값. 외화 펀드의 원화는 비워 두고 뒤에서 약정일 환율로 채운다
+    # KRW 펀드는 원화·로컬이 같은 값. 외화 펀드의 원화는 비워 두고 뒤에서 적용환율(연말·기준일)로 채운다
     is_krw = df["CCY"] == "KRW"
     krw = krw.where(krw.notna(), local.where(is_krw))
     local = local.where(local.notna(), krw.where(is_krw))
@@ -218,8 +219,10 @@ def _prep_fx(raw):
     return df.sort_values("WRK_DT")[["WRK_DT", "CURR_ID", "RATE"]].reset_index(drop=True)
 
 
-def _fill_krw_by_fx(cf, fx):
-    """원화가 비어 있는 외화 행(약정)을 로컬 × 거래일 환율(직전 값)로 채운다. 1 단위 × 원/단위 = 원.
+def _fill_krw_by_fx(cf, fx, asof):
+    """원화가 비어 있는 외화 행(약정)을 로컬 × 적용환율로 채운다. 1 단위 × 원/단위 = 원.
+    적용환율 = 약정 연도 말일(12/31)과 기준일 중 이른 날의 환율 (그날 값이 없으면 직전 값)
+    예) 기준일 20260731 → 2025년 약정은 20251231 환율, 2026년 약정은 20260731 환율.
     환율이 없어 못 채운 행 수를 함께 돌려준다"""
     need = cf["AMT_KRW"].isna() & cf["AMT_LOCAL"].notna()
     if not need.any():
@@ -227,8 +230,11 @@ def _fill_krw_by_fx(cf, fx):
     if fx is not None:
         part = cf[need].copy()
         part["_IDX"] = part.index
-        part = part.sort_values("WRK_DT")
-        merged = pd.merge_asof(part, fx.rename(columns={"CURR_ID": "CCY"}), on="WRK_DT", by="CCY", direction="backward")
+        year_end = pd.to_datetime(part["WRK_DT"].dt.year.astype(str) + "1231", format="%Y%m%d")
+        part["FX_DT"] = year_end.where(year_end < asof, asof)          # 연말과 기준일 중 이른 날
+        part = part.sort_values("FX_DT")
+        rates = fx.rename(columns={"CURR_ID": "CCY", "WRK_DT": "FX_DT"})
+        merged = pd.merge_asof(part, rates, on="FX_DT", by="CCY", direction="backward")
         vals = (merged["AMT_LOCAL"] * merged["RATE"]).astype(float)
         cf.loc[merged["_IDX"].values, "AMT_KRW"] = vals.values
     missing = int((cf["AMT_KRW"].isna() & need).sum())
@@ -332,7 +338,7 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     # ---- 기준일: 약정은 asof, 집행·분배는 asof 이하 마지막 PCAP 기준일
     asof = pd.Timestamp(asof) if asof is not None else max(commit["WRK_DT"].max(), pcap["WRK_DT"].max())
     commit = commit[commit["WRK_DT"] <= asof].copy()
-    commit, missing = _fill_krw_by_fx(commit, fx)       # 외화 약정 → 약정일 환율로 원화
+    commit, missing = _fill_krw_by_fx(commit, fx, asof)  # 외화 약정 → 적용환율(연말·기준일 중 이른 날)로 원화
     if missing:
         warnings.append("환율이 없어 원화로 환산하지 못한 외화 약정 %d건 (0 으로 집계)" % missing)
     pcap = pcap[pcap["WRK_DT"] <= asof]

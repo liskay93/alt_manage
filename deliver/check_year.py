@@ -22,14 +22,20 @@ pc = pc[(pc["CURR_ID"] == "KRW") & pc["WRK_DT"].notna()]
 pc = pc.sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
 
 
-def rate(ccy, dt):
-    k = fx[(fx["CURR_ID"] == "KRW") & (fx["WRK_DT"] <= dt)]["USD_RATE"]
-    u = fx[(fx["CURR_ID"] == ccy) & (fx["WRK_DT"] <= dt)]["USD_RATE"]
-    if k.empty:
-        return float("nan")
-    if u.empty:
-        return k.iloc[-1] if ccy == "USD" else float("nan")
-    return k.iloc[-1] / u.iloc[-1]
+krw_s = fx[fx["CURR_ID"] == "KRW"].set_index("WRK_DT")["USD_RATE"]
+
+
+def rate(ccy, e):
+    """e 이하에서 KRW·통화가 같은 날 모두 있는 마지막 날의 원/1단위와 그 날짜"""
+    if ccy == "USD":
+        r = krw_s
+    else:
+        u = fx[fx["CURR_ID"] == ccy].set_index("WRK_DT")["USD_RATE"]
+        r = (krw_s / u.replace(0, float("nan"))).dropna()
+    r = r[r.index <= e]
+    if r.empty:
+        return float("nan"), None
+    return r.iloc[-1], r.index[-1]
 
 
 def check(Y, asof):
@@ -37,8 +43,8 @@ def check(Y, asof):
     e = pd.Timestamp(asof)
 
     c = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)].copy()
-    rows = zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["WRK_DT"])
-    c["KRW"] = [a if y == "KRW" else l * rate(y, d) for a, l, y, d in rows]
+    fxr = {y: rate(y, e) for y in c["CCY"].unique() if y != "KRW"}       # 적용환율 = 기준일(e) 환율
+    c["KRW"] = [a if y == "KRW" else l * fxr[y][0] for a, l, y in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"])]
 
     cur = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)].groupby("FUND_CD").last()
     prv = pc[pc["WRK_DT"] < s].groupby("FUND_CD").last()
@@ -56,6 +62,8 @@ def check(Y, asof):
 
     print(Y, "| 약정", s.strftime("%Y%m%d"), "~", asof, len(c), "건, 환율 없음", int(c["KRW"].isna().sum()), "건",
           "| PCAP", cur["WRK_DT"].max().strftime("%Y%m%d"), "까지", len(f), "펀드")
+    for y, (v, d) in sorted(fxr.items()):
+        print("  환율", y, "%.4f" % v, "원/단위", d.strftime("%Y%m%d") if d is not None else "없음")
     with pd.option_context("display.float_format", "{:,.0f}".format):
         print(out)
     print()

@@ -97,7 +97,7 @@ CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아
 - 조인은 LEFT JOIN 대신 Oracle (+) 외부조인, 주석은 -- 대신 맨 위 /* */ 한 곳으로 바꿨습니다 (missing keyword 대응)
 - 펀드명은 FEIAI0488NTA.DEAL_NM 에서 바로 가져옵니다 (FEIAI0432NTA 조인 제거)
 - FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
-- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 원화 환산합니다
+- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정 연도 12/31 과 기준일 중 이른 날 환율로 원화 환산합니다 (예: 기준일 20260731 → 2025년 약정 20251231, 2026년 약정 20260731 환율)
 - 금액은 1 단위 기준입니다. SQL 은 원본(원, 달러 …)을 나누지 않고 돌려주고, processor 도 그대로 계산합니다. 화면에서만 억원·백만으로 보여 줍니다 (tabs 의 DISPLAY_DIV). 집행 음수 부호는 processor 가 뒤집습니다
 - 날짜도 원본 문자열로 돌려줍니다 (TO_DATE 안 씀). 형식이 잘못된 값이 섞여 있어 ORA-01840 이 났기 때문입니다. 변환은 processor 가 하고, 잘못된 행은 빼면서 건수를 화면 경고로 알립니다
 - SQL 파일에는 ORDER BY 를 넣지 않아도 됩니다. 정렬은 processor 가 하고, 눈으로 볼 때는 df.sort_values("WRK_DT", ascending=False) 로 봅니다

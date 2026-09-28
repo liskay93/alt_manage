@@ -1,6 +1,6 @@
 /* 환율. ALT_Manage 탭이 사용
    원천: FMCBI0006NTA  WRK_DT(기준일, YYYYMMDD, 일별), CURR_CD(통화), MSCI_EXRT(1 USD 당 해당 통화 단위)
-   용도: 외화 약정의 원화 환산(약정일 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
+   용도: 외화 약정의 원화 환산(약정 연도 12/31 과 기준일 중 이른 날 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
    돌려주는 열(대문자): WRK_DT, CURR_ID, USD_RATE
    원/1단위 = USD_RATE(KRW) 나누기 USD_RATE(통화) 는 processor 가 계산. 그래서 KRW 행을 꼭 포함
    통화는 KRW 와 약정 테이블에 있는 펀드 통화만
