@@ -28,14 +28,14 @@ function bullet(text) { return new Paragraph({ numbering: { reference: "bullets"
 
 const DESC = {
   "sql/ALT_Fund.sql": "펀드 마스터. FEIAI0488NTA(펀드코드·펀드명·빈티지·통화) + MAAMC0101DTM_CW01(ATVT_PGM_FUND_CD → 자산군). Oracle (+) 외부조인",
-  "sql/ALT_Commit.sql": "약정 내역. FEIAI0488NTA. AGRT_AMT 원본 그대로(CURR_CD 통화, 단위 1). 억원 변환과 외화의 원화 환산(약정일 환율)은 processor 가 함",
-  "sql/ALT_PCAP.sql": "집행·분배·NAV 분기 스냅샷. FEIAI0432NTA 최신 제공일 한 벌, GCM 보고 기준, 통화 유형(CD/CP)별 long. 금액 원본 그대로(단위 1, 집행 음수). 단위·부호·분기 증분은 processor 가 함",
+  "sql/ALT_Commit.sql": "약정 내역. FEIAI0488NTA. AGRT_AMT·AGRT_DT 원본 그대로(CURR_CD 통화, 단위 1). 외화의 원화 환산(약정일 환율)은 processor 가 1 단위로 함",
+  "sql/ALT_PCAP.sql": "집행·분배·NAV 분기 스냅샷. FEIAI0432NTA 최신 제공일 한 벌, GCM 보고 기준, 통화 유형(CD/CP)별 long. 금액·날짜 원본 그대로(단위 1, 집행 음수). 부호·분기 증분은 processor 가 함",
   "sql/ALT_FX.sql": "환율. FMCBI0006NTA 일별, 1 USD 당 통화 단위. KRW 행 ÷ 통화 행 = 원/1단위 는 processor 가 계산",
 };
 
 const children = [
   new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: "ALT_Manage 탭 — SQL 코드모음", font: BODY_FONT })] }),
-  p("대체투자 약정·집행·분배·순증 현황 탭의 원재료 쿼리 4개와 노트북 확인 코드입니다. 2026-09-28 수정본 (금액·날짜 원본 그대로).", { color: "6B7280", size: 18 }),
+  p("대체투자 약정·집행·분배·순증 현황 탭의 원재료 쿼리 4개와 노트북 확인 코드입니다. 2026-09-28 수정본 (TO_DATE 없음, 금액 1 단위 기준).", { color: "6B7280", size: 18 }),
   p("Oracle 규칙: 세미콜론 없음, 테이블 별명에 AS 없음, ANSI JOIN 대신 (+) 외부조인, 주석은 맨 위 /* */ 한 곳, 날짜는 TO_DATE 없이 원본 문자열. 파일을 그대로 sql/ 폴더에 넣습니다."),
 ];
 const order = ["sql/ALT_Fund.sql", "sql/ALT_Commit.sql", "sql/ALT_PCAP.sql", "sql/ALT_FX.sql"];

@@ -1,10 +1,11 @@
-# ===== 2026년 점검: 자산군 × 약정·집행·회수·순증 (억원) =====
+# ===== 2026년 점검: 자산군 × 약정·집행·회수·순증 (원, 1 단위) =====
 # 앞의 확인 셀에서 만든 raw_fund, raw_commit, raw_pcap, raw_fx 를 그대로 쓴다 (processor 불필요)
-# SQL 은 원본 금액(원, 달러 …)을 돌려주므로 여기서 억원으로 바꾼다
+# 금액은 SQL 원본 그대로 1 단위(원)로 계산한다. 목표 엑셀만 억원 입력이라 1억을 곱해 원으로 맞춘다
 import pandas as pd
 
 Y = 2026
 ORDER = ["사모벤처", "부동산", "인프라", "미분류"]
+TARGET_MULT = 100000000        # 목표 엑셀이 억원 입력 → 원. 원으로 입력했다면 1
 
 
 def to_dt(s):
@@ -38,9 +39,8 @@ def krw_per_unit(ccy, dt):
 c = raw_commit.copy()
 c["WRK_DT"] = to_dt(c["WRK_DT"])
 c = c[c["WRK_DT"].dt.year == Y].copy()
-c["약정_원화"] = [(krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt)) / 1e8          # 원 → 억원
+c["약정_원화"] = [krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt)                 # 1 단위 × 원/단위 = 원
                  for krw, loc, ccy, dt in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["WRK_DT"])]
-c["AMT_LOCAL"] = c["AMT_LOCAL"] / c["CCY"].map(lambda x: 1e8 if x == "KRW" else 1e6)    # 표시용: KRW 억원, 외화 백만
 c["CLS"] = c["FUND_CD"].map(cls_of).fillna("미분류")
 
 # 2) 집행·회수: PCAP 원화(KRW) 행, CD 와 CP 가 다 있으면 CP.
@@ -51,7 +51,7 @@ p = p[(p["CURR_ID"] == "KRW") & p["WRK_DT"].notna()].sort_values(["FUND_CD", "WR
 p = p.drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
 cur = p[p["WRK_DT"].dt.year == Y].groupby("FUND_CD").last()
 prv = p[p["WRK_DT"].dt.year < Y].groupby("FUND_CD").last()
-f = (cur[["FUNDED_AMT", "DISTRB_AMT"]] - prv[["FUNDED_AMT", "DISTRB_AMT"]].reindex(cur.index).fillna(0)) / 1e8   # 원 → 억원
+f = cur[["FUNDED_AMT", "DISTRB_AMT"]] - prv[["FUNDED_AMT", "DISTRB_AMT"]].reindex(cur.index).fillna(0)   # 원
 f["FUNDED_AMT"] = -f["FUNDED_AMT"]                                                    # 원본 집행은 음수 부호
 f["CLS"] = pd.Series(f.index, index=f.index).map(cls_of).fillna("미분류")
 
@@ -72,6 +72,7 @@ tg = tg[tg["연도"] == Y].copy()
 tg["자산군"] = tg["자산군"].replace({"사모": "사모벤처"})
 tg = tg.set_index("자산군")[["약정", "집행", "회수", "순증"]]
 tg["순증"] = tg["순증"].fillna(tg["집행"] - tg["회수"])          # 엑셀에서 한 번도 안 열어 수식 값이 없을 때
+tg = tg * TARGET_MULT                                            # 억원 → 원
 tg.loc["합계"] = tg.sum()
 tg = tg.reindex(now.index)
 
@@ -81,7 +82,8 @@ view = view.swaplevel(axis=1)[["약정", "집행", "회수", "순증"]]
 print("날짜 형식이 잘못돼 뺀 행:", bad)
 print("약정    : 2026-01-01 ~", c["WRK_DT"].max().date(), "|", len(c), "건 | 환율 없어 빠진 외화 약정", int(c["약정_원화"].isna().sum()), "건")
 print("집행·회수: PCAP 기준일", cur["WRK_DT"].max().date(), "까지 |", len(f), "펀드")
-print(view.round(0).to_string())
+with pd.option_context("display.float_format", "{:,.0f}".format, "display.width", 250):
+    print(view.to_string())                                   # 원 단위, 천 단위 쉼표 (달성률% 은 정수)
 
 # 5) 펀드별 상세를 엑셀로 (합계가 이상하면 여기서 펀드를 찾아본다)
 c_out = (c.assign(펀드명=c["FUND_CD"].map(nm_of))
@@ -91,7 +93,7 @@ f_out = (f.assign(펀드명=pd.Series(f.index, index=f.index).map(nm_of), 순증
           .rename(columns={"FUNDED_AMT": "집행", "DISTRB_AMT": "회수"})
           .sort_values(["CLS", "집행"], ascending=[True, False]))
 with pd.ExcelWriter("ALT_2026_점검.xlsx") as w:
-    view.round(1).to_excel(w, sheet_name="요약")
+    view.round(0).to_excel(w, sheet_name="요약")
     c_out.to_excel(w, sheet_name="약정_펀드별", index=False)
     f_out.to_excel(w, sheet_name="집행회수_펀드별")
 print("펀드별 상세: ALT_2026_점검.xlsx")

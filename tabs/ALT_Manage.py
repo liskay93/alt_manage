@@ -10,7 +10,8 @@
 #     4단  월별(PCAP 이면 분기별) 집행·분배·순증 1개 + 지표별 요약 표 1개
 #     5단  누적 실적을 이끈 펀드 4개   지표별 상위 5개 (로컬 통화 · 원화 · 비중)
 #     6단  자산군별 목표·현황·달성률 표 1개   전체 탭에만
-# 입력: processors.ALT_Manage.process_ALT_Manage 의 결과 사전 (global_data.DF_ALT_Manage)
+# 입력: processors.ALT_Manage.process_ALT_Manage 의 결과 사전 (global_data.DF_ALT_Manage), 1 단위(원·통화 1단위)
+#       화면에서는 to_display 로 억원·백만으로 바꿔 보여 준다 (DISPLAY_DIV 등 상수)
 # ------------------------------------------------------------
 from dash import html, dcc
 import plotly.graph_objs as go
@@ -454,10 +455,44 @@ def make_page(data, cls):
     return html.Div(parts)
 
 
+# ---------- 표시 단위 ----------
+# processor 는 1 단위(원, 통화 1단위)로 준다. 화면에서만 아래 단위로 나눠 보여 준다. 원 그대로 보려면 1 과 "원"
+DISPLAY_DIV = 100000000        # 원 → 억원
+DISPLAY_UNIT = "억원"
+LOCAL_DISPLAY_DIV = 1000000    # 외화 1단위 → 백만 (KRW 펀드의 펀드 통화 금액은 DISPLAY_DIV)
+LOCAL_DISPLAY_UNIT = "백만"
+MONEY = ["약정", "집행", "분배", "순증"]
+
+
+def to_display(data):
+    """1 단위 결과 사전을 화면 단위(억원·백만)로 바꾼 사본. 원본 사전은 건드리지 않는다"""
+    d = dict(data)
+    if data.get("unit") == DISPLAY_UNIT:                    # 이미 표시 단위면 그대로
+        return d
+    for key in ["target", "monthly", "cum"]:
+        df = data[key].copy()
+        df[MONEY] = df[MONEY] / DISPLAY_DIV
+        d[key] = df
+    k = data["kpi"].copy()
+    for c in ["TARGET", "ACTUAL", "REMAIN", "PREV"]:
+        k[c] = pd.to_numeric(k[c], errors="coerce") / DISPLAY_DIV
+    d["kpi"] = k
+    f = data["funds"].copy()
+    for c in MONEY + ["누적약정", "누적집행"]:
+        f[c] = f[c] / DISPLAY_DIV
+    local_div = f["CCY"].map(lambda c: DISPLAY_DIV if c == "KRW" else LOCAL_DISPLAY_DIV)
+    for c in [m + "_L" for m in MONEY]:
+        f[c] = f[c] / local_div
+    d["funds"] = f
+    d["unit"], d["local_unit"] = DISPLAY_UNIT, LOCAL_DISPLAY_UNIT
+    return d
+
+
 # ---------- 진입점 ----------
 def render(data):
     if not data:
         return html.Div("데이터를 로드할 수 없습니다.")
+    data = to_display(data)                                 # 계산은 1 단위, 화면만 억원·백만
     asof = data["asof"]
     header = html.Div([
         html.Span("대체투자 약정 현황", style={"fontSize": "18px", "fontWeight": "700", "color": INK}),

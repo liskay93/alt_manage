@@ -16,7 +16,7 @@
 #              금액은 원본(단위 1, FUNDED 음수 부호), PCAP_DATE 기준 누적 → 부호를 뒤집고 분기 증분으로 바꾼다
 #              기간 증분이면 pcap_cumulative=False
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
-#   raw_target data/ALT_Target.xlsx 의 '목표' 시트 (pd.read_excel) — 연도·자산군별 목표, 억원
+#   raw_target data/ALT_Target.xlsx 의 '목표' 시트 (pd.read_excel) — 연도·자산군별 목표, 억원 입력 (읽을 때 원으로)
 #              열: 연도, 자산군(사모/부동산/인프라), 약정, 집행, 회수, 순증   (회수 = 분배. 순증이 비면 집행 − 회수, 회수가 비면 집행 − 순증)
 #              DB 에서 올 때의 열 이름(TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW)도 받는다
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
@@ -32,7 +32,7 @@
 #   warnings    문자열 목록 (예: 날짜 형식이 잘못돼 뺀 행 수, 환율이 없어 원화 환산을 못 한 약정 건수). 없으면 빈 목록
 # 날짜: SQL 은 원본 문자열(YYYYMMDD, YYYY-MM-DD)을 돌려주고 여기서 변환한다. 변환이 안 되는 값은 빼고 warnings 에 건수를 적는다
 #   flow_freq   집행·분배 자료 주기 "Q"(PCAP 분기) 또는 "M"
-#   unit        원화 단위 표기 "억원"           local_unit 외화 단위 표기 "백만"
+#   unit        원화 단위 표기 "원"             local_unit 펀드 통화 단위 표기 "" (1단위, 통화 코드가 단위)
 #   classes     자산군 목록 (표시 순서, '전체' 제외)
 #   years       목표가 있는 연도 목록          base_year 기준연도 (기준일이 속한 연도, 없으면 마지막 목표 연도)
 #   target      DataFrame [YEAR, CLS, 약정, 집행, 분배, 순증]   CLS 에 '전체' 포함
@@ -46,8 +46,9 @@
 #                          약정_L, 집행_L, 분배_L, 순증_L, 누적약정, 누적집행, 집행률]
 #                 펀드·연도별 실적(원화, _L 은 펀드 통화). 누적은 그 연도까지, 집행률 = 누적집행/누적약정
 #
-# 단위: SQL 은 원본(원, 달러 …)을 돌려주고, 여기서 원화는 억원(÷ KRW_DIV), 외화는 백만(÷ LOCAL_DIV)으로 바꾼다
-#       KRW 펀드의 펀드 통화 금액도 억원. 출력은 모두 이 단위
+# 단위: 1 단위 기준. SQL 이 준 원본(원, 달러, 유로 …)을 나누지 않고 그대로 계산·출력한다
+#       원화 열은 원, 펀드 통화(_L) 열은 그 통화 1단위. 목표 엑셀만 억원 입력이라 읽을 때 TARGET_MULT 를 곱해 원으로 맞춘다
+#       화면(tabs)이 보기 좋게 억원·백만으로 바꾸는 것은 표시할 때 한 번뿐
 # 순증 = 집행 − 분배 (투자잔액 증가분)
 # ------------------------------------------------------------
 import pandas as pd
@@ -57,11 +58,10 @@ FLOW_TYPES = ["약정", "집행", "분배"]
 PCAP_METRICS = ["집행", "분배", "순증"]                 # PCAP(분기) 기준일을 따르는 지표
 CLASS_ORDER = ["사모벤처", "부동산", "인프라"]          # 표시 순서. 목록에 없는 자산군은 뒤에 이름순
 ALL = "전체"
-UNIT = "억원"
-LOCAL_UNIT = "백만"
+UNIT = "원"                # 원화 열 단위 (1 단위 기준)
+LOCAL_UNIT = ""            # 펀드 통화 열은 그 통화 1단위 (통화 코드가 단위)
 NO_CLASS = "미분류"
-KRW_DIV = 100000000        # 원 → 억원
-LOCAL_DIV = 1000000        # 외화 1단위 → 백만
+TARGET_MULT = 100000000    # 목표 엑셀 '목표' 시트가 억원 입력 → 원. 원으로 입력하면 1
 FUNDED_SIGN = -1           # FEIAI0432NTA 의 FUNDED_AMT 는 음수 부호 → 양수로
 # 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
 CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
@@ -129,8 +129,8 @@ def _prep_commit(raw):
     is_krw = df["CCY"] == "KRW"
     krw = krw.where(krw.notna(), local.where(is_krw))
     local = local.where(local.notna(), krw.where(is_krw))
-    df["AMT_KRW"] = krw.astype(float) / KRW_DIV                                    # 원 → 억원
-    df["AMT_LOCAL"] = local.astype(float) / is_krw.map({True: KRW_DIV, False: LOCAL_DIV})   # KRW 억원, 외화 백만
+    df["AMT_KRW"] = krw.astype(float)                       # 원 (1 단위)
+    df["AMT_LOCAL"] = local.astype(float)                   # 펀드 통화 1단위
     df["TX_TYPE"] = "약정"
     df = df.dropna(subset=["WRK_DT"])
     return df[["WRK_DT", "FUND_KEY", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
@@ -142,10 +142,8 @@ def _pcap_wide(df):
     df["CURR_TYP"] = df["CURR_TYP"].fillna("").astype(str).str.strip().str.upper() if "CURR_TYP" in df else ""
     for c in ["FUNDED_AMT", "DISTRB_AMT"]:
         df[c] = _num(df, c)
-    # 원본 단위 → KRW 행은 억원, 외화 행은 백만. 집행은 음수 부호를 뒤집는다
-    div = df["CURR_ID"].map(lambda c: KRW_DIV if c == "KRW" else LOCAL_DIV)
-    df["FUNDED_AMT"] = FUNDED_SIGN * df["FUNDED_AMT"] / div
-    df["DISTRB_AMT"] = df["DISTRB_AMT"] / div
+    # 금액은 1 단위 그대로. 집행만 음수 부호를 뒤집는다
+    df["FUNDED_AMT"] = FUNDED_SIGN * df["FUNDED_AMT"]
     # 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 STATE_DT(명세서/갱신 일자) 가 늦은 행만 남긴다
     if "STATE_DT" in df:
         df["STATE_DT"] = _to_date(df["STATE_DT"])
@@ -220,7 +218,7 @@ def _prep_fx(raw):
 
 
 def _fill_krw_by_fx(cf, fx):
-    """원화가 비어 있는 외화 행(약정)을 로컬 × 거래일 환율(직전 값) ÷ 100 으로 채운다. 백만 → 억원.
+    """원화가 비어 있는 외화 행(약정)을 로컬 × 거래일 환율(직전 값)로 채운다. 1 단위 × 원/단위 = 원.
     환율이 없어 못 채운 행 수를 함께 돌려준다"""
     need = cf["AMT_KRW"].isna() & cf["AMT_LOCAL"].notna()
     if not need.any():
@@ -230,7 +228,7 @@ def _fill_krw_by_fx(cf, fx):
         part["_IDX"] = part.index
         part = part.sort_values("WRK_DT")
         merged = pd.merge_asof(part, fx.rename(columns={"CURR_ID": "CCY"}), on="WRK_DT", by="CCY", direction="backward")
-        vals = (merged["AMT_LOCAL"] * merged["RATE"] / 100).astype(float)
+        vals = (merged["AMT_LOCAL"] * merged["RATE"]).astype(float)
         cf.loc[merged["_IDX"].values, "AMT_KRW"] = vals.values
     missing = int((cf["AMT_KRW"].isna() & need).sum())
     cf["AMT_KRW"] = cf["AMT_KRW"].fillna(0.0)
@@ -238,7 +236,7 @@ def _fill_krw_by_fx(cf, fx):
 
 
 def _fill_local_by_fx(cf, fx):
-    """로컬 금액이 비어 있는 행을 원화 ÷ 기준일 환율(직전 값)로 채운다. 억원 → 백만: × 100 / 환율"""
+    """로컬 금액이 비어 있는 행을 원화 ÷ 기준일 환율(직전 값)로 채운다. 원 ÷ 원/단위 = 1 단위"""
     need = cf["AMT_LOCAL"].isna() & (cf["CCY"] != "KRW")
     if fx is None or not need.any():
         return cf
@@ -246,7 +244,7 @@ def _fill_local_by_fx(cf, fx):
     part["_IDX"] = part.index                      # merge_asof 가 인덱스를 새로 매기므로 원래 위치를 기억
     part = part.sort_values("WRK_DT")
     merged = pd.merge_asof(part, fx.rename(columns={"CURR_ID": "CCY"}), on="WRK_DT", by="CCY", direction="backward")
-    vals = (merged["AMT_KRW"] * 100 / merged["RATE"].replace(0, pd.NA)).astype(float)
+    vals = (merged["AMT_KRW"] / merged["RATE"].replace(0, pd.NA)).astype(float)
     cf.loc[merged["_IDX"].values, "AMT_LOCAL"] = vals.values
     return cf
 
@@ -268,6 +266,7 @@ def _prep_target(raw):
     df["순증"] = net.fillna(0.0).astype(float)
     df["YEAR"] = pd.to_numeric(df["YEAR"], errors="coerce").astype(int)
     df["CLS"] = df["CLS"].astype(str).str.strip().map(lambda c: CLASS_ALIAS.get(c, c))
+    df[METRICS] = df[METRICS] * TARGET_MULT                 # 억원 입력 → 원 (1 단위 기준)
     return df.groupby(["YEAR", "CLS"], as_index=False)[METRICS].sum()
 
 
