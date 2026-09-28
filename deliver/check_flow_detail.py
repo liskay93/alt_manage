@@ -21,7 +21,7 @@ t = pd.DataFrame({"자산군": cls_of(pd.Series(a.index, index=a.index)), "통�
 t["증분_로컬"] = t["올해누적"] - t["작년누적"].fillna(0)
 if col == "FUNDED_AMT":
     t["증분_로컬"] = -t["증분_로컬"]                       # 집행은 원천이 음수 → 양수로
-t["환율"] = [1.0 if y == "KRW" else rate(y, e)[0] for y in t["통화"]]
+t["환율"] = [1.0 if y == "KRW" else rate2(y, e)[0] for y in t["통화"]]
 t["증분_원"] = t["증분_로컬"] * t["환율"]
 t["이전없음"] = t["작년기준일"].isna()                      # 작년 말 이전 PCAP 이 없어 누적 전체가 올해 증분으로 잡힌 펀드
 print(Y, col, "펀드", len(t), "개 | 원화 증분 합", "{:,.0f}".format(t["증분_원"].sum()),
