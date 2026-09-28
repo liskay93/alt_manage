@@ -107,7 +107,7 @@ DB 가 아니라 엑셀 양식 `data/ALT_Target.xlsx` 의 '목표' 시트로 받
 |---|---|---|---|
 | 1 펀드 마스터 | sql/ALT_Fund.sql | FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR | ✅ 완성 (FEIAI0488NTA + MAAMC0101DTM_CW01, (+) 외부조인) |
 | 2 약정 | sql/ALT_Commit.sql | WRK_DT, FUND_CD, CCY, AMT_LOCAL, AMT_KRW(KRW 펀드만) | ✅ 완성 |
-| 3·4 집행·분배 | sql/ALT_PCAP.sql (보고 구분별 최신 제공일, GCM 우선·없으면 Fund, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, RPRT_NM, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | ✅ 완성 |
+| 3·4 집행·분배 | sql/ALT_PCAP.sql (최신 제공일, GCM 우선·없으면 Fund, 통화 유형별 long, 누적 → processor 가 증분) | PROV_DT, WRK_DT, FUND_CD, CURR_ID, CURR_TYP, COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT | ✅ 완성 |
 | 5 목표 | sql/ALT_Target.sql | TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW | ⬜ 테이블 확인 전 |
 | 6 환율 | sql/ALT_FX.sql (long: 날짜·통화·USD 기준 환율) | WRK_DT, CURR_ID, USD_RATE | ✅ FMCBI0006NTA 완성 |
 
