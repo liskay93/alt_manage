@@ -4,7 +4,11 @@ s, e = pd.Timestamp(str(Y) + "0101"), pd.Timestamp(asof)
 pd.set_option("display.max_rows", 500)                    # 행이 많아도 다 보이게
 
 c = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)].copy()
-fxr = {y: rate(y, e)[0] for y in c["CCY"].unique() if y != "KRW"}          # 기준일 환율
+fxr = {}                                                   # 통화별 기준일 환율
+for y in c["CCY"].unique():
+    if y != "KRW":
+        r = rate(y, e)
+        fxr[y] = r[0] if isinstance(r, tuple) else r         # rate 가 (환율, 날짜) 든 환율 숫자든 받음
 c["환율"] = [1.0 if y == "KRW" else fxr[y] for y in c["CCY"]]
 c["원화"] = [a if y == "KRW" else l * r for a, l, y, r in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["환율"])]
 c["펀드명"] = c["FUND_CD"].map(raw_fund.drop_duplicates("FUND_CD").set_index("FUND_CD")["FUND_NM"])
