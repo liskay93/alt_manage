@@ -54,12 +54,6 @@ def rate(ccy, e):
     return r.iloc[-1], r.index[-1]
 
 
-def rate2(ccy, e):
-    """rate 가 (환율, 날짜) 를 돌려주든 환율 숫자만 돌려주든 (환율, 날짜) 로 맞춤"""
-    r = rate(ccy, e)
-    return r if isinstance(r, tuple) else (r, None)
-
-
 def last_val(d, col):
     """펀드별로 col 이 비어 있지 않은 마지막 값 (groupby 없이)"""
     d = d.dropna(subset=[col]).sort_values(["FUND_CD", "WRK_DT"])
@@ -76,23 +70,26 @@ def check(Y, asof):
     s = pd.Timestamp(str(Y) + "0101")
     e = pd.Timestamp(asof)
 
-    c = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)].copy()
-    fxr = {y: rate2(y, e) for y in c["CCY"].unique() if y != "KRW"}      # 적용환율 = 기준일(e) 환율
-    c["KRW"] = [a if y == "KRW" else l * fxr[y][0] for a, l, y in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"])]
+    c = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)].copy()          # 올해 약정
+    now = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]              # 올해 PCAP (로컬)
+    old = pc[pc["WRK_DT"] < s]                                        # 작년 말까지 PCAP (로컬)
+    ccy = last_val(now, "CURR_ID")                                    # 펀드별 로컬 통화
+
+    fxr = {}                                                          # 통화별 기준일(e) 환율 (원/1단위, 숫자)
+    for y in set(c["CCY"]) | set(ccy):
+        if y != "KRW":
+            r = rate(y, e)
+            fxr[y] = r[0] if isinstance(r, tuple) else r              # rate 가 (환율, 날짜) 든 숫자든 환율만
+
+    c["KRW"] = [a if y == "KRW" else l * fxr[y] for a, l, y in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"])]
     commit = pd.Series({x: c.loc[c["CLS"] == x, "KRW"].sum() for x in sorted(c["CLS"].unique())}, dtype=float)
 
-    now = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]      # 올해 PCAP (로컬)
-    old = pc[pc["WRK_DT"] < s]                                # 작년 말까지 PCAP (로컬)
-    ccy = last_val(now, "CURR_ID")                            # 펀드별 로컬 통화
-    for y in ccy.unique():
-        if y != "KRW" and y not in fxr:
-            fxr[y] = rate2(y, e)                              # PCAP 통화도 기준일(e) 환율
-    fx_of = ccy.map(lambda y: 1.0 if y == "KRW" else fxr[y][0])
+    fx_of = ccy.map(lambda y: 1.0 if y == "KRW" else fxr[y])          # 펀드별 환율
     inc = {}
     for col in ["FUNDED_AMT", "DISTRB_AMT"]:
         a = last_val(now, col)
         b = last_val(old, col).reindex(a.index).fillna(0)
-        inc[col] = by_cls((a - b) * fx_of.reindex(a.index))   # (올해 누적 − 작년 말 누적) 로컬 × 기준일 환율
+        inc[col] = by_cls((a - b) * fx_of.reindex(a.index))           # (올해 누적 − 작년 말 누적) 로컬 × 기준일 환율
 
     out = pd.DataFrame({"약정": commit, "집행": -inc["FUNDED_AMT"], "회수": inc["DISTRB_AMT"]}).fillna(0)
     out["순증"] = out["집행"] - out["회수"]
@@ -102,8 +99,8 @@ def check(Y, asof):
     print(Y, "| 약정", s.strftime("%Y%m%d"), "~", asof, len(c), "건, 환율 없음", int(c["KRW"].isna().sum()), "건",
           "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드",
           "| CD 행 없는 펀드", len(nocd), "개")
-    for y, (v, d) in sorted(fxr.items()):
-        print("  환율 1 %s = %.4f 원 (%s)" % (y, v, d.strftime("%Y%m%d") if d is not None else "-"))
+    for y in sorted(fxr):
+        print("  환율 1 %s = %.4f 원 (%s 이전 마지막 값)" % (y, fxr[y], asof))
     print(out)
     print()
     return out
