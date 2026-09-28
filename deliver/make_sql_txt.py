@@ -18,6 +18,18 @@ import loader
 import pandas as pd
 conn = loader.create_connection()
 
+
+# 금액은 1 단위라 숫자가 커서 지수 표기(1.07e+12)가 된다 → 100만 이상은 천 단위 쉼표 정수, 그보다 작은 수(환율 등)는 소수 넷째 자리
+pd.set_option("display.float_format", lambda x: "{:,.0f}".format(x) if abs(x) >= 1e6 else "{:,.4f}".format(x))
+
+
+def to_dt(s):
+    """원본 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 빈 값·잘못된 값은 NaT (빈 값이 섞이면 min/max 가 안 돼서)"""
+    if pd.api.types.is_datetime64_any_dtype(s):
+        return s
+    return pd.to_datetime(s.astype(str).str.replace(r"\\D", "", regex=True).str[:8], format="%Y%m%d", errors="coerce")
+
+
 # 0) 오류가 나면: 오류 코드와 위치를 찍는다 (파일 이름만 바꿔서 실행)
 import cx_Oracle
 sql = open("sql/ALT_Fund.sql", encoding="utf-8").read()
@@ -56,21 +68,24 @@ print(raw_fund.head())
 
 # 2) 약정: 건수, 통화별 건수와 로컬 합계, 날짜 범위. 금액은 원본(원, 달러 …). AMT_KRW 는 KRW 펀드만 값이 있어야 정상
 raw_commit = loader.load_data(conn, "ALT_Commit.sql")
-print(len(raw_commit), "건", raw_commit["WRK_DT"].min(), "~", raw_commit["WRK_DT"].max())
+d = to_dt(raw_commit["WRK_DT"])
+print(len(raw_commit), "건 |", d.min(), "~", d.max(), "| 날짜가 비었거나 잘못된 행:", int(d.isna().sum()))
 print(raw_commit.groupby("CCY")[["AMT_LOCAL", "AMT_KRW"]].agg(["count", "sum"]).round(0))
 print(raw_commit.head())
 
 # 3) PCAP: 최신 제공일, 기준일 범위, 통화유형x통화 분포. 금액은 원본, FUNDED_AMT 는 음수(원본 부호)여야 정상
 raw_pcap = loader.load_data(conn, "ALT_PCAP.sql")
-print(len(raw_pcap), "행 | 제공일", raw_pcap["PROV_DT"].max(), "| 기준일", raw_pcap["WRK_DT"].min(), "~", raw_pcap["WRK_DT"].max())
+d = to_dt(raw_pcap["WRK_DT"])
+print(len(raw_pcap), "행 | 제공일", to_dt(raw_pcap["PROV_DT"]).max(), "| 기준일", d.min(), "~", d.max(), "| 날짜가 비었거나 잘못된 행:", int(d.isna().sum()))
 print(raw_pcap.groupby(["CURR_TYP", "CURR_ID"]).size())
 print(raw_pcap[["FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]].describe().round(0))
-print(raw_pcap.sort_values(["FUND_CD", "WRK_DT"]).head(8))
+print(raw_pcap.assign(기준일=d).sort_values(["FUND_CD", "기준일"]).head(8))
 
 # 4) 환율: 통화별 행 수와 최근 값. KRW 가 꼭 있어야 하고, 값은 1 USD 당 통화 단위
 raw_fx = loader.load_data(conn, "ALT_FX.sql")
-print(len(raw_fx), "행", raw_fx["WRK_DT"].min(), "~", raw_fx["WRK_DT"].max())
-print(raw_fx.sort_values("WRK_DT").groupby("CURR_ID").tail(1))'''
+d = to_dt(raw_fx["WRK_DT"])
+print(len(raw_fx), "행 |", d.min(), "~", d.max(), "| 날짜가 비었거나 잘못된 행:", int(d.isna().sum()))
+print(raw_fx.assign(일자=d).dropna(subset=["일자"]).sort_values("일자").groupby("CURR_ID").tail(1))'''
 
 CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아 FUND_CD 로 적었습니다. 0-1) 둘째 줄에서 ORA-00904 가 나거나 조인 확인의 MATCHED 가 0 에 가까우면 조인 키가 다른 것이니 알려 주세요
 - 프로그램 코드 컬럼은 ATVT_PGM_FUND_CD, 테이블은 MAAMC0101DTM_CW01 입니다
@@ -82,6 +97,7 @@ CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아
 - 날짜도 원본 문자열로 돌려줍니다 (TO_DATE 안 씀). 형식이 잘못된 값이 섞여 있어 ORA-01840 이 났기 때문입니다. 변환은 processor 가 하고, 잘못된 행은 빼면서 건수를 화면 경고로 알립니다
 - SQL 파일에는 ORDER BY 를 넣지 않아도 됩니다. 정렬은 processor 가 하고, 눈으로 볼 때는 df.sort_values("WRK_DT", ascending=False) 로 봅니다
 - ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만, 2018-01-01 이후 일별로 가져옵니다
+- 날짜 열은 원본 문자열이라 빈 값이 섞이면 .min() .max() 가 TypeError 를 냅니다. 날짜를 볼 때는 to_dt(열) 로 바꿔서 봅니다
 - 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다
 - No module named 'loader' 가 나면 00) 의 BASE 를 loader.py 가 있는 폴더로 바꾸세요. 세 개가 모두 True 로 찍혀야 합니다"""
 
