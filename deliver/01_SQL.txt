@@ -96,8 +96,8 @@ import pandas as pd
 conn = loader.create_connection()
 
 
-# 금액은 1 단위라 숫자가 커서 지수 표기(1.07e+12)가 된다 → 100만 이상은 쉼표 없는 정수(원본 그대로), 그보다 작은 수(환율 등)는 소수 넷째 자리
-pd.set_option("display.float_format", lambda x: "{:.0f}".format(x) if abs(x) >= 1e6 else "{:.4f}".format(x))
+# 금액은 1 단위라 숫자가 커서 지수 표기(1.07e+12)가 된다 → 100만 이상은 쉼표 정수(나누기 없음), 그보다 작은 수(환율 등)는 소수 넷째 자리
+pd.set_option("display.float_format", lambda x: "{:,.0f}".format(x) if abs(x) >= 1e6 else "{:,.4f}".format(x))
 
 
 # 날짜는 전부 YYYYMMDD 문자열로 쓴다. 불러오면서 앞뒤 공백을 지우고, 날짜가 아닌 값(빈 값, '2026' 등)은 비운다(NaN)

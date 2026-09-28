@@ -1,5 +1,8 @@
 import pandas as pd
 
+# 표 표시: 100만 이상은 쉼표 정수, 그보다 작은 수(환율 등)는 소수 넷째 자리 (e+12 지수 표기 방지)
+pd.set_option("display.float_format", lambda x: "{:,.0f}".format(x) if abs(x) >= 1e6 else "{:,.4f}".format(x))
+
 
 def to_dt(s):
     t = s.astype(str).str.replace("-", "").str[:8]
@@ -76,8 +79,7 @@ def check(Y, asof):
           "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드")
     for y, (v, d) in sorted(fxr.items()):
         print("  환율 1 %s = %.4f 원 (%s)" % (y, v, d.strftime("%Y%m%d") if d is not None else "환율 없음"))
-    with pd.option_context("display.float_format", "{:.0f}".format):     # 원본 그대로 (원, 쉼표 없음)
-        print(out)
+    print(out)
     print()
     return out
 
