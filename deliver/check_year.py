@@ -5,8 +5,11 @@ pd.set_option("display.float_format", lambda x: "{:,.0f}".format(x) if abs(x) >=
 
 
 def to_dt(s):
-    t = s.astype(str).str.replace("-", "").str[:8]
-    return pd.to_datetime(t, format="%Y%m%d", errors="coerce")
+    t = s.astype(str).str.strip().str.replace("-", "").str[:8]
+    d = pd.to_datetime(t, format="%Y%m%d", errors="coerce")
+    xl = t.str.isdigit() & (t.str.len() == 5)                            # 46239 같은 엑셀 날짜 숫자
+    n = pd.to_numeric(t.where(xl), errors="coerce")
+    return d.fillna(pd.Timestamp("1899-12-30") + pd.to_timedelta(n, unit="D"))
 
 
 # 자산군 = 펀드코드 맨 앞 글자 (헤지펀드 H 는 사모벤처)

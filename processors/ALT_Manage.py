@@ -64,6 +64,7 @@ UNIT = "원"                # 원화 열 단위 (1 단위 기준)
 LOCAL_UNIT = ""            # 펀드 통화 열은 그 통화 1단위 (통화 코드가 단위)
 NO_CLASS = "미분류"
 TARGET_MULT = 100000000    # 목표 엑셀 '목표' 시트가 억원 입력 → 원. 원으로 입력하면 1
+EXCEL_EPOCH = pd.Timestamp("1899-12-30")   # 엑셀 날짜 숫자의 0일 (46239 → 20260805)
 FUNDED_SIGN = -1           # FEIAI0432NTA 의 FUNDED_AMT 는 음수 부호 → 양수로
 # 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
 CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
@@ -100,11 +101,16 @@ PCAP_KRW_PREF = ["CP", "CD"]   # 원화 행이 여러 개일 때 우선순위: C
 
 
 def _to_date(s):
-    """YYYYMMDD / YYYY-MM-DD 문자열, 숫자, 또는 이미 날짜인 열을 날짜로 통일"""
+    """YYYYMMDD / YYYY-MM-DD 문자열, 엑셀 날짜 숫자(5자리), 또는 이미 날짜인 열을 날짜로 통일"""
     if pd.api.types.is_datetime64_any_dtype(s):
         return pd.to_datetime(s)
-    digits = s.astype(str).str.replace("[^0-9]", "", regex=True).str[:8]     # 숫자만 남김 (역슬래시 안 씀)
-    return pd.to_datetime(digits, format="%Y%m%d", errors="coerce")
+    t = s.astype(str).str.strip()
+    t = t.where(~t.str.endswith(".0"), t.str[:-2])                          # 숫자로 읽힌 46239.0 → 46239
+    digits = t.str.replace("[^0-9]", "", regex=True).str[:8]                 # 숫자만 남김 (역슬래시 안 씀)
+    d = pd.to_datetime(digits, format="%Y%m%d", errors="coerce")
+    xl = t.str.isdigit() & (t.str.len() == 5)                                # 엑셀 날짜 숫자 (1899-12-30 기준 일수, 46239 = 20260805)
+    n = pd.to_numeric(t.where(xl), errors="coerce")
+    return d.fillna(EXCEL_EPOCH + pd.to_timedelta(n, unit="D"))
 
 
 def _bad_dates(raw):
