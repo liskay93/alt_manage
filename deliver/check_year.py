@@ -33,8 +33,9 @@ cm["CLS"] = cls_of(cm["FUND_CD"])
 
 pc = raw_pcap.copy()
 pc["WRK_DT"] = to_dt(pc["WRK_DT"])
-pc = pc[(pc["CURR_ID"] == "KRW") & pc["WRK_DT"].notna()]
-pc = pc.sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")     # CP 우선
+pc = pc[(pc["CURR_TYP"] == "CD") & pc["WRK_DT"].notna()]                       # 로컬(투자 통화) 행만
+pc = pc.sort_values(["FUND_CD", "WRK_DT"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
+nocd = sorted(set(raw_pcap["FUND_CD"]) - set(pc["FUND_CD"]))                   # CD 행이 없어 집행·회수에서 빠지는 펀드
 
 
 krw_s = fx[fx["CURR_ID"] == "KRW"].set_index("WRK_DT")["USD_RATE"]
@@ -74,13 +75,18 @@ def check(Y, asof):
     c["KRW"] = [a if y == "KRW" else l * fxr[y][0] for a, l, y in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"])]
     commit = pd.Series({x: c.loc[c["CLS"] == x, "KRW"].sum() for x in sorted(c["CLS"].unique())}, dtype=float)
 
-    now = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]      # 올해 PCAP
-    old = pc[pc["WRK_DT"] < s]                                # 작년 말까지 PCAP
+    now = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]      # 올해 PCAP (로컬)
+    old = pc[pc["WRK_DT"] < s]                                # 작년 말까지 PCAP (로컬)
+    ccy = last_val(now, "CURR_ID")                            # 펀드별 로컬 통화
+    for y in ccy.unique():
+        if y != "KRW" and y not in fxr:
+            fxr[y] = rate(y, e)                               # PCAP 통화도 기준일(e) 환율
+    fx_of = ccy.map(lambda y: 1.0 if y == "KRW" else fxr[y][0])
     inc = {}
     for col in ["FUNDED_AMT", "DISTRB_AMT"]:
         a = last_val(now, col)
         b = last_val(old, col).reindex(a.index).fillna(0)
-        inc[col] = by_cls(a - b)                              # 올해 누적 − 작년 말 누적
+        inc[col] = by_cls((a - b) * fx_of.reindex(a.index))   # (올해 누적 − 작년 말 누적) 로컬 × 기준일 환율
 
     out = pd.DataFrame({"약정": commit, "집행": -inc["FUNDED_AMT"], "회수": inc["DISTRB_AMT"]}).fillna(0)
     out["순증"] = out["집행"] - out["회수"]
@@ -88,7 +94,8 @@ def check(Y, asof):
 
     m = now["WRK_DT"].max()
     print(Y, "| 약정", s.strftime("%Y%m%d"), "~", asof, len(c), "건, 환율 없음", int(c["KRW"].isna().sum()), "건",
-          "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드")
+          "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드",
+          "| CD 행 없는 펀드", len(nocd), "개")
     for y, (v, d) in sorted(fxr.items()):
         print("  환율 1 %s = %.4f 원 (%s)" % (y, v, d.strftime("%Y%m%d") if d is not None else "환율 없음"))
     print(out)
