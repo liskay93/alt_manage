@@ -15,6 +15,7 @@ c["펀드명"] = c["FUND_CD"].map(raw_fund.drop_duplicates("FUND_CD").set_index(
 c["약정일"] = c["WRK_DT"].dt.strftime("%Y%m%d")
 
 d = c[["CLS", "FUND_CD", "펀드명", "약정일", "CCY", "AMT_LOCAL", "환율", "원화"]]
-d = d.sort_values(["CLS", "원화"], ascending=[True, False]).reset_index(drop=True)
+order = {"사모벤처": 0, "부동산": 1, "인프라": 2}                   # 자산군 순서 (그 외는 맨 뒤)
+d = d.assign(_o=d["CLS"].map(order).fillna(9)).sort_values(["_o", "약정일"]).drop(columns="_o").reset_index(drop=True)
 print(Y, "약정", len(d), "건, 원화 합계", "{:,.0f}".format(d["원화"].sum()))
 d
