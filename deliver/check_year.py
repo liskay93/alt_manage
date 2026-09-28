@@ -38,6 +38,18 @@ def rate(ccy, e):
     return r.iloc[-1], r.index[-1]
 
 
+def last_val(d, col):
+    """펀드별로 col 이 비어 있지 않은 마지막 값 (groupby 없이)"""
+    d = d.dropna(subset=[col]).sort_values(["FUND_CD", "WRK_DT"])
+    return d.drop_duplicates("FUND_CD", keep="last").set_index("FUND_CD")[col]
+
+
+def by_cls(v):
+    """펀드코드 인덱스 값 → 자산군별 합계 (groupby 없이)"""
+    k = pd.Series(v.index, index=v.index).map(cls_of).fillna("미분류")
+    return pd.Series({x: v[k == x].sum() for x in sorted(k.unique())}, dtype=float)
+
+
 def check(Y, asof):
     s = pd.Timestamp(str(Y) + "0101")
     e = pd.Timestamp(asof)
@@ -45,23 +57,23 @@ def check(Y, asof):
     c = cm[(cm["WRK_DT"] >= s) & (cm["WRK_DT"] <= e)].copy()
     fxr = {y: rate(y, e) for y in c["CCY"].unique() if y != "KRW"}       # 적용환율 = 기준일(e) 환율
     c["KRW"] = [a if y == "KRW" else l * fxr[y][0] for a, l, y in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"])]
+    commit = pd.Series({x: c.loc[c["CLS"] == x, "KRW"].sum() for x in sorted(c["CLS"].unique())}, dtype=float)
 
-    cur = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)].groupby("FUND_CD").last()
-    prv = pc[pc["WRK_DT"] < s].groupby("FUND_CD").last()
-    cols = ["FUNDED_AMT", "DISTRB_AMT"]
-    f = cur[cols] - prv[cols].reindex(cur.index).fillna(0)
-    f["CLS"] = pd.Series(f.index, index=f.index).map(cls_of).fillna("미분류")
+    now = pc[(pc["WRK_DT"] >= s) & (pc["WRK_DT"] <= e)]      # 올해 PCAP
+    old = pc[pc["WRK_DT"] < s]                                # 작년 말까지 PCAP
+    inc = {}
+    for col in ["FUNDED_AMT", "DISTRB_AMT"]:
+        a = last_val(now, col)
+        b = last_val(old, col).reindex(a.index).fillna(0)
+        inc[col] = by_cls(a - b)                              # 올해 누적 − 작년 말 누적
 
-    out = pd.DataFrame({
-        "약정": c.groupby("CLS")["KRW"].sum(),
-        "집행": -f.groupby("CLS")["FUNDED_AMT"].sum(),
-        "회수": f.groupby("CLS")["DISTRB_AMT"].sum(),
-    }).fillna(0)
+    out = pd.DataFrame({"약정": commit, "집행": -inc["FUNDED_AMT"], "회수": inc["DISTRB_AMT"]}).fillna(0)
     out["순증"] = out["집행"] - out["회수"]
     out.loc["합계"] = out.sum()
 
+    m = now["WRK_DT"].max()
     print(Y, "| 약정", s.strftime("%Y%m%d"), "~", asof, len(c), "건, 환율 없음", int(c["KRW"].isna().sum()), "건",
-          "| PCAP", cur["WRK_DT"].max().strftime("%Y%m%d"), "까지", len(f), "펀드")
+          "| PCAP", m.strftime("%Y%m%d") if pd.notna(m) else "없음", "까지", now["FUND_CD"].nunique(), "펀드")
     for y, (v, d) in sorted(fxr.items()):
         print("  환율", y, "%.4f" % v, "원/단위", d.strftime("%Y%m%d") if d is not None else "없음")
     with pd.option_context("display.float_format", "{:,.0f}".format):
