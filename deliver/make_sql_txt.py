@@ -5,6 +5,15 @@ ROOT = Path(__file__).resolve().parent.parent
 FILES = ["ALT_Fund.sql", "ALT_Commit.sql", "ALT_PCAP.sql", "ALT_FX.sql"]
 
 NOTEBOOK = '''# 네 파일을 sql/ 에 넣은 뒤 순서대로 실행. 각 셀 결과(출력 그대로)를 보내 주시면 됩니다
+# 00) 폴더 맞추기: loader.py 가 있는 TPA Dashboard 폴더로 이동 (dash_board.ipynb 안에서 돌리면 필요 없음)
+import os, sys
+BASE = r"여기에_TPA_Dashboard_폴더_경로"          # 예: r"C:\\Users\\...\\TPA Dashboard"  또는  "/home/.../TPA Dashboard"
+if os.path.isdir(BASE):
+    os.chdir(BASE)
+sys.path.insert(0, os.getcwd())
+print("현재 폴더:", os.getcwd())
+print("loader.py:", os.path.exists("loader.py"), "| sql 폴더:", os.path.isdir("sql"), "| data/ALT_Target.xlsx:", os.path.exists("data/ALT_Target.xlsx"))
+
 import loader
 import pandas as pd
 conn = loader.create_connection()
@@ -71,7 +80,8 @@ CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아
 - 날짜도 원본 문자열로 돌려줍니다 (TO_DATE 안 씀). 형식이 잘못된 값이 섞여 있어 ORA-01840 이 났기 때문입니다. 변환은 processor 가 하고, 잘못된 행은 빼면서 건수를 화면 경고로 알립니다
 - SQL 파일에는 ORDER BY 를 넣지 않아도 됩니다. 정렬은 processor 가 하고, 눈으로 볼 때는 df.sort_values("WRK_DT", ascending=False) 로 봅니다
 - ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만, 2018-01-01 이후 일별로 가져옵니다
-- 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다"""
+- 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다
+- No module named 'loader' 가 나면 00) 의 BASE 를 loader.py 가 있는 폴더로 바꾸세요. 세 개가 모두 True 로 찍혀야 합니다"""
 
 
 def main():
