@@ -3,8 +3,9 @@
    용도: 외화 약정의 원화 환산(약정일 환율). PCAP 에 CD 행이 없는 펀드의 로컬 환산(보조)
    돌려주는 열(대문자): WRK_DT, CURR_ID, USD_RATE
    원/1단위 = USD_RATE(KRW) 나누기 USD_RATE(통화) 는 processor 가 계산. 그래서 KRW 행을 꼭 포함
-   통화는 KRW 와 약정 테이블에 있는 펀드 통화만 */
-SELECT TO_DATE(a.WRK_DT, 'YYYYMMDD')                                               AS wrk_dt
+   통화는 KRW 와 약정 테이블에 있는 펀드 통화만
+   날짜는 원본 문자열 그대로. 형식이 잘못된 값이 섞여 있어 TO_DATE 는 쓰지 않고 processor 가 변환한다 */
+SELECT a.WRK_DT                                                                    AS wrk_dt
      , UPPER(a.CURR_CD)                                                            AS curr_id
      , a.MSCI_EXRT                                                                 AS usd_rate
   FROM FMCBI0006NTA a

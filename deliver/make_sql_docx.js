@@ -35,8 +35,8 @@ const DESC = {
 
 const children = [
   new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun({ text: "ALT_Manage 탭 — SQL 코드모음", font: BODY_FONT })] }),
-  p("대체투자 약정·집행·분배·순증 현황 탭의 원재료 쿼리 4개와 노트북 확인 코드입니다. 2026-09-28 수정본 (금액 원본 그대로).", { color: "6B7280", size: 18 }),
-  p("Oracle 규칙: 세미콜론 없음, 테이블 별명에 AS 없음, ANSI JOIN 대신 (+) 외부조인, 주석은 맨 위 /* */ 한 곳. 파일을 그대로 sql/ 폴더에 넣습니다."),
+  p("대체투자 약정·집행·분배·순증 현황 탭의 원재료 쿼리 4개와 노트북 확인 코드입니다. 2026-09-28 수정본 (금액·날짜 원본 그대로).", { color: "6B7280", size: 18 }),
+  p("Oracle 규칙: 세미콜론 없음, 테이블 별명에 AS 없음, ANSI JOIN 대신 (+) 외부조인, 주석은 맨 위 /* */ 한 곳, 날짜는 TO_DATE 없이 원본 문자열. 파일을 그대로 sql/ 폴더에 넣습니다."),
 ];
 const order = ["sql/ALT_Fund.sql", "sql/ALT_Commit.sql", "sql/ALT_PCAP.sql", "sql/ALT_FX.sql"];
 for (const name of order) {

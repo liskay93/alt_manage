@@ -6,13 +6,23 @@ import pandas as pd
 
 Y = 2026
 ORDER = ["사모벤처", "부동산", "인프라", "미분류"]
+
+
+def to_dt(s):
+    """원본 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 형식이 잘못된 값은 NaT"""
+    if pd.api.types.is_datetime64_any_dtype(s):
+        return s
+    return pd.to_datetime(s.astype(str).str.replace(r"\D", "", regex=True).str[:8], format="%Y%m%d", errors="coerce")
+
+
+bad = {n: int(to_dt(r["WRK_DT"]).isna().sum()) for n, r in [("약정", raw_commit), ("PCAP", raw_pcap), ("환율", raw_fx)]}
 fm = raw_fund.drop_duplicates("FUND_CD").set_index("FUND_CD")
 cls_of, nm_of = fm["ASSET_CLS"], fm["FUND_NM"]
 
 # 1) 약정: 약정일이 2026년인 펀드. 외화는 약정일(없으면 직전 영업일) 환율로 원화 환산
 fx = raw_fx.copy()
-fx["WRK_DT"] = pd.to_datetime(fx["WRK_DT"])
-fx = fx.sort_values("WRK_DT")
+fx["WRK_DT"] = to_dt(fx["WRK_DT"])
+fx = fx.dropna(subset=["WRK_DT"]).sort_values("WRK_DT")
 
 
 def krw_per_unit(ccy, dt):
@@ -27,7 +37,7 @@ def krw_per_unit(ccy, dt):
 
 
 c = raw_commit.copy()
-c["WRK_DT"] = pd.to_datetime(c["WRK_DT"])
+c["WRK_DT"] = to_dt(c["WRK_DT"])
 c = c[c["WRK_DT"].dt.year == Y].copy()
 c["약정_원화"] = [(krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt)) / 1e8          # 원 → 억원
                  for krw, loc, ccy, dt in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["WRK_DT"])]
@@ -37,8 +47,8 @@ c["CLS"] = c["FUND_CD"].map(cls_of).fillna("미분류")
 # 2) 집행·회수: PCAP 원화(KRW) 행, CD 와 CP 가 다 있으면 CP.
 #    2026년 마지막 기준일 누적 − 2025년까지 마지막 기준일 누적 (2026년 신규 펀드는 이전 누적 0)
 p = raw_pcap.copy()
-p["WRK_DT"] = pd.to_datetime(p["WRK_DT"])
-p = p[p["CURR_ID"] == "KRW"].sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"])
+p["WRK_DT"] = to_dt(p["WRK_DT"])
+p = p[(p["CURR_ID"] == "KRW") & p["WRK_DT"].notna()].sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"])
 p = p.drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
 cur = p[p["WRK_DT"].dt.year == Y].groupby("FUND_CD").last()
 prv = p[p["WRK_DT"].dt.year < Y].groupby("FUND_CD").last()
@@ -69,6 +79,7 @@ tg = tg.reindex(now.index)
 view = pd.concat({"목표": tg, "현황": now, "달성률%": now / tg.where(tg != 0) * 100}, axis=1)
 view = view.swaplevel(axis=1)[["약정", "집행", "회수", "순증"]]
 
+print("날짜 형식이 잘못돼 뺀 행:", bad)
 print("약정    : 2026-01-01 ~", c["WRK_DT"].max().date(), "|", len(c), "건 | 환율 없어 빠진 외화 약정", int(c["약정_원화"].isna().sum()), "건")
 print("집행·회수: PCAP 기준일", cur["WRK_DT"].max().date(), "까지 |", len(f), "펀드")
 print(view.round(0).to_string())
@@ -89,6 +100,7 @@ print("펀드별 상세: ALT_2026_점검.xlsx")
 =====확인 사항=====
 - 먼저 01_SQL 의 확인 셀 1)~4) 를 돌려 raw_fund, raw_commit, raw_pcap, raw_fx 를 만든 뒤 실행합니다
 - SQL 금액은 원본(원, 달러 …)이고 이 셀이 억원으로 바꿉니다. 집행 음수 부호도 이 셀이 뒤집습니다
+- 날짜도 원본 문자열이라 이 셀이 변환합니다. 형식이 잘못된 행은 빼고 '날짜 형식이 잘못돼 뺀 행' 에 건수를 찍습니다
 - 목표는 data/ALT_Target.xlsx '목표' 시트에서 읽습니다. 파일을 노트북과 같은 폴더의 data/ 아래에 두세요
 - 약정은 2026-01-01 부터 오늘까지(약정일 기준), 집행·회수는 PCAP 최신 분기말까지입니다. 그래서 집행·회수 달성률은 한 분기 늦게 보입니다
 - 외화 약정은 약정일(주말이면 직전 영업일) 환율로 원화 환산합니다. '환율 없어 빠진 외화 약정' 이 0 이 아니면 알려 주세요

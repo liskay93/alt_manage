@@ -29,7 +29,8 @@
 #
 # 출력 (사전)  실패하면 {}
 #   asof        약정 기준일 pd.Timestamp        asof_flow  집행·분배 기준일 (기준일 이하 마지막 PCAP 기준일)
-#   warnings    문자열 목록 (예: 환율이 없어 원화 환산을 못 한 약정 건수). 없으면 빈 목록
+#   warnings    문자열 목록 (예: 날짜 형식이 잘못돼 뺀 행 수, 환율이 없어 원화 환산을 못 한 약정 건수). 없으면 빈 목록
+# 날짜: SQL 은 원본 문자열(YYYYMMDD, YYYY-MM-DD)을 돌려주고 여기서 변환한다. 변환이 안 되는 값은 빼고 warnings 에 건수를 적는다
 #   flow_freq   집행·분배 자료 주기 "Q"(PCAP 분기) 또는 "M"
 #   unit        원화 단위 표기 "억원"           local_unit 외화 단위 표기 "백만"
 #   classes     자산군 목록 (표시 순서, '전체' 제외)
@@ -100,6 +101,14 @@ def _to_date(s):
         return pd.to_datetime(s)
     digits = s.astype(str).str.replace(r"\D", "", regex=True).str[:8]
     return pd.to_datetime(digits, format="%Y%m%d", errors="coerce")
+
+
+def _bad_dates(raw):
+    """원재료의 WRK_DT 중 날짜로 바꿀 수 없는 행 수 (없으면 0)"""
+    if raw is None or raw.empty:
+        return 0
+    cols = [c for c in raw.columns if str(c).upper() == "WRK_DT"]
+    return int(_to_date(raw[cols[0]]).isna().sum()) if cols else 0
 
 
 def _num(df, col):
@@ -306,6 +315,11 @@ def _with_total(df, keys, cols):
 def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=None, pcap_cumulative=True, raw_fx=None):
     if any(x is None or x.empty for x in [raw_commit, raw_pcap, raw_target]):
         return {}
+    warnings = []
+    for name, raw in [("약정", raw_commit), ("PCAP", raw_pcap), ("환율", raw_fx)]:
+        bad = _bad_dates(raw)
+        if bad:
+            warnings.append("%s: 날짜가 비었거나 형식이 잘못된 %d행 제외" % (name, bad))
     commit = _prep_commit(raw_commit)
     pcap = _prep_pcap(raw_pcap, pcap_cumulative)
     tg = _prep_target(raw_target)
@@ -317,7 +331,6 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     # ---- 기준일: 약정은 asof, 집행·분배는 asof 이하 마지막 PCAP 기준일
     asof = pd.Timestamp(asof) if asof is not None else max(commit["WRK_DT"].max(), pcap["WRK_DT"].max())
     commit = commit[commit["WRK_DT"] <= asof].copy()
-    warnings = []
     commit, missing = _fill_krw_by_fx(commit, fx)       # 외화 약정 → 약정일 환율로 원화
     if missing:
         warnings.append("환율이 없어 원화로 환산하지 못한 외화 약정 %d건 (0 으로 집계)" % missing)

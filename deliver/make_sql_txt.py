@@ -31,6 +31,11 @@ print(pd.read_sql("SELECT FUND_CD, ATVT_PGM_FUND_CD FROM MAAMC0101DTM_CW01 WHERE
 # 조인 확인: 약정 테이블 펀드 중 MAAMC0101DTM_CW01 에서 찾아지는 펀드 수 (TOTAL 과 비슷해야 정상)
 print(pd.read_sql("SELECT COUNT(*) AS total, SUM(CASE WHEN EXISTS (SELECT 1 FROM MAAMC0101DTM_CW01 q WHERE q.FUND_CD = a.NPS_FUND_CD) THEN 1 ELSE 0 END) AS matched FROM FEIAI0488NTA a", conn))
 
+# 0-2) 날짜 형식이 잘못된 값 찾기 (ORA-01840 원인). 세 결과 모두 비어 있으면 깨끗한 것
+print(pd.read_sql("SELECT AGRT_DT, COUNT(*) AS cnt FROM FEIAI0488NTA WHERE NOT REGEXP_LIKE(NVL(AGRT_DT, 'x'), '^[0-9]{8}$') GROUP BY AGRT_DT", conn))
+print(pd.read_sql("SELECT PCAP_DATE, COUNT(*) AS cnt FROM FEIAI0432NTA WHERE NOT REGEXP_LIKE(NVL(PCAP_DATE, 'x'), '^[0-9]{8}$') GROUP BY PCAP_DATE", conn))
+print(pd.read_sql("SELECT WRK_DT, COUNT(*) AS cnt FROM FMCBI0006NTA WHERE NOT REGEXP_LIKE(NVL(WRK_DT, 'x'), '^[0-9]{8}$') GROUP BY WRK_DT", conn))
+
 # 1) 펀드 마스터: 펀드 수, 자산군 분포(미분류가 많으면 MAAMC0101DTM_CW01 조인 문제), 이름 없는 펀드 수
 raw_fund = loader.load_data(conn, "ALT_Fund.sql")
 print(len(raw_fund), "펀드")
@@ -63,6 +68,8 @@ CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아
 - FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
 - ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 원화 환산합니다
 - SQL 은 금액을 나누지 않고 원본 그대로 돌려줍니다 (원, 달러 …, 집행은 음수 부호 그대로). 억원·백만 변환과 부호 처리는 processor 가 합니다
+- 날짜도 원본 문자열로 돌려줍니다 (TO_DATE 안 씀). 형식이 잘못된 값이 섞여 있어 ORA-01840 이 났기 때문입니다. 변환은 processor 가 하고, 잘못된 행은 빼면서 건수를 화면 경고로 알립니다
+- SQL 파일에는 ORDER BY 를 넣지 않아도 됩니다. 정렬은 processor 가 하고, 눈으로 볼 때는 df.sort_values("WRK_DT", ascending=False) 로 봅니다
 - ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만, 2018-01-01 이후 일별로 가져옵니다
 - 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다"""
 
