@@ -8,7 +8,7 @@ ORDER = ["사모벤처", "부동산", "인프라", "미분류"]
 TARGET_MULT = 100000000        # 목표 엑셀이 억원 입력 → 원. 원으로 입력했다면 1
 
 
-# 날짜 문자열(YYYYMMDD, YYYY-MM-DD) → 날짜. 빈 값·잘못된 값은 NaT
+# 날짜 문자열(YYYYMMDD) → 날짜. 빈 값·잘못된 값은 NaT
 def to_dt(s):
     t = s.astype(str).str.replace("-", "").str[:8]
     return pd.to_datetime(t, format="%Y%m%d", errors="coerce")

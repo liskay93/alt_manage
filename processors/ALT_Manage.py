@@ -30,7 +30,7 @@
 # 출력 (사전)  실패하면 {}
 #   asof        약정 기준일 pd.Timestamp        asof_flow  집행·분배 기준일 (기준일 이하 마지막 PCAP 기준일)
 #   warnings    문자열 목록 (예: 날짜 형식이 잘못돼 뺀 행 수, 환율이 없어 원화 환산을 못 한 약정 건수). 없으면 빈 목록
-# 날짜: SQL 은 원본 문자열(YYYYMMDD, YYYY-MM-DD)을 돌려주고 여기서 변환한다. 변환이 안 되는 값은 빼고 warnings 에 건수를 적는다
+# 날짜: SQL 은 원본 YYYYMMDD 문자열을 돌려주고 여기서 변환한다 (날짜 타입이나 YYYY-MM-DD 가 와도 받는다). 변환이 안 되는 값은 빼고 warnings 에 건수를 적는다
 #   flow_freq   집행·분배 자료 주기 "Q"(PCAP 분기) 또는 "M"
 #   unit        원화 단위 표기 "원"             local_unit 펀드 통화 단위 표기 "" (1단위, 통화 코드가 단위)
 #   classes     자산군 목록 (표시 순서, '전체' 제외)

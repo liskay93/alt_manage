@@ -38,7 +38,7 @@
 | 열 | 필수 | 설명 |
 |---|---|---|
 | 펀드 | 필수 | 펀드 마스터의 키 |
-| 약정일 | 필수 | YYYY-MM-DD. 연도별 집계의 기준 |
+| 약정일 | 필수 | YYYYMMDD. 연도별 집계의 기준 |
 | 약정금액(원화) | 필수 | 억원. 외화 펀드는 약정 시점 환산액 |
 | 약정금액(로컬) | 선택 | 외화 펀드의 펀드 통화 금액 (백만). KRW 펀드는 생략 가능 |
 | 자산군 | 선택 | 마스터에 있으면 생략 가능 |
@@ -99,7 +99,7 @@ DB 가 아니라 엑셀 양식 `data/ALT_Target.xlsx` 의 '목표' 시트로 받
 | MAAMC0101DTM_CW01 | FUND_CD 펀드코드('funcd_cd' 로 전달받음), ATVT_PGM_FUND_CD 액티브 프로그램 코드 | 1 펀드 마스터: 자산군·세부 분류 | 컬럼명이 FUND_CD 가 맞는지, 펀드당 1행인지 |
 | (엑셀) ATVT_PGM_FUND_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 자산군(코드 앞 3자리 XPV/XRE/XIF), 펀드 표의 세부 분류 꼬리표 | 없음 |
 | FMCBI0006NTA | WRK_DT 기준일(YYYYMMDD, 일별), CURR_CD 통화, MSCI_EXRT 환율(1 USD 당 해당 통화 단위) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 없음 (USD 행이 없어도 KRW 행으로 만든다) |
-| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, 'YYYY-MM-DD'), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(중복 없음). 금액 단위 1, PCAP_DATE YYYYMMDD | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 이력 시작 시점(최신 제공일 한 벌에 PCAP_DATE 가 언제부터 있는지) |
+| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, YYYYMMDD), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(중복 없음). 금액 단위 1, PCAP_DATE YYYYMMDD | 3 집행, 4 분배 (분기 증분): 원화는 CP-KRW 행, 로컬은 CD 행. NAV 는 추후 활용. GCM 보고 기준만 | 이력 시작 시점(최신 제공일 한 벌에 PCAP_DATE 가 언제부터 있는지) |
 
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
 
