@@ -14,9 +14,14 @@ def txt(s):
     return s.astype(str).str.strip().str.upper()
 
 
-fd = raw_fund.copy()
-fd["FUND_CD"] = txt(fd["FUND_CD"])
-cls_of = fd.drop_duplicates("FUND_CD").set_index("FUND_CD")["ASSET_CLS"]
+# 자산군 = 펀드코드 맨 앞 글자 (헤지펀드 H 는 사모벤처)
+CODE_CLS = {"P": "사모벤처", "D": "사모벤처", "Z": "사모벤처", "H": "사모벤처",
+            "R": "부동산", "I": "인프라", "S": "인프라"}
+
+
+def cls_of(codes):
+    return codes.str[:1].map(CODE_CLS).fillna("미분류")
+
 
 fx = raw_fx.copy()
 fx["WRK_DT"] = to_dt(fx["WRK_DT"])
@@ -27,7 +32,7 @@ cm = raw_commit.copy()
 cm["WRK_DT"] = to_dt(cm["WRK_DT"])
 cm["FUND_CD"] = txt(cm["FUND_CD"])
 cm["CCY"] = txt(cm["CCY"])
-cm["CLS"] = cm["FUND_CD"].map(cls_of).fillna("미분류")
+cm["CLS"] = cls_of(cm["FUND_CD"])
 
 pc = raw_pcap.copy()
 pc["WRK_DT"] = to_dt(pc["WRK_DT"])
@@ -62,7 +67,7 @@ def last_val(d, col):
 
 def by_cls(v):
     """펀드코드 인덱스 값 → 자산군별 합계 (groupby 없이)"""
-    k = pd.Series(v.index, index=v.index).map(cls_of).fillna("미분류")
+    k = cls_of(pd.Series(v.index, index=v.index))
     return pd.Series({x: v[k == x].sum() for x in sorted(k.unique())}, dtype=float)
 
 

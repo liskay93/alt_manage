@@ -21,8 +21,9 @@
 #              열: 연도, 자산군(사모/부동산/인프라), 약정, 집행, 회수, 순증   (회수 = 분배. 순증이 비면 집행 − 회수, 회수가 비면 집행 − 순증)
 #              DB 에서 올 때의 열 이름(TARGET_YR, ASSET_CLS, COMMIT_KRW, DRAW_KRW, DIST_KRW, NET_KRW)도 받는다
 #   raw_fund   sql/ALT_Fund.sql    펀드 마스터 (선택)  FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
-#              PGM_CD(ATVT_PGM_FUND_CD, 액티브 프로그램 코드) → 세부 분류명은 PGM_NAMES 로, 자산군이 비어 있으면 코드 앞 3자리로
-#              없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드, 자산군은 '미분류'
+#              자산군은 펀드코드 맨 앞 글자(FUND_CLASS: P·D·Z·H 사모벤처, R 부동산, I·S 인프라). 마스터에 없는 펀드(PCAP 에만 있는 펀드)도 같은 규칙
+#              PGM_CD(ATVT_PGM_FUND_CD, 액티브 프로그램 코드) → 세부 분류명(PGM_NAMES)에만 쓴다
+#              마스터가 없으면 약정 내역에서 통화·빈티지를 유추하고 펀드명은 코드
 #   raw_fx     sql/ALT_FX.sql      환율 (FMCBI0006NTA)  WRK_DT, CURR_ID, USD_RATE(1 USD 당 통화 단위)
 #              또는 WRK_DT, CURR_ID, RATE(원/1단위). USD_RATE 형식이면 KRW 행 ÷ 통화 행으로 원/1단위를 만든다
 #              쓰임 1) 외화 약정의 원화 환산 (연말·기준일 환율, 필수)  2) PCAP 에 CD 행이 없는 펀드의 로컬 환산 (보조)
@@ -66,8 +67,10 @@ TARGET_MULT = 100000000    # 목표 엑셀 '목표' 시트가 억원 입력 → 
 FUNDED_SIGN = -1           # FEIAI0432NTA 의 FUNDED_AMT 는 음수 부호 → 양수로
 # 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
 CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
-# 액티브 프로그램 코드(ATVT_PGM_FUND_CD) → 세부 분류명 (형님 엑셀 기준, docs/ATVT_PGM_FUND_CD.csv). 앞 3자리가 자산군
-PGM_CLASS = {"XPV": "사모벤처", "XRE": "부동산", "XIF": "인프라"}
+# 자산군 = 펀드코드 맨 앞 글자. 헤지펀드(H)는 사모벤처에 포함. 목록에 없는 글자는 미분류
+FUND_CLASS = {"P": "사모벤처", "D": "사모벤처", "Z": "사모벤처", "H": "사모벤처",
+              "R": "부동산", "I": "인프라", "S": "인프라"}
+# 액티브 프로그램 코드(ATVT_PGM_FUND_CD) → 세부 분류명 (형님 엑셀 기준, docs/ATVT_PGM_FUND_CD.csv)
 PGM_NAMES = {
     "XPV01": "Buyout",
     "XPV03": "Growth",
@@ -277,6 +280,11 @@ def _prep_target(raw):
     return df.groupby(["YEAR", "CLS"], as_index=False)[METRICS].sum()
 
 
+def _class_by_code(keys):
+    """펀드코드 맨 앞 글자 → 자산군 (FUND_CLASS). 목록에 없으면 NaN"""
+    return keys.astype(str).str.strip().str[:1].str.upper().map(FUND_CLASS)
+
+
 def _prep_fund(raw):
     """펀드 마스터 표준화 (선택 입력). FUND_KEY 를 index 로"""
     if raw is None or raw.empty:
@@ -288,9 +296,9 @@ def _prep_fund(raw):
     df["PGM_CD"] = df["PGM_CD"].fillna("").astype(str).str.strip().str.upper() if "PGM_CD" in df else ""
     df["PGM_NM"] = df["PGM_CD"].map(PGM_NAMES).fillna(df["PGM_CD"].where(df["PGM_CD"] != "", pd.NA))
     df["ASSET_CLS"] = df["ASSET_CLS"].astype(str).str.strip() if "ASSET_CLS" in df else pd.NA
-    by_code = df["PGM_CD"].str[:3].map(PGM_CLASS)                      # 자산군이 비었거나 미분류면 코드 앞 3자리로
+    by_code = _class_by_code(df["FUND_KEY"])                           # 펀드코드 맨 앞 글자 우선
     known = df["ASSET_CLS"].notna() & ~df["ASSET_CLS"].isin(["", "nan", "None", NO_CLASS])
-    df["ASSET_CLS"] = df["ASSET_CLS"].where(known | by_code.isna(), by_code)
+    df["ASSET_CLS"] = by_code.where(by_code.notna(), df["ASSET_CLS"].where(known))
     df["ASSET_CLS"] = df["ASSET_CLS"].fillna(NO_CLASS).map(lambda c: CLASS_ALIAS.get(c, c))
     df["CCY"] = df["CCY"].fillna("KRW").astype(str).str.strip().str.upper() if "CCY" in df else "KRW"
     df["VINTAGE_YR"] = pd.to_numeric(df["VINTAGE_YR"], errors="coerce") if "VINTAGE_YR" in df else pd.NA
@@ -348,7 +356,7 @@ def process_ALT_Manage(raw_commit, raw_pcap, raw_target, raw_fund=None, asof=Non
     first_commit = commit.sort_values("WRK_DT").drop_duplicates("FUND_KEY").set_index("FUND_KEY")
     attrs = pd.DataFrame(index=first_commit.index.union(pcap["FUND_KEY"].unique()))
     attrs["FUND_NM"] = attrs.index.to_series()
-    attrs["ASSET_CLS"] = NO_CLASS
+    attrs["ASSET_CLS"] = _class_by_code(attrs.index.to_series()).fillna(NO_CLASS)     # 마스터에 없는 펀드도 코드 앞 글자로
     attrs["PGM_NM"] = pd.NA
     attrs["CCY"] = first_commit["CCY"].reindex(attrs.index).fillna("KRW")
     attrs["VINTAGE_YR"] = first_commit["WRK_DT"].dt.year.reindex(attrs.index)

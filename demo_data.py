@@ -20,8 +20,11 @@ def load_demo():
     tg = pd.read_csv(DATA_DIR / "targets.csv", encoding="utf-8-sig")
     tx["date"] = pd.to_datetime(tx["date"])
     tx["currency"] = tx["currency"].fillna("KRW")
-    code = "F" + (tx["fund"].astype("category").cat.codes + 1).astype(str).str.zfill(4)   # 펀드코드 흉내
-    tx["code"] = code
+    # 펀드코드 흉내: 맨 앞 글자가 자산군 (사모벤처 P·D·Z·H, 부동산 R, 인프라 I·S) + 번호 4자리
+    num = tx["fund"].astype("category").cat.codes + 1
+    cls = tx.groupby("fund")["asset_class"].transform("first")
+    lead = {"사모벤처": "PDZH", "부동산": "R", "인프라": "IS"}
+    tx["code"] = [lead[c][n % len(lead[c])] + str(n).zfill(4) for c, n in zip(cls, num)]
 
     c = tx[tx["type"] == "약정"]
     # SQL 과 같은 원본 단위: KRW 는 원, 외화는 1단위 (샘플 CSV 는 억원·백만이라 곱해서 되돌린다)

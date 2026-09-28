@@ -2,16 +2,21 @@
    돌려주는 열(대문자): FUND_CD, FUND_NM, ASSET_CLS, PGM_CD, CCY, VINTAGE_YR
    원천
      FEIAI0488NTA  NPS_FUND_CD(펀드코드), DEAL_NM(펀드명), VNTG_YR(빈티지), CURR_CD(통화). 펀드당 1행
-     MAAMC0101DTM_CW01  FUND_CD(펀드코드), ATVT_PGM_FUND_CD(액티브 프로그램 코드)
-   자산군: ATVT_PGM_FUND_CD 앞 3자리 XPV 사모벤처, XRE 부동산, XIF 인프라 (대소문자·앞뒤 공백 무시)
-   펀드명이 없으면 펀드코드, 프로그램 코드가 없으면 자산군은 미분류
+     MAAMC0101DTM_CW01  FUND_CD(펀드코드), ATVT_PGM_FUND_CD(액티브 프로그램 코드) — 세부 분류명에만 사용
+   자산군: 펀드코드(NPS_FUND_CD) 맨 앞 글자 (대소문자·앞뒤 공백 무시)
+     P, D, Z, H(헤지펀드) 사모벤처 / R 부동산 / I, S 인프라 / 그 외 미분류
+   펀드명이 없으면 펀드코드
    조인은 Oracle (+) 외부조인 */
 SELECT a.NPS_FUND_CD                                             AS fund_cd
      , NVL(a.DEAL_NM, a.NPS_FUND_CD)                             AS fund_nm
-     , DECODE(UPPER(SUBSTR(TRIM(m.ATVT_PGM_FUND_CD), 1, 3)), 'XPV', '사모벤처'
-                                                         , 'XRE', '부동산'
-                                                         , 'XIF', '인프라'
-                                                         , '미분류')  AS asset_cls
+     , DECODE(UPPER(SUBSTR(TRIM(a.NPS_FUND_CD), 1, 1)), 'P', '사모벤처'
+                                                     , 'D', '사모벤처'
+                                                     , 'Z', '사모벤처'
+                                                     , 'H', '사모벤처'
+                                                     , 'R', '부동산'
+                                                     , 'I', '인프라'
+                                                     , 'S', '인프라'
+                                                     , '미분류')      AS asset_cls
      , UPPER(TRIM(m.ATVT_PGM_FUND_CD))                           AS pgm_cd
      , NVL(UPPER(a.CURR_CD), 'KRW')                              AS ccy
      , a.VNTG_YR                                                 AS vintage_yr
