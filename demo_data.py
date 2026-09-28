@@ -24,13 +24,15 @@ def load_demo():
     tx["code"] = code
 
     c = tx[tx["type"] == "약정"]
+    # SQL 과 같은 원본 단위: KRW 는 원, 외화는 1단위 (샘플 CSV 는 억원·백만이라 곱해서 되돌린다)
+    unit = c["currency"].map(lambda x: 1e8 if x == "KRW" else 1e6)
     raw_commit = pd.DataFrame({
         "WRK_DT": c["date"].dt.strftime("%Y%m%d"),
         "FUND_CD": c["code"],
         "CCY": c["currency"],
-        "AMT_LOCAL": c["local_amount"].astype(float),
+        "AMT_LOCAL": c["local_amount"].astype(float) * unit,
         # SQL 처럼 KRW 펀드만 원화를 채우고 외화는 비운다 (processor 가 약정일 환율로 환산)
-        "AMT_KRW": c["amount"].astype(float).where(c["currency"] == "KRW"),
+        "AMT_KRW": (c["amount"].astype(float) * 1e8).where(c["currency"] == "KRW"),
     })
 
     # 분기말 누적 (설립 이후). 실제 SQL 결과처럼 통화 유형별 long 행: CP=원화(KRW) 행, CD=펀드 통화 행. GCM 보고 기준만
@@ -45,8 +47,10 @@ def load_demo():
     distrb_loc = q[("local_amount", "분배")] if ("local_amount", "분배") in q else 0.0
     base = {"PROV_DT": "2026-09-18", "WRK_DT": q["Q_END"].dt.strftime("%Y-%m-%d"), "FUND_CD": q["code"],
             "RPRT_NM": "AS Reported by GCM", "COMMIT_AMT": 0.0, "NAV_AMT": 0.0}
-    cp = pd.DataFrame(dict(base, CURR_ID="KRW", CURR_TYP="CP", FUNDED_AMT=funded_krw, DISTRB_AMT=distrb_krw))
-    cd = pd.DataFrame(dict(base, CURR_ID=q["currency"], CURR_TYP="CD", FUNDED_AMT=funded_loc, DISTRB_AMT=distrb_loc))
+    # SQL 과 같은 원본 단위: KRW 행은 원, 외화 행은 1단위, 집행은 음수 부호
+    loc_unit = q["currency"].map(lambda x: 1e8 if x == "KRW" else 1e6)
+    cp = pd.DataFrame(dict(base, CURR_ID="KRW", CURR_TYP="CP", FUNDED_AMT=-funded_krw * 1e8, DISTRB_AMT=distrb_krw * 1e8))
+    cd = pd.DataFrame(dict(base, CURR_ID=q["currency"], CURR_TYP="CD", FUNDED_AMT=-funded_loc * loc_unit, DISTRB_AMT=distrb_loc * loc_unit))
     raw_pcap = pd.concat([cp, cd], ignore_index=True)[
         ["PROV_DT", "WRK_DT", "FUND_CD", "CURR_ID", "CURR_TYP", "RPRT_NM", "COMMIT_AMT", "FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]]
 

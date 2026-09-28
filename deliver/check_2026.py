@@ -1,5 +1,6 @@
 # ===== 2026년 점검: 자산군 × 약정·집행·회수·순증 (억원) =====
 # 앞의 확인 셀에서 만든 raw_fund, raw_commit, raw_pcap, raw_fx 를 그대로 쓴다 (processor 불필요)
+# SQL 은 원본 금액(원, 달러 …)을 돌려주므로 여기서 억원으로 바꾼다
 import pandas as pd
 
 Y = 2026
@@ -27,8 +28,9 @@ def krw_per_unit(ccy, dt):
 c = raw_commit.copy()
 c["WRK_DT"] = pd.to_datetime(c["WRK_DT"])
 c = c[c["WRK_DT"].dt.year == Y].copy()
-c["약정_원화"] = [krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt) / 100          # 백만 × 원/단위 ÷ 100 = 억원
+c["약정_원화"] = [(krw if ccy == "KRW" else loc * krw_per_unit(ccy, dt)) / 1e8          # 원 → 억원
                  for krw, loc, ccy, dt in zip(c["AMT_KRW"], c["AMT_LOCAL"], c["CCY"], c["WRK_DT"])]
+c["AMT_LOCAL"] = c["AMT_LOCAL"] / c["CCY"].map(lambda x: 1e8 if x == "KRW" else 1e6)    # 표시용: KRW 억원, 외화 백만
 c["CLS"] = c["FUND_CD"].map(cls_of).fillna("미분류")
 
 # 2) 집행·회수: PCAP 원화(KRW) 행, CD 와 CP 가 다 있으면 CP.
@@ -39,7 +41,8 @@ p = p[p["CURR_ID"] == "KRW"].sort_values(["FUND_CD", "WRK_DT", "CURR_TYP"])
 p = p.drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
 cur = p[p["WRK_DT"].dt.year == Y].groupby("FUND_CD").last()
 prv = p[p["WRK_DT"].dt.year < Y].groupby("FUND_CD").last()
-f = cur[["FUNDED_AMT", "DISTRB_AMT"]] - prv[["FUNDED_AMT", "DISTRB_AMT"]].reindex(cur.index).fillna(0)
+f = (cur[["FUNDED_AMT", "DISTRB_AMT"]] - prv[["FUNDED_AMT", "DISTRB_AMT"]].reindex(cur.index).fillna(0)) / 1e8   # 원 → 억원
+f["FUNDED_AMT"] = -f["FUNDED_AMT"]                                                    # 원본 집행은 음수 부호
 f["CLS"] = pd.Series(f.index, index=f.index).map(cls_of).fillna("미분류")
 
 # 3) 현황 표

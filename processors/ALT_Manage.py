@@ -3,9 +3,9 @@
 # 무엇: 대체투자 약정·집행·분배·순증 현황 탭(ALT_Manage)의 가공 모듈
 #
 # 입력 (모두 loader.load_data 결과, Oracle 이라 열 이름은 대문자)
-#   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA, 펀드당 1행)
-#              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화: KRW 억원·외화 백만), AMT_KRW(KRW 펀드만, 외화는 NULL)
-#              외화 약정의 원화 = AMT_LOCAL × 약정일 환율(raw_fx) ÷ 100. 환율이 없으면 0 으로 두고 warnings 에 적는다
+#   raw_commit sql/ALT_Commit.sql  약정 내역 (FEIAI0488NTA, 펀드당 1행). 금액은 원본(단위 1)
+#              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화), AMT_KRW(KRW 펀드만, 외화는 NULL)
+#              외화 약정의 원화 = AMT_LOCAL × 약정일 환율(raw_fx). 환율이 없으면 0 으로 두고 warnings 에 적는다
 #   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, GCM 보고 기준)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
 #              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
@@ -13,7 +13,8 @@
 #              같은 펀드·기준일에 행이 여러 개 → 원화는 CP 이면서 CURR_ID='KRW' 인 행, 펀드 통화는 CD 행. CP-USD 행은 쓰지 않는다
 #              CD 행 통화가 펀드 통화(FEIAI0488NTA.CURR_CD)와 다르면 그 값은 버리고, raw_fx 가 있으면 원화 증분 ÷ 기준일 환율로
 #              환산, 없으면 로컬은 비운다(NaN). 정상 자료에서는 일어나지 않는 보조 경로
-#              금액은 PCAP_DATE 기준 누적(확인 완료) → 분기 증분으로 바꾼다. 기간 증분이면 pcap_cumulative=False
+#              금액은 원본(단위 1, FUNDED 음수 부호), PCAP_DATE 기준 누적 → 부호를 뒤집고 분기 증분으로 바꾼다
+#              기간 증분이면 pcap_cumulative=False
 #              (예전 wide 형식 FUNDED_KRW/FUNDED_LOCAL/DISTRB_KRW/DISTRB_LOCAL 도 받는다)
 #   raw_target data/ALT_Target.xlsx 의 '목표' 시트 (pd.read_excel) — 연도·자산군별 목표, 억원
 #              열: 연도, 자산군(사모/부동산/인프라), 약정, 집행, 회수, 순증   (회수 = 분배. 순증이 비면 집행 − 회수, 회수가 비면 집행 − 순증)
@@ -44,7 +45,8 @@
 #                          약정_L, 집행_L, 분배_L, 순증_L, 누적약정, 누적집행, 집행률]
 #                 펀드·연도별 실적(원화, _L 은 펀드 통화). 누적은 그 연도까지, 집행률 = 누적집행/누적약정
 #
-# 단위: 원화는 억원, 펀드 통화는 KRW 펀드면 억원·외화 펀드면 백만. SQL 이 그 단위로 돌려준다고 가정 (확인 사항)
+# 단위: SQL 은 원본(원, 달러 …)을 돌려주고, 여기서 원화는 억원(÷ KRW_DIV), 외화는 백만(÷ LOCAL_DIV)으로 바꾼다
+#       KRW 펀드의 펀드 통화 금액도 억원. 출력은 모두 이 단위
 # 순증 = 집행 − 분배 (투자잔액 증가분)
 # ------------------------------------------------------------
 import pandas as pd
@@ -57,6 +59,9 @@ ALL = "전체"
 UNIT = "억원"
 LOCAL_UNIT = "백만"
 NO_CLASS = "미분류"
+KRW_DIV = 100000000        # 원 → 억원
+LOCAL_DIV = 1000000        # 외화 1단위 → 백만
+FUNDED_SIGN = -1           # FEIAI0432NTA 의 FUNDED_AMT 는 음수 부호 → 양수로
 # 자산군 표기 통일: 목표 엑셀·프로그램 코드는 '사모', 화면은 '사모벤처'
 CLASS_ALIAS = {"사모": "사모벤처", "PE": "사모벤처", "사모투자": "사모벤처", "RE": "부동산", "INFRA": "인프라"}
 # 액티브 프로그램 코드(ATVT_PGM_FUND_CD) → 세부 분류명 (형님 엑셀 기준, docs/ATVT_PGM_FUND_CD.csv). 앞 3자리가 자산군
@@ -115,8 +120,8 @@ def _prep_commit(raw):
     is_krw = df["CCY"] == "KRW"
     krw = krw.where(krw.notna(), local.where(is_krw))
     local = local.where(local.notna(), krw.where(is_krw))
-    df["AMT_KRW"] = krw.astype(float)
-    df["AMT_LOCAL"] = local.astype(float)
+    df["AMT_KRW"] = krw.astype(float) / KRW_DIV                                    # 원 → 억원
+    df["AMT_LOCAL"] = local.astype(float) / is_krw.map({True: KRW_DIV, False: LOCAL_DIV})   # KRW 억원, 외화 백만
     df["TX_TYPE"] = "약정"
     df = df.dropna(subset=["WRK_DT"])
     return df[["WRK_DT", "FUND_KEY", "CCY", "TX_TYPE", "AMT_KRW", "AMT_LOCAL"]]
@@ -128,6 +133,10 @@ def _pcap_wide(df):
     df["CURR_TYP"] = df["CURR_TYP"].fillna("").astype(str).str.strip().str.upper() if "CURR_TYP" in df else ""
     for c in ["FUNDED_AMT", "DISTRB_AMT"]:
         df[c] = _num(df, c)
+    # 원본 단위 → KRW 행은 억원, 외화 행은 백만. 집행은 음수 부호를 뒤집는다
+    div = df["CURR_ID"].map(lambda c: KRW_DIV if c == "KRW" else LOCAL_DIV)
+    df["FUNDED_AMT"] = FUNDED_SIGN * df["FUNDED_AMT"] / div
+    df["DISTRB_AMT"] = df["DISTRB_AMT"] / div
     # 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 STATE_DT(명세서/갱신 일자) 가 늦은 행만 남긴다
     if "STATE_DT" in df:
         df["STATE_DT"] = _to_date(df["STATE_DT"])

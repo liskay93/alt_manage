@@ -38,17 +38,17 @@ print(raw_fund["ASSET_CLS"].value_counts(dropna=False))
 print("이름=코드인 펀드:", (raw_fund["FUND_NM"] == raw_fund["FUND_CD"]).sum())
 print(raw_fund.head())
 
-# 2) 약정: 건수, 통화별 건수와 로컬 합계, 날짜 범위. AMT_KRW 는 KRW 펀드만 값이 있어야 정상
+# 2) 약정: 건수, 통화별 건수와 로컬 합계, 날짜 범위. 금액은 원본(원, 달러 …). AMT_KRW 는 KRW 펀드만 값이 있어야 정상
 raw_commit = loader.load_data(conn, "ALT_Commit.sql")
 print(len(raw_commit), "건", raw_commit["WRK_DT"].min(), "~", raw_commit["WRK_DT"].max())
-print(raw_commit.groupby("CCY")[["AMT_LOCAL", "AMT_KRW"]].agg(["count", "sum"]).round(1))
+print(raw_commit.groupby("CCY")[["AMT_LOCAL", "AMT_KRW"]].agg(["count", "sum"]).round(0))
 print(raw_commit.head())
 
-# 3) PCAP: 최신 제공일, 기준일 범위, 통화유형x통화 분포. FUNDED_AMT 는 양수여야 정상
+# 3) PCAP: 최신 제공일, 기준일 범위, 통화유형x통화 분포. 금액은 원본, FUNDED_AMT 는 음수(원본 부호)여야 정상
 raw_pcap = loader.load_data(conn, "ALT_PCAP.sql")
 print(len(raw_pcap), "행 | 제공일", raw_pcap["PROV_DT"].max(), "| 기준일", raw_pcap["WRK_DT"].min(), "~", raw_pcap["WRK_DT"].max())
 print(raw_pcap.groupby(["CURR_TYP", "CURR_ID"]).size())
-print(raw_pcap[["FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]].describe().round(1))
+print(raw_pcap[["FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]].describe().round(0))
 print(raw_pcap.sort_values(["FUND_CD", "WRK_DT"]).head(8))
 
 # 4) 환율: 통화별 행 수와 최근 값. KRW 가 꼭 있어야 하고, 값은 1 USD 당 통화 단위
@@ -61,8 +61,8 @@ CHECKS = """- MAAMC0101DTM_CW01 의 펀드코드 컬럼을 'funcd_cd' 로 받아
 - 조인은 LEFT JOIN 대신 Oracle (+) 외부조인, 주석은 -- 대신 맨 위 /* */ 한 곳으로 바꿨습니다 (missing keyword 대응)
 - 펀드명은 FEIAI0488NTA.DEAL_NM 에서 바로 가져옵니다 (FEIAI0432NTA 조인 제거)
 - FEIAI0432NTA 의 RPRT_NM 은 UPPER(...) LIKE '%GCM%' 로 골랐습니다. GCM 이 들어간 다른 값이 있으면 알려 주세요
-- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 환산합니다
-- 단위 변환: 통화가 KRW 면 1억으로 나눠 억원, 그 외는 100만으로 나눠 백만 (원천 단위 1 기준)
+- ALT_Commit.sql 의 원화(AMT_KRW)는 KRW 펀드만 채워지고, 외화 약정은 processor 가 약정일 환율로 원화 환산합니다
+- SQL 은 금액을 나누지 않고 원본 그대로 돌려줍니다 (원, 달러 …, 집행은 음수 부호 그대로). 억원·백만 변환과 부호 처리는 processor 가 합니다
 - ALT_FX.sql 은 KRW 와 약정 테이블에 있는 통화만, 2018-01-01 이후 일별로 가져옵니다
 - 오류가 나면 0) 셀 출력을 그대로 보내 주세요. 오류 위치 앞뒤 글자가 찍혀서 원인 줄을 바로 짚을 수 있습니다"""
 
