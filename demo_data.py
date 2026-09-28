@@ -49,13 +49,13 @@ def load_demo():
     funded_loc = q[("local_amount", "집행")] if ("local_amount", "집행") in q else 0.0
     distrb_loc = q[("local_amount", "분배")] if ("local_amount", "분배") in q else 0.0
     base = {"PROV_DT": "20260918", "WRK_DT": q["Q_END"].dt.strftime("%Y%m%d"), "FUND_CD": q["code"],
-            "RPRT_NM": "AS Reported by GCM", "COMMIT_AMT": 0.0, "NAV_AMT": 0.0}
+            "RPRT_NM": "AS Reported by GCM", "STATE_DT": q["Q_END"].dt.strftime("%Y-%m-%d"), "COMMIT_AMT": 0.0, "NAV_AMT": 0.0}
     # SQL 과 같은 원본 단위: KRW 행은 원, 외화 행은 1단위, 집행은 음수 부호
     loc_unit = q["currency"].map(lambda x: 1e8 if x == "KRW" else 1e6)
     cp = pd.DataFrame(dict(base, CURR_ID="KRW", CURR_TYP="CP", FUNDED_AMT=-funded_krw * 1e8, DISTRB_AMT=distrb_krw * 1e8))
     cd = pd.DataFrame(dict(base, CURR_ID=q["currency"], CURR_TYP="CD", FUNDED_AMT=-funded_loc * loc_unit, DISTRB_AMT=distrb_loc * loc_unit))
     raw_pcap = pd.concat([cp, cd], ignore_index=True)[
-        ["PROV_DT", "WRK_DT", "FUND_CD", "CURR_ID", "CURR_TYP", "RPRT_NM", "COMMIT_AMT", "FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]]
+        ["PROV_DT", "WRK_DT", "FUND_CD", "CURR_ID", "CURR_TYP", "RPRT_NM", "STATE_DT", "COMMIT_AMT", "FUNDED_AMT", "DISTRB_AMT", "NAV_AMT"]]
 
     # 목표는 실제 경로와 같게 엑셀 양식(data/ALT_Target.xlsx '목표' 시트)에서 읽는다
     raw_target = pd.read_excel(Path(__file__).resolve().parent / "data" / "ALT_Target.xlsx", sheet_name="목표")

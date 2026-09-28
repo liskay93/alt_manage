@@ -99,7 +99,7 @@ DB 가 아니라 엑셀 양식 `data/ALT_Target.xlsx` 의 '목표' 시트로 받
 | MAAMC0101DTM_CW01 | FUND_CD 펀드코드('funcd_cd' 로 전달받음), ATVT_PGM_FUND_CD 액티브 프로그램 코드 | 1 펀드 마스터: 세부 분류 | 컬럼명이 FUND_CD 가 맞는지, 펀드당 1행인지 |
 | (엑셀) ATVT_PGM_FUND_CD 매핑 | 액티브 프로그램 코드 22개 → 구분(사모/부동산/인프라)·세부 분류명 | 펀드 표의 세부 분류 꼬리표 (자산군은 펀드코드 맨 앞 글자로 정함) | 없음 |
 | FMCBI0006NTA | WRK_DT 기준일(YYYYMMDD, 일별), CURR_CD 통화, MSCI_EXRT 환율(1 USD 당 해당 통화 단위) | 6 환율: KRW 행 ÷ 통화 행 = 원/1단위 (processor 계산) | 없음 (USD 행이 없어도 KRW 행으로 만든다) |
-| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, YYYYMMDD), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(중복 없음). 금액 단위 1, PCAP_DATE YYYYMMDD | 3 집행, 4 분배 (분기 증분, 같은 키에 GCM 있으면 GCM·없으면 STATE_DATE 가장 늦은 Fund 행): 로컬(CD 행) 증분 × 적용환율(그 해 12/31 과 기준일 중 이른 날)로 원화 환산. CD 행이 없을 때만 CP-KRW 행 원화 사용. NAV 는 추후 활용. 펀드·기준일·통화마다 GCM 보고 우선, 없으면 Fund 보고 | 이력 시작 시점(최신 제공일 한 벌에 PCAP_DATE 가 언제부터 있는지) |
+| FEIAI0432NTA | WRK_DT 데이터 제공일(주간, YYYYMMDD), PCAP_DATE 기준일(분기), NPS_CD 펀드코드, COMMITMENT_AMT·FUNDED_AMT(음수)·DISTRB_AMT·PCAP_AMT (PCAP_DATE 기준 누적), CURR_ID, CURR_TYP(CD=투자 통화 EUR/USD/JPY…, CP=보고 통화 USD/KRW), RPRT_NM(Fund/GCM), DEAL_NM 펀드명, STATE_DATE(중복 없음). 금액 단위 1, PCAP_DATE YYYYMMDD | 3 집행, 4 분배 (분기 증분, SQL 은 최신 제공일 그대로 뽑고 파이썬에서 같은 키에 GCM 우선·없으면 STATE_DATE 가장 늦은 행): 로컬(CD 행) 증분 × 적용환율(그 해 12/31 과 기준일 중 이른 날)로 원화 환산. CD 행이 없을 때만 CP-KRW 행 원화 사용. NAV 는 추후 활용. 펀드·기준일·통화마다 GCM 보고 우선, 없으면 Fund 보고 | 이력 시작 시점(최신 제공일 한 벌에 PCAP_DATE 가 언제부터 있는지) |
 
 ## SQL 파일과의 대응 (TPA Dashboard 형식)
 

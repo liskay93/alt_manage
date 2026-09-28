@@ -33,6 +33,10 @@ cm["CLS"] = cls_of(cm["FUND_CD"])
 
 pc = raw_pcap.copy()
 pc["WRK_DT"] = to_dt(pc["WRK_DT"])
+pc["STATE_DT"] = to_dt(pc["STATE_DT"])
+pc["GCM"] = pc["RPRT_NM"].astype(str).str.upper().str.contains("GCM")          # GCM 보고 여부
+pc = pc.sort_values(["GCM", "STATE_DT"], na_position="first")                   # 뒤로 갈수록 우선: GCM, STATE_DT 늦은 것
+pc = pc.drop_duplicates(["FUND_CD", "WRK_DT", "CURR_TYP", "CURR_ID"], keep="last")   # 펀드·기준일·통화마다 한 행
 pc = pc[(pc["CURR_TYP"] == "CD") & pc["WRK_DT"].notna()]                       # 로컬(투자 통화) 행만
 pc = pc.sort_values(["FUND_CD", "WRK_DT"]).drop_duplicates(["FUND_CD", "WRK_DT"], keep="last")
 nocd = sorted(set(raw_pcap["FUND_CD"]) - set(pc["FUND_CD"]))                   # CD 행이 없어 집행·회수에서 빠지는 펀드

@@ -7,9 +7,9 @@
 #              WRK_DT(약정일), FUND_CD, CCY, AMT_LOCAL(펀드 통화), AMT_KRW(KRW 펀드만, 외화는 NULL)
 #              외화 약정의 원화 = AMT_LOCAL × 적용환율(raw_fx). 적용환율 = 약정 연도 12/31 과 asof 중 이른 날 환율
 #              (예: asof 20260731 → 2025년 약정 20251231, 2026년 약정 20260731). 환율이 없으면 0 으로 두고 warnings 에 적는다
-#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌, 펀드·기준일·통화마다 GCM 우선·없으면 Fund 보고)
+#   raw_pcap   sql/ALT_PCAP.sql    집행·분배·NAV 분기 스냅샷 (FEIAI0432NTA, 최신 제공일 한 벌. SQL 은 그대로 뽑고 행 고르기는 여기서)
 #              WRK_DT(기준일=PCAP_DATE), FUND_CD, CURR_ID(USD/KRW), CURR_TYP(CD/CP), COMMIT_AMT, FUNDED_AMT, DISTRB_AMT, NAV_AMT
-#              STATE_DT(선택): 같은 펀드·기준일·통화에 행이 여러 개면 STATE_DT 가 가장 늦은 행만 쓴다
+#              RPRT_NM·STATE_DT(선택): 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 GCM 보고 우선, 없으면 STATE_DT 가 가장 늦은 행
 #              CURR_TYP 뜻 (확인 완료): CD = 투자 통화(EUR/USD/JPY/KRW…), CP = 보고 통화(USD 기준 또는 KRW 기준)
 #              같은 펀드·기준일에 행이 여러 개 → 펀드 통화(로컬)는 CD 행, GCM 원화는 CP 이면서 CURR_ID='KRW' 인 행. CP-USD 행은 쓰지 않는다
 #              집행·분배 원화 = 로컬(CD) 분기 증분 × 적용환율 (약정과 같은 규칙: 그 해 12/31 과 asof 중 이른 날 환율)
@@ -156,11 +156,11 @@ def _pcap_wide(df):
         df[c] = _num(df, c)
     # 금액은 1 단위 그대로. 집행만 음수 부호를 뒤집는다
     df["FUNDED_AMT"] = FUNDED_SIGN * df["FUNDED_AMT"]
-    # 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 STATE_DT(명세서/갱신 일자) 가 늦은 행만 남긴다
-    if "STATE_DT" in df:
-        df["STATE_DT"] = _to_date(df["STATE_DT"])
-        df = df.sort_values(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID", "STATE_DT"])
-        df = df.drop_duplicates(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID"], keep="last")
+    # 같은 펀드·기준일·통화유형·통화에 행이 여러 개면 GCM 보고 우선, 그다음 STATE_DT(근거 명세서 일자)가 늦은 행 하나만
+    df["_GCM"] = df["RPRT_NM"].astype(str).str.upper().str.contains("GCM") if "RPRT_NM" in df else False
+    df["_SDT"] = _to_date(df["STATE_DT"]) if "STATE_DT" in df else pd.NaT
+    df = df.sort_values(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID", "_GCM", "_SDT"], na_position="first")
+    df = df.drop_duplicates(["FUND_KEY", "WRK_DT", "CURR_TYP", "CURR_ID"], keep="last")
     keys = ["FUND_KEY", "WRK_DT"]
     # 원화: CURR_ID='KRW' 행. 여러 개면 PCAP_KRW_PREF 순서로 하나
     krw = df[df["CURR_ID"] == "KRW"].copy()
